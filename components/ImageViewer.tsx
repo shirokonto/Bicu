@@ -14,8 +14,8 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ placeholderImageSource }) => 
 
 const styles = StyleSheet.create({
     image: {
-        width: 320,
-        height: 440,
+        width: 350, // TODO remove later? so that image is fullscreen and in background
+        height: 500,
         borderRadius: 18,
     },
 });
