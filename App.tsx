@@ -1,13 +1,35 @@
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet, View} from 'react-native';
+import {ActionSheetIOS, StyleSheet, View} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 import ImageViewer from "./components/ImageViewer";
 import Button from "./components/Button";
+import {useState} from "react";
 
-const PlaceholderImage = require('./assets/sample.png')
+const placeholderImage = require('./assets/sample.png')
 
-export default function App() {
+const App = () => {
+
+  const [selectedImg, setSelectedImage] = useState(null);
+
+  const openActionSheetAsync = async() =>
+      ActionSheetIOS.showActionSheetWithOptions(
+          {
+            options: ['Cancel', 'Camera', 'Gallery'],
+            cancelButtonIndex: 0,
+            userInterfaceStyle: 'dark',
+          },
+          buttonIndex => {
+            if (buttonIndex === 0) {
+              // cancel action
+            } else if (buttonIndex === 1) {
+              openCameraAsync();
+            } else if (buttonIndex === 2) {
+              pickImageAsync();
+            }
+          },
+      );
+
   const pickImageAsync = async() => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -16,12 +38,13 @@ export default function App() {
       return;
     }
 
-    let result = await ImagePicker.launchImageLibraryAsync({
+    let result : any = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1
     });
 
     if(!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
       console.log(result);
     } else {
       alert('No image selected.');
@@ -36,9 +59,10 @@ export default function App() {
       return;
     }
 
-    let result = await ImagePicker.launchCameraAsync();
+    let result : any = await ImagePicker.launchCameraAsync();
 
     if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri)
       console.log(result);
     } else {
       alert('No image selected.');
@@ -48,11 +72,13 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <ImageViewer placeholderImageSource={PlaceholderImage} />
+        <ImageViewer
+            placeholderImageSource={placeholderImage}
+            selectedImage={selectedImg} />
       </View>
       <View style={styles.footerContainer}>
-        <Button label="Take a photo"  iconname={"camera"} onPress={pickImageAsync}/>
-        <Button label="Add new item" iconname={"plus"} onPress={openCameraAsync}/>
+        <Button label="Select image"  iconname={"camera"} onPress={openActionSheetAsync}/>
+        <Button label="Add new item" iconname={"plus"} onPress={() => alert('You pressed search button.')}/>
         <Button label="Search" iconname={"search"} onPress={() => alert('You pressed search button.')}/>
       </View>
       <StatusBar style="auto" />
@@ -78,3 +104,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   }
 });
+
+export default App;

@@ -4,11 +4,15 @@ import React from "react";
 
 interface ImageViewerProps {
     placeholderImageSource: ImageSourcePropType;
+    selectedImage: ImageSourcePropType | null | undefined;
 }
 
-const ImageViewer: React.FC<ImageViewerProps> = ({ placeholderImageSource }) => {
+const ImageViewer: React.FC<ImageViewerProps> = ({ placeholderImageSource, selectedImage }) => {
+    // Define the type explicitly for imageSource
+    const imageSource = selectedImage ? {uri: selectedImage as string } : placeholderImageSource
+
     return (
-        <Image source={placeholderImageSource} style={styles.image} />
+        <Image source={imageSource} style={styles.image} />
     );
 }
 
