@@ -1,20 +1,19 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import React from "react";
-import * as events from "events";
 
 interface ButtonProps {
     label: string;
-    iconname: string;
+    icon: string;
     onPress: () => void;
 }
 
-const Button: React.FC<ButtonProps> = ({ label, iconname, onPress }) => {
+const Button: React.FC<ButtonProps> = ({ label, icon, onPress }) => {
     return (
         <View style={styles.buttonContainer}>
             <Pressable style={styles.button} onPress={onPress}>
                 <FontAwesome
-                    name={iconname as any}
+                    name={icon as any}
                     style={styles.buttonIcon}
                     size={18}
                 />

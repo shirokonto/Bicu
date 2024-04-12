@@ -5,12 +5,15 @@ import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from "./components/ImageViewer";
 import Button from "./components/Button";
 import {useState} from "react";
+import IconButton from "./components/IconButton";
+import CircleButton from "./components/CircleButton";
 
 const placeholderImage = require('./assets/sample.png')
 
 const App = () => {
 
   const [selectedImg, setSelectedImage] = useState(null);
+  const [showAppOptions, setShowAppOptions] = useState(false);
 
   const openActionSheetAsync = async() =>
       ActionSheetIOS.showActionSheetWithOptions(
@@ -45,6 +48,7 @@ const App = () => {
 
     if(!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      setShowAppOptions(true);
       console.log(result);
     } else {
       alert('No image selected.');
@@ -62,12 +66,25 @@ const App = () => {
     let result : any = await ImagePicker.launchCameraAsync();
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri)
+      setSelectedImage(result.assets[0].uri);
+      setShowAppOptions(true);
       console.log(result);
     } else {
       alert('No image selected.');
     }
   }
+
+  const onReset = () => {
+    setShowAppOptions(false);
+  };
+
+  const onAddItem = () => {
+    // implement this later
+  };
+
+  const onSearch = async () => {
+    // implement this later
+  };
 
   return (
     <View style={styles.container}>
@@ -76,11 +93,22 @@ const App = () => {
             placeholderImageSource={placeholderImage}
             selectedImage={selectedImg} />
       </View>
-      <View style={styles.footerContainer}>
-        <Button label="Select image"  iconname={"camera"} onPress={openActionSheetAsync}/>
-        <Button label="Add new item" iconname={"plus"} onPress={() => alert('You pressed search button.')}/>
-        <Button label="Search" iconname={"search"} onPress={() => alert('You pressed search button.')}/>
-      </View>
+      {showAppOptions ? (
+          <View style={styles.optionsContainer}>
+            <View style={styles.optionsRow}>
+              <IconButton icon="refresh" label="Reset" onPress={onReset} />
+              <CircleButton onPress={() => alert('You pressed plus button.')} />
+              <IconButton icon="search" label="Search" onPress={() => alert('You pressed search button')} />
+            </View>
+          </View>
+      ) : (
+          <View style={styles.footerContainer}>
+            <Button label="Select image"  icon={"camera"} onPress={openActionSheetAsync}/>
+            <Button label="Add item" icon={"plus"} onPress={() => alert('You pressed plus button.')}/>
+            <Button label="Search" icon={"search"} onPress={() => alert('You pressed search button.')}/>
+          </View>
+      )}
+
       <StatusBar style="auto" />
     </View>
   );
@@ -102,7 +130,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1 / 3,
     alignItems: 'center',
-  }
+  },
+
+  optionsContainer: {
+    position: 'absolute',
+    bottom: 80,
+  },
+  optionsRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
 });
 
 export default App;

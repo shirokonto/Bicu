@@ -1,6 +1,8 @@
-import { StyleSheet, Image, ImageSourcePropType } from 'react-native';
-import Button from "./Button";
+import {StyleSheet, Image, ImageSourcePropType, Dimensions} from 'react-native';
 import React from "react";
+
+const windowWidth = Dimensions.get('window').width;
+
 
 interface ImageViewerProps {
     placeholderImageSource: ImageSourcePropType;
@@ -18,9 +20,9 @@ const ImageViewer: React.FC<ImageViewerProps> = ({ placeholderImageSource, selec
 
 const styles = StyleSheet.create({
     image: {
-        width: 350, // TODO remove later? so that image is fullscreen and in background
-        height: 500,
-        borderRadius: 18,
+        width: windowWidth - 20,
+        height: 600,
+        borderRadius: 15,
     },
 });
 
