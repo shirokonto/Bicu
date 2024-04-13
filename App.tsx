@@ -13,7 +13,7 @@ const placeholderImage = require('./assets/sample.png')
 const App = () => {
 
   const [selectedImg, setSelectedImage] = useState(null);
-  const [showAppOptions, setShowAppOptions] = useState(false);
+  const [showTagOptions, setShowTagOptions] = useState(false);
 
   const openActionSheetAsync = async() =>
       ActionSheetIOS.showActionSheetWithOptions(
@@ -48,7 +48,7 @@ const App = () => {
 
     if(!result.canceled) {
       setSelectedImage(result.assets[0].uri);
-      setShowAppOptions(true);
+      setShowTagOptions(true);
       console.log(result);
     } else {
       alert('No image selected.');
@@ -67,7 +67,7 @@ const App = () => {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
-      setShowAppOptions(true);
+      setShowTagOptions(true);
       console.log(result);
     } else {
       alert('No image selected.');
@@ -76,8 +76,12 @@ const App = () => {
 
   const onReset = () => {
     setSelectedImage(null);
-    //setShowAppOptions(false);
+    setShowTagOptions(false);
   };
+
+  const onShowRaster = () => {
+    alert('Here will be a raster image.')
+  }
 
   const onShowList = () => {
     alert('You pressed list button.')
@@ -101,13 +105,19 @@ const App = () => {
         </View>
       </View>
       <View style={styles.imageContainer}>
-
-        <Pressable onPress={openActionSheetAsync}>
-          <ImageViewer
-              placeholderImageSource={placeholderImage}
-              selectedImage={selectedImg} />
-        </Pressable>
-
+        {showTagOptions ? (
+          <Pressable onPress={onShowRaster}>
+            <ImageViewer
+                placeholderImageSource={placeholderImage}
+                selectedImage={selectedImg} />
+          </Pressable>
+        ) : (
+          <Pressable onPress={openActionSheetAsync}>
+            <ImageViewer
+                placeholderImageSource={placeholderImage}
+                selectedImage={selectedImg} />
+          </Pressable>
+        )}
       </View>
           <View style={styles.optionsContainer}>
             <View style={styles.optionsRow}>
