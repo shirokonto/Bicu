@@ -11,7 +11,7 @@ interface IconButtonProps {
 const IconButton: React.FC<IconButtonProps> = ({ icon, label, onPress }) => {
     return (
         <Pressable style={styles.iconButton} onPress={onPress}>
-            <MaterialIcons name={icon as any} size={24} color="#fff" />
+            <MaterialIcons name={icon as any} size={28} color="#fff" style={styles.iconButtonIcon}/>
             <Text style={styles.iconButtonLabel}>{label}</Text>
         </Pressable>
     );
@@ -21,6 +21,9 @@ const styles = StyleSheet.create({
     iconButton: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    iconButtonIcon: {
+        marginTop: 4,
     },
     iconButtonLabel: {
         color: '#fff',

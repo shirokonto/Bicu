@@ -1,4 +1,4 @@
-import {StyleSheet, Image, ImageSourcePropType, Dimensions} from 'react-native';
+import {StyleSheet, Image, ImageSourcePropType, Dimensions, Pressable} from 'react-native';
 import React from "react";
 
 const windowWidth = Dimensions.get('window').width;
@@ -9,18 +9,18 @@ interface ImageViewerProps {
     selectedImage: ImageSourcePropType | null | undefined;
 }
 
-const ImageViewer: React.FC<ImageViewerProps> = ({ placeholderImageSource, selectedImage }) => {
+const ImageViewer: React.FC<ImageViewerProps> = ({ placeholderImageSource, selectedImage}) => {
     // Define the type explicitly for imageSource
     const imageSource = selectedImage ? {uri: selectedImage as string } : placeholderImageSource
 
     return (
-        <Image source={imageSource} style={styles.image} />
+        <Image source={imageSource} style={styles.image}/>
     );
 }
 
 const styles = StyleSheet.create({
     image: {
-        width: windowWidth - 20,
+        width: 370,
         height: 600,
         borderRadius: 15,
     },

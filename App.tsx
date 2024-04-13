@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import {ActionSheetIOS, StyleSheet, View} from 'react-native';
+import {ActionSheetIOS, Pressable, StyleSheet, TextInput, View} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 import ImageViewer from "./components/ImageViewer";
@@ -75,40 +75,47 @@ const App = () => {
   }
 
   const onReset = () => {
-    setShowAppOptions(false);
+    setSelectedImage(null);
+    //setShowAppOptions(false);
   };
+
+  const onShowList = () => {
+    alert('You pressed list button.')
+  }
 
   const onAddItem = () => {
     // implement this later
+    alert('You pressed plus button.')
   };
 
   const onSearch = async () => {
-    // implement this later
+    alert('You pressed search button')
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <ImageViewer
-            placeholderImageSource={placeholderImage}
-            selectedImage={selectedImg} />
+      <View style={styles.titleContainer}>
+        <View style={styles.titleRow}>
+          <TextInput style={styles.titleLabel}>RoomTitle</TextInput>
+          <Button icon="refresh" label="Reset" onPress={onReset} />
+        </View>
       </View>
-      {showAppOptions ? (
+      <View style={styles.imageContainer}>
+
+        <Pressable onPress={openActionSheetAsync}>
+          <ImageViewer
+              placeholderImageSource={placeholderImage}
+              selectedImage={selectedImg} />
+        </Pressable>
+
+      </View>
           <View style={styles.optionsContainer}>
             <View style={styles.optionsRow}>
-              <IconButton icon="refresh" label="Reset" onPress={onReset} />
-              <CircleButton onPress={() => alert('You pressed plus button.')} />
-              <IconButton icon="search" label="Search" onPress={() => alert('You pressed search button')} />
+              <IconButton icon="list" label="List" onPress={onShowList} />
+              <CircleButton onPress={onAddItem} />
+              <IconButton icon="search" label="Search" onPress={onSearch} />
             </View>
           </View>
-      ) : (
-          <View style={styles.footerContainer}>
-            <Button label="Select image"  icon={"camera"} onPress={openActionSheetAsync}/>
-            <Button label="Add item" icon={"plus"} onPress={() => alert('You pressed plus button.')}/>
-            <Button label="Search" icon={"search"} onPress={() => alert('You pressed search button.')}/>
-          </View>
-      )}
-
       <StatusBar style="auto" />
     </View>
   );
@@ -121,8 +128,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  titleContainer: {
+    paddingTop: 50,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  titleLabel: {
+    color: '#fff'
+  },
   imageContainer: {
-    paddingTop: 60,
+    paddingTop: 10,
     flex: 1,
   },
 
@@ -133,12 +151,15 @@ const styles = StyleSheet.create({
   },
 
   optionsContainer: {
+    flex: 1,
+    alignItems: 'center',
     position: 'absolute',
-    bottom: 80,
+    bottom: 60,
   },
   optionsRow: {
-    alignItems: 'center',
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 

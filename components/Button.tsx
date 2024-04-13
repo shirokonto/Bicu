@@ -25,14 +25,14 @@ const Button: React.FC<ButtonProps> = ({ label, icon, onPress }) => {
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        marginHorizontal: 20,
+        marginHorizontal: 3,
         alignItems: 'center',
         justifyContent: 'center',
         padding: 3,
-        flex: 1
+        //flex: 1
     },
     button: {
-        borderRadius: 10,
+        borderRadius: 3,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
