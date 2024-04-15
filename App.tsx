@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import {ActionSheetIOS, Pressable, StyleSheet, TextInput, View} from 'react-native';
+import {ActionSheetIOS, ImageSourcePropType, Pressable, StyleSheet, TextInput, View} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 import ImageViewer from "./components/ImageViewer";
@@ -8,6 +8,8 @@ import {useState} from "react";
 import IconButton from "./components/IconButton";
 import CircleButton from "./components/CircleButton";
 import EditableTitle from "./components/EditableTitle"
+import ItemList from "./components/ItemList";
+import ItemPicker from "./components/ItemPicker"
 
 const placeholderImage = require('./assets/sample.png')
 
@@ -15,6 +17,9 @@ const App = () => {
 
   const [selectedImg, setSelectedImage] = useState(null);
   const [showTagOptions, setShowTagOptions] = useState(false);
+
+  const [pickedItem, setPickedItem] = useState<ImageSourcePropType | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const openActionSheetAsync = async() =>
       ActionSheetIOS.showActionSheetWithOptions(
@@ -85,16 +90,22 @@ const App = () => {
   }
 
   const onShowList = () => {
-    alert('You pressed list button.')
+    //alert('You pressed list button.')
+    setIsModalVisible(true);
   }
 
   const onAddItem = () => {
     // implement this later
     alert('You pressed plus button.')
+    // for dragging pins on the screen
   };
 
   const onSearch = async () => {
     alert('You pressed search button')
+  };
+
+  const onModalClose = () => {
+    setIsModalVisible(false);
   };
 
   return (
@@ -124,6 +135,9 @@ const App = () => {
               <IconButton icon="search" label="Search" onPress={onSearch} />
             </View>
           </View>
+      <ItemPicker isVisible={isModalVisible} onClose={onModalClose}>
+        <ItemList onSelect={setPickedItem} onCloseModal={onModalClose} />
+      </ItemPicker>
       <StatusBar style="auto" />
     </View>
   );
@@ -139,6 +153,7 @@ const styles = StyleSheet.create({
 
   titleContainer: {
     paddingTop: 50,
+    marginHorizontal: 60,
   },
 
   imageContainer: {
