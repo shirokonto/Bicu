@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     iconButton: {
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 15
     },
     iconButtonIcon: {
         marginTop: 4,

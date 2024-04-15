@@ -1,4 +1,4 @@
-import {View, Pressable, StyleSheet, ButtonProps} from 'react-native';
+import {View, Pressable, StyleSheet} from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React from "react";
 

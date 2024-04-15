@@ -7,6 +7,7 @@ import Button from "./components/Button";
 import {useState} from "react";
 import IconButton from "./components/IconButton";
 import CircleButton from "./components/CircleButton";
+import EditableTitle from "./components/EditableTitle"
 
 const placeholderImage = require('./assets/sample.png')
 
@@ -99,10 +100,7 @@ const App = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <View style={styles.titleRow}>
-          <TextInput style={styles.titleLabel}>RoomTitle</TextInput>
-          <Button icon="refresh" label="Reset" onPress={onReset} />
-        </View>
+        <EditableTitle onPress={onReset}/>
       </View>
       <View style={styles.imageContainer}>
         {showTagOptions ? (
@@ -138,17 +136,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   titleContainer: {
     paddingTop: 50,
   },
-  titleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  titleLabel: {
-    color: '#fff'
-  },
+
   imageContainer: {
     paddingTop: 10,
     flex: 1,
