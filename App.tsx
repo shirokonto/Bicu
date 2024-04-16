@@ -10,6 +10,7 @@ import CircleButton from "./components/CircleButton";
 import EditableTitle from "./components/EditableTitle"
 import ItemList from "./components/ItemList";
 import ItemPicker from "./components/ItemPicker"
+import Marker from "./components/Marker";
 
 const placeholderImage = require('./assets/sample.png')
 
@@ -17,7 +18,7 @@ const App = () => {
 
   const [selectedImg, setSelectedImage] = useState(null);
   const [showTagOptions, setShowTagOptions] = useState(false);
-
+  const [showMarker, setMarker] = useState(false);
   const [pickedItem, setPickedItem] = useState<ImageSourcePropType | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -85,6 +86,11 @@ const App = () => {
     setShowTagOptions(false);
   };
 
+  const onSetMarker = () => {
+    setMarker(true);
+    alert("Marker set");
+  }
+
   const onShowRaster = () => {
     alert('Here will be a raster image.')
   }
@@ -111,21 +117,27 @@ const App = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <EditableTitle onPress={onReset}/>
+        <EditableTitle
+            onReset={onReset}
+            onAddMarker={onSetMarker}/>
       </View>
       <View style={styles.imageContainer}>
         {showTagOptions ? (
-          <Pressable onPress={onShowRaster}>
-            <ImageViewer
-                placeholderImageSource={placeholderImage}
-                selectedImage={selectedImg} />
-          </Pressable>
+            <View>
+              <Pressable onPress={onShowRaster}>
+                <ImageViewer
+                    placeholderImageSource={placeholderImage}
+                    selectedImage={selectedImg} />
+              </Pressable>
+              {showMarker && <Marker imageSize={40}/>}
+            </View>
         ) : (
-          <Pressable onPress={openActionSheetAsync}>
-            <ImageViewer
-                placeholderImageSource={placeholderImage}
-                selectedImage={selectedImg} />
-          </Pressable>
+
+            <Pressable onPress={openActionSheetAsync}>
+              <ImageViewer
+                  placeholderImageSource={placeholderImage}
+                  selectedImage={selectedImg} />
+            </Pressable>
         )}
       </View>
           <View style={styles.optionsContainer}>
