@@ -1,10 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import {ActionSheetIOS, ImageSourcePropType, Pressable, StyleSheet, TextInput, View} from 'react-native';
+import {ActionSheetIOS, ImageSourcePropType, Pressable, StyleSheet, View} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import {useState} from "react";
 
 import ImageViewer from "./components/ImageViewer";
-import Button from "./components/Button";
-import {useState} from "react";
 import IconButton from "./components/IconButton";
 import CircleButton from "./components/CircleButton";
 import EditableTitle from "./components/EditableTitle"
@@ -56,7 +56,6 @@ const App = () => {
     if(!result.canceled) {
       setSelectedImage(result.assets[0].uri);
       setShowTagOptions(true);
-      console.log(result);
     } else {
       alert('No image selected.');
     }
@@ -75,7 +74,6 @@ const App = () => {
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
       setShowTagOptions(true);
-      console.log(result);
     } else {
       alert('No image selected.');
     }
@@ -88,7 +86,6 @@ const App = () => {
 
   const onSetMarker = () => {
     setMarker(true);
-    alert("Marker set");
   }
 
   const onShowRaster = () => {
@@ -115,11 +112,17 @@ const App = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <View style={styles.titleContainer}>
-        <EditableTitle
-            onReset={onReset}
-            onAddMarker={onSetMarker}/>
+        {showTagOptions ? (
+            <EditableTitle
+                onReset={onReset}
+                onAddMarker={onSetMarker}/>
+        ) : (
+            <EditableTitle
+                onReset={onReset}
+                onAddMarker={() => {alert('First select an image')}}/>
+        )}
       </View>
       <View style={styles.imageContainer}>
         {showTagOptions ? (
@@ -132,7 +135,6 @@ const App = () => {
               {showMarker && <Marker imageSize={40}/>}
             </View>
         ) : (
-
             <Pressable onPress={openActionSheetAsync}>
               <ImageViewer
                   placeholderImageSource={placeholderImage}
@@ -151,7 +153,7 @@ const App = () => {
         <ItemList onSelect={setPickedItem} onCloseModal={onModalClose} />
       </ItemPicker>
       <StatusBar style="auto" />
-    </View>
+    </GestureHandlerRootView >
   );
 }
 
