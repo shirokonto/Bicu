@@ -4,15 +4,15 @@ import * as ImagePicker from 'expo-image-picker';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {useState} from "react";
 
-import ImageViewer from "./components/ImageViewer";
-import IconButton from "./components/IconButton";
-import CircleButton from "./components/CircleButton";
-import EditableTitle from "./components/EditableTitle"
-import ItemList from "./components/ItemList";
-import ItemPicker from "./components/ItemPicker"
-import Marker from "./components/Marker";
+import ImageViewer from "./src/components/ImageViewer";
+import IconButton from "./src/components/IconButton";
+import CircleButton from "./src/components/CircleButton";
+import EditableTitle from "./src/components/EditableTitle"
+import ItemList from "./src/components/ItemList";
+import ItemPicker from "./src/components/ItemPicker"
+import Marker from "./src/components/Marker";
 
-const placeholderImage = require('./assets/sample.png')
+const placeholderImage = require('./src/assets/images/sample.png')
 
 const App = () => {
 

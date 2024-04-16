@@ -7,20 +7,20 @@ interface ItemListProps {
 }
 
 const ItemList: React.FC<ItemListProps> = ({ onSelect, onCloseModal }) => {
-    const [emoji] = useState([
-        require('../assets/bicuicon.png'),
-        require('../assets/bicuicon.png'),
-        require('../assets/bicuicon.png'),
-        require('../assets/bicuicon.png'),
-        require('../assets/bicuicon.png'),
-        require('../assets/bicuicon.png'),
+    const [item] = useState([
+        require('../assets/images/bicuicon.png'),
+        require('../assets/images/bicuicon.png'),
+        require('../assets/images/bicuicon.png'),
+        require('../assets/images/bicuicon.png'),
+        require('../assets/images/bicuicon.png'),
+        require('../assets/images/bicuicon.png'),
     ]);
 
     return (
         <FlatList
             horizontal
             showsHorizontalScrollIndicator={Platform.OS === 'web'}
-            data={emoji}
+            data={item}
             contentContainerStyle={styles.listContainer}
             renderItem={({ item, index }) => (
                 <Pressable
