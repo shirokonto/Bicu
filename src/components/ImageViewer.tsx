@@ -1,4 +1,4 @@
-import {StyleSheet, Image, ImageSourcePropType, Dimensions, Pressable} from 'react-native';
+import {Image, ImageSourcePropType, StyleSheet} from 'react-native';
 import React from "react";
 
 interface ImageViewerProps {
@@ -6,7 +6,7 @@ interface ImageViewerProps {
     selectedImage: ImageSourcePropType | null | undefined;
 }
 
-const ImageViewer: React.FC<ImageViewerProps> = ({ placeholderImageSource, selectedImage}) => {
+const ImageViewer = ({ placeholderImageSource, selectedImage} : ImageViewerProps) => {
     const imageSource = selectedImage ? {uri: selectedImage as string } : placeholderImageSource
 
     return (

@@ -1,13 +1,12 @@
-import { View } from 'react-native';
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, {useAnimatedStyle, useSharedValue, withSpring} from 'react-native-reanimated';
+import {Gesture, GestureDetector} from 'react-native-gesture-handler';
+import Animated, {useAnimatedStyle, useSharedValue} from 'react-native-reanimated';
 import React from "react";
 
 interface MarkerProps {
     imageSize: number;
 }
-const Marker : React.FC<MarkerProps> = ({ imageSize }) => {
+const Marker = ({ imageSize } : MarkerProps) => {
 
     const translateX = useSharedValue(0);
     const translateY = useSharedValue(0);

@@ -1,4 +1,4 @@
-import {View, Pressable, StyleSheet} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React from "react";
 
@@ -6,7 +6,7 @@ interface CircleButtonProps {
     onPress: () => void;
 }
 
-const CircleButton: React.FC<CircleButtonProps> = ({ onPress }) => {
+const CircleButton = ({ onPress } : CircleButtonProps) => {
     return (
         <View style={styles.circleButtonContainer}>
             <Pressable style={styles.circleButton} onPress={onPress}>

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import {StyleSheet, FlatList, Image, Platform, Pressable, ImageSourcePropType} from 'react-native';
+import React, {useState} from 'react';
+import {FlatList, Image, ImageSourcePropType, Platform, Pressable, StyleSheet} from 'react-native';
 
 interface ItemListProps {
     onSelect: (item: ImageSourcePropType) => void;
     onCloseModal: () => void;
 }
 
-const ItemList: React.FC<ItemListProps> = ({ onSelect, onCloseModal }) => {
+const ItemList = ({ onSelect, onCloseModal } : ItemListProps) => {
     const [item] = useState([
         require('../assets/images/bicuicon.png'),
         require('../assets/images/bicuicon.png'),

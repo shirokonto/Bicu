@@ -1,24 +1,24 @@
-import {View, TextInput, StyleSheet} from "react-native";
+import {StyleSheet, TextInput, View} from "react-native";
 import React from "react";
-import Button from "./Button";
+import Button from "./buttons/Button";
 
 interface EditableTitleProps {
     onReset: () => void;
     onAddMarker: () => void;
 }
 
-const EditableTitle: React.FC<EditableTitleProps> = ({ onReset, onAddMarker }) => {
+const EditableTitle = ({onReset, onAddMarker} : EditableTitleProps) => {
 
     const [value, onChangeText] = React.useState('Basement01');
 
     return (
         <View style={styles.titleRow}>
-            <Button icon="map-marker" label="Marker" onPress={onAddMarker} />
+            <Button icon="map-marker" label="Marker" onPress={onAddMarker}/>
             <TextInput style={styles.titleLabel}
                        maxLength={12}
                        onChangeText={text => onChangeText(text)}
                        value={value}/>
-            <Button icon="refresh" label="Reset" onPress={onReset} />
+            <Button icon="refresh" label="Reset" onPress={onReset}/>
         </View>
     );
 }

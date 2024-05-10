@@ -1,4 +1,4 @@
-import {ButtonProps, Pressable, StyleSheet, Text} from 'react-native';
+import {Pressable, StyleSheet, Text} from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React from "react";
 
@@ -8,7 +8,7 @@ interface IconButtonProps {
     onPress: () => void;
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ icon, label, onPress }) => {
+const IconButton = ({icon, label, onPress}: IconButtonProps) => {
     return (
         <Pressable style={styles.iconButton} onPress={onPress}>
             <MaterialIcons name={icon as any} size={28} color="#fff" style={styles.iconButtonIcon}/>

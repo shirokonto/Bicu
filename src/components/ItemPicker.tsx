@@ -1,6 +1,5 @@
 import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import ItemList from "./ItemList";
 import React, {ReactNode} from "react";
 
 interface ItemPickerProps {
@@ -9,7 +8,7 @@ interface ItemPickerProps {
     children: ReactNode;
 }
 
-const ItemPicker: React.FC<ItemPickerProps> = ({ isVisible, children, onClose }) => {
+const ItemPicker = ({ isVisible, children, onClose }: ItemPickerProps) => {
     return (
         <Modal animationType="slide" transparent={true} visible={isVisible}>
             <View style={styles.modalContent}>
