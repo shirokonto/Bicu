@@ -6,26 +6,53 @@ export type RoomScreenParams = {
         name: string;
         image: ImageSourcePropType;
         description: string;
+        items: { name: string, category: string } [] | undefined;
     };
 };
 export const listedRooms = [
     {
         id: 1,
-        name: 'Room 01',
+        name: 'Basement',
         image: require('../assets/images/sample.png'),
-        description: 'Place where your stuff is',
+        description: 'This is a unnecessary comment',
+        items: [
+            {
+                name: "item1",
+                category: "Clothing",
+            },
+            {
+                name: "item2",
+                category: "Food",
+            },
+            {
+                name: "item3",
+                category: "Tech",
+            },
+        ],
     },
     {
         id: 2,
         name: 'Room 02',
         image: require('../assets/images/favicon.png'),
         description: 'Place where your stuff is',
+        items: [
+            {
+                name: "item1",
+                category: "Clothing",
+            },
+        ],
     },
     {
         id: 3,
         name: 'Room 03',
         image: require('../assets/images/bicuicon.png'),
         description: 'Place where your stuff is',
+        items: [
+            {
+                name: "item1",
+                category: "Clothing",
+            },
+        ],
     },
 ]
 

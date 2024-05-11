@@ -2,7 +2,7 @@ import {ScrollView, StatusBar} from 'react-native';
 import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {SafeAreaView} from "react-native-safe-area-context";
 import Categories from "../components/Categories";
-import RoomsRow from "../components/RoomsRow";
+import RoomRow from "../components/RoomRow";
 import SearchBar from "../components/SearchBar";
 import React from "react";
 
@@ -28,7 +28,7 @@ const Home = () => {
                 <Categories/>
 
                 {/*room list*/}
-                <RoomsRow/>
+                <RoomRow/>
             </ScrollView>
         </SafeAreaView>
     );

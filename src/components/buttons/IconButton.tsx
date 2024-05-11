@@ -1,4 +1,4 @@
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React from "react";
 
@@ -8,27 +8,18 @@ interface IconButtonProps {
     onPress: () => void;
 }
 
-const IconButton = ({icon, label, onPress}: IconButtonProps) => {
+const IconButton = ({icon, onPress}: IconButtonProps) => {
     return (
-        <Pressable style={styles.iconButton} onPress={onPress}>
-            <MaterialIcons name={icon as any} size={28} color="#fff" style={styles.iconButtonIcon}/>
-            <Text style={styles.iconButtonLabel}>{label}</Text>
-        </Pressable>
+        <TouchableOpacity onPress={onPress}>
+            <MaterialIcons name={icon as any} size={28} style={styles.iconButtonIcon} color={'#D97706'}/>
+        </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
-    iconButton: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 15
-    },
     iconButtonIcon: {
-        marginTop: 4,
-    },
-    iconButtonLabel: {
-        color: '#fff',
-        marginTop: 12,
+        paddingVertical: 12,
+        paddingHorizontal: 5,
     },
 });
 

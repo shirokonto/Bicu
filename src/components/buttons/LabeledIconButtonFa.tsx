@@ -8,7 +8,7 @@ interface ButtonProps {
     onPress: () => void;
 }
 
-const Button = ({ label, icon, onPress } : ButtonProps) => {
+const LabeledIconButtonFa = ({ label, icon, onPress } : ButtonProps) => {
     return (
         <View style={styles.buttonContainer}>
             <Pressable style={styles.button} onPress={onPress}>
@@ -39,12 +39,12 @@ const styles = StyleSheet.create({
     },
     buttonIcon: {
         paddingBottom: 8,
-        color: '#fff',
+        color: '#D97706',
     },
     buttonLabel: {
-        color: '#fff',
+        color: '#D97706',
         fontSize: 16,
     },
 });
 
-export default Button;
+export default LabeledIconButtonFa;

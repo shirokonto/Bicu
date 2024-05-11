@@ -1,19 +1,24 @@
-import {useState} from "react";
-import {ActionSheetIOS, ImageSourcePropType, Pressable, StyleSheet, View} from "react-native";
+import React, {useState} from "react";
+import {ActionSheetIOS, ImageSourcePropType, Pressable, StyleSheet, TouchableOpacity, View} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import EditableTitle from "../components/EditableTitle";
 import ImageViewer from "../components/ImageViewer";
 import Marker from "../components/Marker";
-import IconButton from "../components/buttons/IconButton";
+import LabeledIconButton from "../components/buttons/LabeledIconButton";
 import CircleButton from "../components/buttons/CircleButton";
 import ItemPicker from "../components/ItemPicker";
 import ItemList from "../components/ItemList";
 import {StatusBar} from "expo-status-bar";
-import {useRoute} from "@react-navigation/native";
+import {NavigationProp, useNavigation, useRoute} from "@react-navigation/native";
+import {RootStackParamList} from "../navigation";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const placeholderImage = require('../assets/images/sample.png')
 
 const RoomImageView = () => {
+
+    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
 
     const {params} = useRoute();
     let item = params;
@@ -119,10 +124,12 @@ const RoomImageView = () => {
             <View style={styles.titleContainer}>
                 {showTagOptions ? (
                     <EditableTitle
+                        defaultTitle={"Room Default"}
                         onReset={onReset}
                         onAddMarker={onSetMarker}/>
                 ) : (
                     <EditableTitle
+                        defaultTitle={"Room Default"}
                         onReset={onReset}
                         onAddMarker={() => {
                             alert('First select an image')
@@ -149,9 +156,14 @@ const RoomImageView = () => {
             </View>
             <View style={styles.optionsContainer}>
                 <View style={styles.optionsRow}>
-                    <IconButton icon="list" label="List" onPress={onShowList}/>
+                    <TouchableOpacity
+                        onPress={() => navigation.goBack()}
+                        style={{ backgroundColor: '#FFFF', borderRadius: 999, padding: 5}}>
+                        <MaterialIcons name={"arrow-back"} size={28} color={'#D97706'}/>
+                    </TouchableOpacity>
+                    <LabeledIconButton icon="list" label="List" onPress={onShowList}/>
                     <CircleButton onPress={onAddItem}/>
-                    <IconButton icon="search" label="Search" onPress={onSearch}/>
+                    <LabeledIconButton icon="search" label="Search" onPress={onSearch}/>
                 </View>
             </View>
             <ItemPicker isVisible={isModalVisible} onClose={onModalClose}>
