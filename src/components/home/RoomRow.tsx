@@ -1,7 +1,7 @@
 import {Text, View} from "react-native";
 import React from "react";
 import RoomCard from "./RoomCard";
-import {listedRooms} from "../constants";
+import {listedRooms} from "../../constants";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const RoomRow = () => {

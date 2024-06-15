@@ -10,16 +10,16 @@ const ImageViewer = ({ placeholderImageSource, selectedImage} : ImageViewerProps
     const imageSource = selectedImage ? {uri: selectedImage as string } : placeholderImageSource
 
     return (
-        <Image source={imageSource} style={styles.image}/>
+
+        <Image source={imageSource} style={styles.maximizedImage}/>
     );
 }
 
 const styles = StyleSheet.create({
-    image: {
-        width: 370,
-        height: 600,
-        borderRadius: 15,
-    },
+    maximizedImage: {
+        width: '90%',
+        height: '80%',
+    }
 });
 
 export default ImageViewer;

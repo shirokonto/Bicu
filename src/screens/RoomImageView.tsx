@@ -1,8 +1,7 @@
 import React, {useState} from "react";
-import {ActionSheetIOS, ImageSourcePropType, Pressable, StyleSheet, TouchableOpacity, View} from "react-native";
-import * as ImagePicker from "expo-image-picker";
+import {ImageSourcePropType, Pressable, StyleSheet, TouchableOpacity, View} from "react-native";
 import EditableTitle from "../components/EditableTitle";
-import ImageViewer from "../components/ImageViewer";
+import ImageViewer from "../components/room/image/ImageViewer";
 import Marker from "../components/Marker";
 import LabeledIconButton from "../components/buttons/LabeledIconButton";
 import CircleButton from "../components/buttons/CircleButton";
@@ -30,62 +29,6 @@ const RoomImageView = () => {
     const [pickedItem, setPickedItem] = useState<ImageSourcePropType | null>(null);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const openActionSheetAsync = async () =>
-        ActionSheetIOS.showActionSheetWithOptions(
-            {
-                options: ['Cancel', 'Camera', 'Gallery'],
-                cancelButtonIndex: 0,
-                userInterfaceStyle: 'dark',
-            },
-            buttonIndex => {
-                if (buttonIndex === 0) {
-                    // cancel action
-                } else if (buttonIndex === 1) {
-                    openCameraAsync();
-                } else if (buttonIndex === 2) {
-                    pickImageAsync();
-                }
-            },
-        );
-
-    const pickImageAsync = async () => {
-        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-        if (!permissionResult.granted) {
-            alert("Allow this app access to your photos");
-            return;
-        }
-
-        let result: any = await ImagePicker.launchImageLibraryAsync({
-            allowsEditing: true,
-            quality: 1
-        });
-
-        if (!result.canceled) {
-            setSelectedImage(result.assets[0].uri);
-            setShowTagOptions(true);
-        } else {
-            alert('No image selected.');
-        }
-    }
-
-    const openCameraAsync = async () => {
-        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-        if (!permissionResult.granted) {
-            alert("Allow this app access to your camera");
-            return;
-        }
-
-        let result: any = await ImagePicker.launchCameraAsync();
-
-        if (!result.canceled) {
-            setSelectedImage(result.assets[0].uri);
-            setShowTagOptions(true);
-        } else {
-            alert('No image selected.');
-        }
-    }
 
     const onReset = () => {
         setSelectedImage(null);
@@ -147,7 +90,7 @@ const RoomImageView = () => {
                         {showMarker && <Marker imageSize={40}/>}
                     </View>
                 ) : (
-                    <Pressable onPress={openActionSheetAsync}>
+                    <Pressable onPress={() => alert('First select an image')}>
                         <ImageViewer
                             placeholderImageSource={placeholderImage}
                             selectedImage={selectedImg}/>
