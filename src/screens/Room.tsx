@@ -3,20 +3,34 @@ import {NavigationProp, RouteProp, useNavigation, useRoute} from '@react-navigat
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import {RootStackParamList} from '../navigation/index'
 import {RoomScreenParams} from "../constants";
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import IconButton from "../components/buttons/IconButton";
 import ItemCard from "../components/ItemCard";
+import ItemModal from "../components/room/modals/ItemModal";
 
 
 const Room = () => {
+
+    {/* image view */}
+        {/* select picture */}
+        {/* set picture */}
+        {/* set marker points */}
+
+    {/* item list  - add new item with name and category */}
+        {/* add modal */}
+
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const route = useRoute<RouteProp<RootStackParamList, "Room">>();
     const { room } = route.params as RoomScreenParams;
+    const textInputRef = useRef<TextInput | null>(null);
+
 
     const [selectedImg, setSelectedImage] = useState(null);
     const [showTagOptions, setShowTagOptions] = useState(false);
     const [showMarker, setMarker] = useState(false);
-    const [value, onChangeText] = React.useState("New room");
+    const [value, onChangeText] = useState(room.name || "Room");
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [items, setItems] = useState(room.items || []);
 
 
     const onReset = () => { room
@@ -27,6 +41,11 @@ const Room = () => {
     const onSetMarker = () => {
         setMarker(true);
     }
+
+    const handleAddItem = (newItem: { name: string; category: string; image: string }) => {
+        setItems([...items, newItem]);
+    };
+
 
     return (
         <View>
@@ -49,8 +68,13 @@ const Room = () => {
                                     <TextInput style={styles.titleLabel}
                                                maxLength={9}
                                                onChangeText={text => onChangeText(text)}
-                                               value={room.name}/>
-                                    <IconButton icon="mode-edit" label="Marker" onPress={() => alert('No image selected.')}/>
+                                               value={value}
+                                               ref={textInputRef}/>
+                                    <IconButton icon="mode-edit" label="Marker" onPress={() => {
+                                        if (textInputRef.current) {
+                                            textInputRef.current.focus();
+                                        }
+                                    }}/>
                                 </View>
                                     <TouchableOpacity
                                         onPress={() => navigation.goBack()}
@@ -58,32 +82,36 @@ const Room = () => {
                                         <MaterialIcons name={"room-preferences"} size={28} color={'#D97706'}/>
                                 </TouchableOpacity>
                             </View>
-                            <Text style={{fontSize: 18}}>{room.description}</Text>
                         </View>
                         <TouchableOpacity onPress={() => navigation.navigate("TodoConvert")}>
                             <Text style={{fontSize: 18, paddingTop: 20, color: "#D97706", lineHeight: 16}}>See old view</Text>
                         </TouchableOpacity>
-                        <Text style={{paddingVertical: 12, fontWeight: 'bold', fontSize: 25,}}>Items</Text>
+                        <View style={{flexDirection: 'row',}}>
+                            <Text style={{paddingVertical: 12, fontWeight: 'bold', fontSize: 25,}}>Items</Text>
+                            <IconButton icon="add" label="Add" onPress={() => setModalVisible(true)} />
+                        </View>
                     </View>
                     {/* items */}
                     <View >
-                        {
-                            room.items.map((item, index) => {
-                                return (
-                                    <ItemCard
-                                        room = { room }
-                                        key  = { index }
-                                        index = { index }
-                                    />
-                                )
-                            })
-                        }
+                        {room.items && room.items.length > 0 ? (
+                            room.items.map((item, index) => (
+                                <ItemCard
+                                    room={room}
+                                    key={index}
+                                    index={index}
+                                />
+                            ))
+                        ) : (
+                            <Text style={styles.emptyItemsList}>Add items with plus icon</Text>
+                        )}
                     </View>
-
-
                 </View>
             </ScrollView>
-
+            <ItemModal
+                visible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                onAddItem={handleAddItem}
+            />
         </View>
 
     );
@@ -99,6 +127,12 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         paddingVertical: 12,
+    },
+    emptyItemsList: {
+        color: 'gray',
+        fontStyle: 'italic',
+        textAlign: 'center',
+        marginTop: 20,
     },
 });
 

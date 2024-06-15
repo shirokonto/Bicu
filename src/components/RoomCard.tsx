@@ -42,7 +42,6 @@ const RoomCard = ({ room }: RoomScreenParams) => {
                             fontSize: 18,
                             lineHeight: 30,
                         }}>{room.name}</Text>
-                        <Text style={{color: "#6B7280", fontSize: 15, lineHeight: 16}}>{room.description}</Text>
                     </View>
                 </View>
             </View>

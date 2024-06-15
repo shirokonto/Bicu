@@ -5,16 +5,15 @@ export type RoomScreenParams = {
         id: number;
         name: string;
         image: ImageSourcePropType;
-        description: string;
         items: { name: string, category: string } [] | undefined;
     };
 };
+
 export const listedRooms = [
     {
         id: 1,
         name: 'Basement',
         image: require('../assets/images/sample.png'),
-        description: 'This is a unnecessary comment',
         items: [
             {
                 name: "item1",
@@ -34,7 +33,6 @@ export const listedRooms = [
         id: 2,
         name: 'Room 02',
         image: require('../assets/images/favicon.png'),
-        description: 'Place where your stuff is',
         items: [
             {
                 name: "item1",
@@ -46,7 +44,6 @@ export const listedRooms = [
         id: 3,
         name: 'Room 03',
         image: require('../assets/images/bicuicon.png'),
-        description: 'Place where your stuff is',
         items: [
             {
                 name: "item1",
@@ -65,7 +62,7 @@ export const categories = [
     {
         id: 2,
         name: 'Food',
-        image: require('../assets/images/favicon.png'),
+        image: require('../assets/images/categories/food.png'),
     },
     {
         id: 3,

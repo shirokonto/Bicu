@@ -2,13 +2,23 @@ import {Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import React from "react";
 import {NavigationProp, useNavigation} from "@react-navigation/native";
 import {RootStackParamList} from "../navigation";
+import {categories, RoomScreenParams} from "../constants";
 
-const ItemCard = ({ room, index }: {RoomScreenParams; index: number }) => {
+type ItemCardProps = {
+    room: RoomScreenParams['room'];
+    index: number;
+};
+
+const ItemCard = ({ room, index }: ItemCardProps) => {
 
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
+    const categoryName = room.items?.[index]?.category ?? "No Category";
+    const category = categories.find(cat => cat.name === categoryName);
+    const categoryImage = category ? category.image : null;
+
     return (
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Room", { item })}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("Room", { room })}>
             <View style={{
                 marginBottom: 10,
                 backgroundColor: "#fff",
@@ -27,10 +37,10 @@ const ItemCard = ({ room, index }: {RoomScreenParams; index: number }) => {
                     paddingBottom: 14,
                     marginTop: 8,
                 }}>
-                    <Image source={room.image}
+                    <Image source={categoryImage}
                            style={{
-                               height: 70,
-                               width: 70,
+                               height: 60,
+                               width: 60,
                                borderRadius: 15,
                                marginHorizontal: 15
                            }}/>
@@ -40,8 +50,8 @@ const ItemCard = ({ room, index }: {RoomScreenParams; index: number }) => {
                             paddingTop: 8,
                             fontSize: 18,
                             lineHeight: 30,
-                        }}>{room.items[index].name}</Text>
-                        <Text style={{color: "#6B7280", fontSize: 15, lineHeight: 16}}>{room.items[index].category}</Text>
+                        }}>{room.items ? room.items[index].name : "No Item"}</Text>
+                        <Text style={{color: "#6B7280", fontSize: 15, lineHeight: 16}}>{room.items ? room.items[index].category : "No Category"}</Text>
                     </View>
                 </View>
             </View>

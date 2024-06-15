@@ -6,7 +6,7 @@ import ImageViewer from "../components/ImageViewer";
 import Marker from "../components/Marker";
 import LabeledIconButton from "../components/buttons/LabeledIconButton";
 import CircleButton from "../components/buttons/CircleButton";
-import ItemPicker from "../components/ItemPicker";
+import ItemPicker from "../components/room/ItemPicker";
 import ItemList from "../components/ItemList";
 import {StatusBar} from "expo-status-bar";
 import {NavigationProp, useNavigation, useRoute} from "@react-navigation/native";

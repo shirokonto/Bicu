@@ -1,4 +1,4 @@
-import {Image, ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle} from "react-native";
+import {Image, ImageStyle, ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle} from "react-native";
 import React, {useState} from "react";
 import {categories} from "../constants";
 
@@ -30,12 +30,16 @@ const Categories = () => {
                             lineHeight: 20,
                             fontWeight: isActive ? '600' : '400'
                         };
+                        const imgStyle : ImageStyle = {
+                            width: 48,
+                            height: 48
+                        }
                         return (
                             <View key={index} style= {{display: "flex", flex: 1, justifyContent: "center", alignItems: "center", marginRight: 10}}>
                                 <TouchableOpacity
                                     onPress={() => setActiveCategory(category.id)}
                                     style={btnStyle}>
-                                    <Image source={category.image}/>
+                                    <Image source={category.image} style={imgStyle}/>
                                 </TouchableOpacity>
                                 <Text style={textStyle}>{category.name}</Text>
                             </View>
