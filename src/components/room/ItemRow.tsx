@@ -1,13 +1,10 @@
-import {RoomScreenParams} from "../../constants";
+import {ItemRowProps} from "../../constants";
 import ItemCard from "./ItemCard";
 import {StyleSheet, Text, View} from "react-native";
 import React, {useState} from "react";
 import IconButton from "../../components/buttons/IconButton";
 import ItemModal from "./modals/ItemModal";
 
-type ItemRowProps = {
-    room: RoomScreenParams['room'];
-};
 const ItemRow = ({ room }: ItemRowProps) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [items, setItems] = useState(room.items || []);

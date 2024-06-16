@@ -85,7 +85,9 @@ const RoomImageView = () => {
                         <Pressable onPress={onShowRaster}>
                             <ImageViewer
                                 placeholderImageSource={placeholderImage}
-                                selectedImage={selectedImg}/>
+                                selectedImage={selectedImg}
+                                maximized={false}
+                            />
                         </Pressable>
                         {showMarker && <Marker imageSize={40}/>}
                     </View>
@@ -93,7 +95,9 @@ const RoomImageView = () => {
                     <Pressable onPress={() => alert('First select an image')}>
                         <ImageViewer
                             placeholderImageSource={placeholderImage}
-                            selectedImage={selectedImg}/>
+                            selectedImage={selectedImg}
+                            maximized={false}
+                        />
                     </Pressable>
                 )}
             </View>

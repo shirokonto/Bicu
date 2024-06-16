@@ -9,6 +9,40 @@ export type RoomScreenParams = {
     };
 };
 
+export interface ImageViewerProps {
+    placeholderImageSource: ImageSourcePropType;
+    selectedImage: ImageSourcePropType | null | undefined;
+    maximized: boolean
+}
+
+export interface ImageModalProps {
+    visible: boolean;
+    onClose: () => void;
+    placeholderImageSource: ImageSourcePropType;
+    selectedImage: ImageSourcePropType | null | undefined;
+}
+
+export type ItemRowProps = {
+    room: RoomScreenParams['room'];
+};
+
+export type ItemCardProps = {
+    room: RoomScreenParams['room'];
+    index: number;
+};
+
+export type AddItemModalProps = {
+    visible: boolean;
+    onClose: () => void;
+    onAddItem: (item: { name: string; category: string; image: string }) => void;
+};
+
+export interface EditableTitleProps {
+    defaultTitle: string;
+    onReset: () => void;
+    onAddMarker: () => void;
+}
+
 export const listedRooms = [
     {
         id: 1,

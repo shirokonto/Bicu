@@ -18,6 +18,7 @@ import IconButton from "../components/buttons/IconButton";
 import ItemRow from "../components/room/ItemRow";
 import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "../components/room/image/ImageViewer";
+import ImageModal from "../components/room/modals/ImageModal";
 
 const placeholderImage = require('../assets/images/sample.png')
 
@@ -106,7 +107,9 @@ const Room = () => {
                     <Pressable onPress={() => setIsImageMaximized(true)}>
                         <ImageViewer
                             placeholderImageSource={placeholderImage}
-                            selectedImage={selectedImg}/>
+                            selectedImage={selectedImg}
+                            maximized={isImageMaximized}
+                        />
                     </Pressable>
 
                     {/* rest */}
@@ -156,6 +159,12 @@ const Room = () => {
             </ScrollView>
 
             {/* Modal for maximized image */}
+            <ImageModal
+                visible={isImageMaximized}
+                onClose={() => setIsImageMaximized(false)}
+                placeholderImageSource={placeholderImage}
+                selectedImage={selectedImg}
+            />
             {isImageMaximized && (
                 <Modal
                     transparent={true}
@@ -169,6 +178,7 @@ const Room = () => {
                         <ImageViewer
                             placeholderImageSource={placeholderImage}
                             selectedImage={selectedImg}
+                            maximized={isImageMaximized}
                         />
                     </View>
                 </Modal>

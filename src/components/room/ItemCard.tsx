@@ -2,12 +2,7 @@ import {Image, Text, TouchableWithoutFeedback, View} from "react-native";
 import React from "react";
 import {NavigationProp, useNavigation} from "@react-navigation/native";
 import {RootStackParamList} from "../../navigation";
-import {categories, RoomScreenParams} from "../../constants";
-
-type ItemCardProps = {
-    room: RoomScreenParams['room'];
-    index: number;
-};
+import {categories, ItemCardProps} from "../../constants";
 
 const ItemCard = ({ room, index }: ItemCardProps) => {
 

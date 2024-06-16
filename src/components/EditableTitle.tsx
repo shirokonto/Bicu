@@ -1,12 +1,8 @@
 import {StyleSheet, TextInput, View} from "react-native";
 import React from "react";
 import LabeledIconButtonFa from "../components/buttons/LabeledIconButtonFa";
+import {EditableTitleProps} from "../constants";
 
-interface EditableTitleProps {
-    defaultTitle: string;
-    onReset: () => void;
-    onAddMarker: () => void;
-}
 
 const EditableTitle = ({defaultTitle, onReset, onAddMarker} : EditableTitleProps) => {
 

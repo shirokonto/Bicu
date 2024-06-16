@@ -2,13 +2,8 @@ import React, {useState} from "react";
 import {Modal, Pressable, StyleSheet, Text, TextInput, View} from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import RNPickerSelect from 'react-native-picker-select';
-import {categories} from "../../../constants";
+import {AddItemModalProps, categories} from "../../../constants";
 
-type AddItemModalProps = {
-    visible: boolean;
-    onClose: () => void;
-    onAddItem: (item: { name: string; category: string; image: string }) => void;
-};
 
 const ItemModal = ({ visible, onClose, onAddItem } : AddItemModalProps) => {
     const [name, setName] = useState("");
