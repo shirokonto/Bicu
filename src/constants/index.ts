@@ -19,6 +19,7 @@ export interface ImageViewerProps {
 export interface ImageModalProps {
     visible: boolean;
     onClose: () => void;
+    onMarkerPress: () => void;
     placeholderImageSource: ImageSourcePropType;
     selectedImage: ImageSourcePropType | null | undefined;
 }

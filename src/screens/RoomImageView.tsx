@@ -109,7 +109,7 @@ const RoomImageView = () => {
                         <MaterialIcons name={"arrow-back"} size={28} color={'#D97706'}/>
                     </TouchableOpacity>
                     <LabeledIconButton icon="list" label="List" onPress={onShowList}/>
-                    <CircleButton onPress={onAddItem}/>
+                    <CircleButton icon={"search"} onPress={onAddItem}/>
                     <LabeledIconButton icon="search" label="Search" onPress={onSearch}/>
                 </View>
             </View>

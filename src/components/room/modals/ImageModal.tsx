@@ -3,9 +3,10 @@ import {Modal, Pressable, StyleSheet, View} from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import ImageViewer from "../../room/image/ImageViewer";
 import {ImageModalProps} from "../../../constants";
+import CircleButton from "../../buttons/CircleButton";
 
 
-const ImageModal = ({ visible, onClose, placeholderImageSource, selectedImage }: ImageModalProps) => {
+const ImageModal = ({ visible, onClose, onMarkerPress, placeholderImageSource, selectedImage }: ImageModalProps) => {
     const [markers, setMarkers] = useState<Array<{x: number, y: number}>>([]);
 
     const handleAddMarker = (event: any) => {
@@ -31,19 +32,11 @@ const ImageModal = ({ visible, onClose, placeholderImageSource, selectedImage }:
                     selectedImage={selectedImage}
                     maximized={true}
                 />
-                { /*<Pressable onPress={handleAddMarker} style={{ flex: 1 }}>
-
-                    {markers.map((marker, index) => (
-                        <View
-                            key={index}
-                            style={[
-                                styles.marker,
-                                { top: marker.y - 10, left: marker.x - 10 }
-                            ]}
-                        />
-                    ))}
-                </Pressable> */}
-
+                <View style={styles.bottomBar}>
+                    <View style={styles.optionsRow}>
+                        <CircleButton icon={"bookmark-add"} onPress={onMarkerPress}/>
+                    </View>
+                </View>
             </View>
         </Modal>
     );
@@ -72,15 +65,36 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 15,
     },
-    barText: {
-        color: '#FFFFFF',
-        fontSize: 18,
+    bottomBar: {
+        flex: 1,
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 40,
+    },
+    optionsContainer: {
+        flex: 1,
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 60,
+    },
+    optionsRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     closeButton: {
         position: 'absolute',
         top: 95,
         right: 30,
         backgroundColor: '#000',
+        borderRadius: 999,
+        padding: 5,
+    },
+    markerButton: {
+        position: "absolute",
+        top: 9,
+        right: 30,
+        backgroundColor: '#FFFF',
         borderRadius: 999,
         padding: 5,
     },
