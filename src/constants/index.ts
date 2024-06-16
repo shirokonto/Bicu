@@ -1,11 +1,12 @@
 import {ImageSourcePropType} from "react-native";
+import {Item} from "../types";
 
 export type RoomScreenParams = {
     room: {
         id: number;
         name: string;
         image: ImageSourcePropType;
-        items: { name: string, category: string } [] | undefined;
+        items: { id: number, name: string, category: string } [] | undefined;
     };
 };
 
@@ -34,7 +35,7 @@ export type ItemCardProps = {
 export type AddItemModalProps = {
     visible: boolean;
     onClose: () => void;
-    onAddItem: (item: { name: string; category: string; image: string }) => void;
+    onAddItem: (item: Item) => void;
 };
 
 export interface EditableTitleProps {
@@ -50,14 +51,17 @@ export const listedRooms = [
         image: require('../assets/images/sample.png'),
         items: [
             {
+                id: 0,
                 name: "item1",
                 category: "Clothing",
             },
             {
+                id: 1,
                 name: "item2",
                 category: "Food",
             },
             {
+                id: 2,
                 name: "item3",
                 category: "Tech",
             },
@@ -69,6 +73,7 @@ export const listedRooms = [
         image: require('../assets/images/favicon.png'),
         items: [
             {
+                id: 0,
                 name: "item1",
                 category: "Clothing",
             },
@@ -80,6 +85,7 @@ export const listedRooms = [
         image: require('../assets/images/bicuicon.png'),
         items: [
             {
+                id: 0,
                 name: "item1",
                 category: "Clothing",
             },

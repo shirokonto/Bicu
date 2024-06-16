@@ -4,13 +4,13 @@ import HomeScreen from "../screens/Home";
 import RoomScreen from "../screens/Room";
 import RoomImageView from "../screens/RoomImageView";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {RoomScreenParams} from "../constants";
+import {Room} from "../types"
 
 const Stack = createNativeStackNavigator();
 
 export type RootStackParamList = {
     Home: undefined;
-    Room: RoomScreenParams;
+    Room: { room: Room };
     TodoConvert: undefined;
 };
 

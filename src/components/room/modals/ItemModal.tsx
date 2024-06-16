@@ -7,6 +7,8 @@ import {AddItemModalProps, categories} from "../../../constants";
 
 const ItemModal = ({ visible, onClose, onAddItem } : AddItemModalProps) => {
     const [name, setName] = useState("");
+    // TODO do not set id
+    const [id, setId]= useState(0);
     const [category, setCategory] = useState("");
     // TODO set category as image
     const [image, setImage] = useState("");
@@ -17,7 +19,7 @@ const ItemModal = ({ visible, onClose, onAddItem } : AddItemModalProps) => {
     };
 
     const handleAddItem = () => {
-        onAddItem({ name, category, image });
+        onAddItem({ id, name, category });
         onClose();
     };
 

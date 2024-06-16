@@ -4,12 +4,13 @@ import {StyleSheet, Text, View} from "react-native";
 import React, {useState} from "react";
 import IconButton from "../../components/buttons/IconButton";
 import ItemModal from "./modals/ItemModal";
+import {Item} from "../../types";
 
 const ItemRow = ({ room }: ItemRowProps) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [items, setItems] = useState(room.items || []);
 
-    const handleAddItem = (newItem: { name: string; category: string; image: string }) => {
+    const handleAddItem = (newItem: Item) => {
         setItems([...items, newItem]);
         setModalVisible(false);
     };
