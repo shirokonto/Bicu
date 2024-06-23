@@ -1,6 +1,8 @@
+import {Marker} from "../types/Marker";
+
 export interface Item {
-    id: number;
+    id: string | number[];
     name: string;
     category: string;
-    // marker: position;
+    markers: Marker[] | [];
 }

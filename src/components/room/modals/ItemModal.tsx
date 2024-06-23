@@ -1,25 +1,56 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Modal, Pressable, StyleSheet, Text, TextInput, View} from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import uuid from 'react-native-uuid';
 import RNPickerSelect from 'react-native-picker-select';
 import {AddItemModalProps, categories} from "../../../constants";
+import {Item, Marker, Room} from "../../../types";
+import {getItems} from "../../../utils/itemStorage";
 
 
-const ItemModal = ({ visible, onClose, onAddItem } : AddItemModalProps) => {
+const ItemModal = (props : AddItemModalProps) => {
+
+    const [rooms, setRooms] = useState<Room[]>([]);
+
+    const [ items, setItems] = useState<Item[]>([]);
+
+    const { visible, onClose, onAddItem, roomId } = props;
     const [name, setName] = useState("");
-    // TODO do not set id
-    const [id, setId]= useState(0);
     const [category, setCategory] = useState("");
     // TODO set category as image
     const [image, setImage] = useState("");
     const [isPickerVisible, setIsPickerVisible] = useState(false);
 
+    useEffect(() => {
+        // Fetch items from AsyncStorage on component mount
+        const fetchItems = async () => {
+            const storedItems = await getItems();
+            setItems(storedItems);
+        };
+        fetchItems();
+    }, []);
+
     const togglePicker = () => {
         setIsPickerVisible(!isPickerVisible);
     };
 
+    const onAddingItem = () => {
+        const newItem: Item = {
+            id: uuid.v4(),
+            name: name,
+            category: category,
+            markers: [],
+        }
+
+        setRooms(rooms.map(room => room.id === roomId ? {
+            ...room, items: room.items ? [...room.items, newItem] : [newItem]
+        } : room));
+    }
+
     const handleAddItem = () => {
-        onAddItem({ id, name, category });
+        const markers: Marker[] = [];
+        const id =  uuid.v4();
+        onAddItem({ id, name, category, markers });
         onClose();
     };
 
@@ -61,7 +92,7 @@ const ItemModal = ({ visible, onClose, onAddItem } : AddItemModalProps) => {
                         style={pickerSelectStyles}
                         value={category}
                     />
-                    <Pressable style={styles.addButton} onPress={handleAddItem}>
+                    <Pressable style={styles.addButton} onPress={onAddingItem}>
                         <Text style={styles.addButtonText}>Add Item</Text>
                     </Pressable>
                 </View>

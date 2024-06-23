@@ -1,13 +1,8 @@
 import {ImageSourcePropType} from "react-native";
-import {Item} from "../types";
+import {Item, Room} from "../types";
 
 export type RoomScreenParams = {
-    room: {
-        id: number;
-        name: string;
-        image: ImageSourcePropType;
-        items: { id: number, name: string, category: string } [] | undefined;
-    };
+    room: Room;
 };
 
 export interface ImageViewerProps {
@@ -33,11 +28,12 @@ export type ItemCardProps = {
     index: number;
 };
 
-export type AddItemModalProps = {
+export interface AddItemModalProps {
     visible: boolean;
     onClose: () => void;
+    roomId: string | number[];
     onAddItem: (item: Item) => void;
-};
+}
 
 export interface EditableTitleProps {
     defaultTitle: string;
@@ -47,48 +43,53 @@ export interface EditableTitleProps {
 
 export const listedRooms = [
     {
-        id: 1,
+        id: '1',
         name: 'Basement',
         image: require('../assets/images/sample.png'),
         items: [
             {
-                id: 0,
+                id: '0',
                 name: "item1",
                 category: "Clothing",
+                markers: [],
             },
             {
-                id: 1,
+                id: '1',
                 name: "item2",
                 category: "Food",
+                markers: [],
             },
             {
-                id: 2,
+                id: '2',
                 name: "item3",
                 category: "Tech",
+                markers: [],
             },
         ],
     },
     {
-        id: 2,
+        id: '2',
         name: 'Room 02',
         image: require('../assets/images/favicon.png'),
         items: [
             {
-                id: 0,
+                id: '0',
                 name: "item1",
                 category: "Clothing",
+                markers: [],
             },
         ],
     },
     {
-        id: 3,
+        id: '3',
         name: 'Room 03',
         image: require('../assets/images/bicuicon.png'),
         items: [
             {
-                id: 0,
+                id: '0',
                 name: "item1",
                 category: "Clothing",
+                markers: [],
             },
         ],
     },

@@ -2,12 +2,12 @@ import {ActionSheetIOS, ScrollView, TouchableOpacity, View} from 'react-native';
 import {NavigationProp, RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import {RootStackParamList} from '../navigation/index'
-import {RoomScreenParams} from "../constants";
 import React, {useState} from "react";
 import ImageModal from "../components/room/modals/ImageModal";
 import TitleImage from "../components/room/image/TitleImage";
 import RoomDetails from "../components/room/RoomDetails";
 import {useImageHandler} from "../hooks/useImageHandler";
+import {RoomScreenParams} from "../constants";
 
 
 const placeholderImage = require('../assets/images/sample.png')
@@ -19,6 +19,7 @@ const Room = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const route = useRoute<RouteProp<RootStackParamList, "Room">>();
     const { room } = route.params as RoomScreenParams;
+    //const  { room } = route.params as Room;
     const { selectedImg, openGalleryAsync, openCameraAsync } = useImageHandler();
 
     const [isImageMaximized, setIsImageMaximized] = useState(false);

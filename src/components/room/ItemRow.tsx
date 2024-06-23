@@ -15,6 +15,8 @@ const ItemRow = ({ room }: ItemRowProps) => {
         setModalVisible(false);
     };
 
+
+
     return(
         <View>
             <View style={{ flexDirection: 'row' }}>
@@ -34,6 +36,7 @@ const ItemRow = ({ room }: ItemRowProps) => {
             )}
             <ItemModal
                 visible={isModalVisible}
+                roomId={room.id}
                 onClose={() => setModalVisible(false)}
                 onAddItem={handleAddItem}
             />
