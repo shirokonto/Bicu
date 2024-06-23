@@ -7,6 +7,8 @@ const ROOMS_KEY = '@rooms';
 export const getRooms = async (): Promise<Room[]> => {
     try {
         const jsonValue = await AsyncStorage.getItem(ROOMS_KEY);
+        console.log(jsonValue)
+
         return jsonValue != null ? JSON.parse(jsonValue) : [];
     } catch (e) {
         console.error('Error getting rooms from AsyncStorage:', e);
