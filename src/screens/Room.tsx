@@ -1,4 +1,4 @@
-import {ActionSheetIOS, ScrollView, TouchableOpacity, View} from 'react-native';
+import {ActionSheetIOS, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {NavigationProp, RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import {RootStackParamList} from '../navigation/index'
@@ -63,13 +63,13 @@ const Room = () => {
                     {/* Action Buttons */}
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}
-                        style={{position: "absolute", top: 50, left: 15, backgroundColor: '#FFFF', borderRadius: 999, padding: 5}}>
+                        style={styles.backButton}>
                         <MaterialIcons name={"arrow-back"} size={28} color={'#D97706'}/>
                     </TouchableOpacity>
                 </View>
 
                 {/* Room details with item list*/}
-                <RoomDetails room={room} navigation={navigation} openActionSheetAsync={openActionSheetAsync}/>
+                <RoomDetails fetchedRoom={room} navigation={navigation} openActionSheetAsync={openActionSheetAsync}/>
             </ScrollView>
 
             {/* Modal for maximized image */}
@@ -84,5 +84,16 @@ const Room = () => {
 
     );
 };
+
+const styles = StyleSheet.create({
+    backButton: {
+        position: "absolute",
+        top: 50,
+        left: 15,
+        backgroundColor: '#FFFF',
+        borderRadius: 999,
+        padding: 5
+    },
+})
 
 export default Room;

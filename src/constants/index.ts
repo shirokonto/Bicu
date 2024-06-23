@@ -20,18 +20,17 @@ export interface ImageModalProps {
 }
 
 export type ItemRowProps = {
-    room: RoomScreenParams['room'];
+    room: Room;
 };
 
 export type ItemCardProps = {
-    room: RoomScreenParams['room'];
+    item: Item;
     index: number;
 };
 
 export interface AddItemModalProps {
     visible: boolean;
     onClose: () => void;
-    roomId: string | number[];
     onAddItem: (item: Item) => void;
 }
 

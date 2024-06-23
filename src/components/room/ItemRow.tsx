@@ -1,32 +1,58 @@
-import {ItemRowProps} from "../../constants";
-import ItemCard from "./ItemCard";
 import {StyleSheet, Text, View} from "react-native";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import IconButton from "../../components/buttons/IconButton";
 import ItemModal from "./modals/ItemModal";
 import {Item} from "../../types";
+import {ItemRowProps} from "../../constants";
+import ItemCard from "./ItemCard";
+import {getRoom, saveRoom} from "../../utils/roomStorage";
 
 const ItemRow = ({ room }: ItemRowProps) => {
     const [isModalVisible, setModalVisible] = useState(false);
-    const [items, setItems] = useState(room.items || []);
+    const [ items, setItems] = useState<Item[]>(room.items);
+
+    useEffect(() => {
+        setItems(room.items);
+    }, [room.items]);
 
     const handleAddItem = (newItem: Item) => {
-        setItems([...items, newItem]);
+        const updatedItems = [...items, newItem];
+        const updatedRoom = {
+            ...room,
+            items: room.items ? [...room.items, newItem] : [newItem]
+        };
+
+        getRoom(updatedRoom.id as string).then(
+            fetchedRoom => {
+                if (fetchedRoom) {
+                    saveRoom(updatedRoom).then(() => {
+                        setItems(updatedItems);
+                    }).catch(e => {
+                        console.error("Error saving updated room:", e);
+                    });
+                } else {
+                    console.error("Room not found");
+                }
+            }).catch(e => {
+            console.error("Error fetching room:", e);
+        });
+    };
+
+    const onAddItem = (newItem: Item) => {
+        handleAddItem(newItem);
         setModalVisible(false);
     };
 
-
-
     return(
         <View>
-            <View style={{ flexDirection: 'row' }}>
-                <Text style={{ paddingVertical: 12, paddingHorizontal: 30, fontWeight: 'bold', fontSize: 25 }}>Items</Text>
+            <View style={styles.itemRowContainer}>
+                <Text style={styles.title}>Items</Text>
                 <IconButton icon="add" label="Add" onPress={() => setModalVisible(true)} />
             </View>
-            {room.items && room.items.length > 0 ? (
-                room.items.map((item, index) => (
+            {items && items.length > 0 ? (
+                items.map((item, index) => (
                     <ItemCard
-                        room={room}
+                        item={item}
                         key={index}
                         index={index}
                     />
@@ -36,15 +62,23 @@ const ItemRow = ({ room }: ItemRowProps) => {
             )}
             <ItemModal
                 visible={isModalVisible}
-                roomId={room.id}
                 onClose={() => setModalVisible(false)}
-                onAddItem={handleAddItem}
+                onAddItem={onAddItem}
             />
         </View>
     )
 };
 
 const styles = StyleSheet.create({
+    itemRowContainer: {
+        flexDirection: 'row'
+    },
+    title: {
+        paddingVertical: 12,
+        paddingHorizontal: 30,
+        fontWeight: 'bold',
+        fontSize: 25
+    },
     emptyItemsList: {
         color: 'gray',
         fontStyle: 'italic',

@@ -4,16 +4,18 @@ import {NavigationProp, useNavigation} from "@react-navigation/native";
 import {RootStackParamList} from "../../navigation";
 import {categories, ItemCardProps} from "../../constants";
 
-const ItemCard = ({ room, index }: ItemCardProps) => {
+const ItemCard = ({ item, index }: ItemCardProps) => {
 
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-    const categoryName = room.items?.[index]?.category ?? "No Category";
+    const categoryName = item.category ?? "No Category";
     const category = categories.find(cat => cat.name === categoryName);
     const categoryImage = category ? category.image : null;
 
+    // onPress={() => navigation.navigate("Room", { room })}
+
     return (
-        <TouchableWithoutFeedback onPress={() => navigation.navigate("Room", { room })}>
+        <TouchableWithoutFeedback >
             <View style={{
                 marginBottom: 10,
                 backgroundColor: "#fff",
@@ -45,8 +47,8 @@ const ItemCard = ({ room, index }: ItemCardProps) => {
                             paddingTop: 8,
                             fontSize: 18,
                             lineHeight: 30,
-                        }}>{room.items ? room.items[index].name : "No Item"}</Text>
-                        <Text style={{color: "#6B7280", fontSize: 15, lineHeight: 16}}>{room.items ? room.items[index].category : "No Category"}</Text>
+                        }}>{item.name}</Text>
+                        <Text style={{color: "#6B7280", fontSize: 15, lineHeight: 16}}>{item.category}</Text>
                     </View>
                 </View>
             </View>

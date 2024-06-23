@@ -1,16 +1,25 @@
-import {StyleSheet, TextInput, View} from "react-native";
+import {StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import React from "react";
 
 const SearchBar = () => {
+
+    const onFilterPress  = () => {
+        alert("pressed")
+    }
     return (
         <View style={styles.searchbarContainer}>
             <View style={styles.searchbarRow}>
                 <MaterialIcons name={"search"} size={28} style={styles.searchIcon}/>
                 <TextInput placeholder={'Rooms'} style={styles.searchField}/>
             </View>
-            <View style={{padding:3, backgroundColor: '#D1D5DB', borderRadius: 999, marginLeft: 2,}}>
-                <MaterialIcons name={"filter-list"}  size={28} style={{borderWidth: 2.5, borderColor:'#fff', borderRadius: 999,}}/>
-            </View>
+            <View style={styles.filterButtonContainer}>
+                <TouchableOpacity
+                    onPress={onFilterPress}
+                    >
+                <MaterialIcons name={"filter-list"}  size={28} style={styles.filterButton}/>
+                </TouchableOpacity>
+                </View>
         </View>
     )
 }
@@ -39,6 +48,17 @@ const styles = StyleSheet.create({
     searchField: {
         marginLeft: 2,
         flex: 1
+    },
+    filterButtonContainer: {
+        padding:3,
+        backgroundColor: '#D1D5DB',
+        borderRadius: 999,
+        marginLeft: 2,
+    },
+    filterButton: {
+        borderWidth: 2.5,
+        borderColor:'#fff',
+        borderRadius: 999,
     }
 });
 

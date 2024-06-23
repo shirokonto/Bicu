@@ -2,16 +2,15 @@ import {StyleSheet, Text, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import RoomCard from "./RoomCard";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import uuid from 'react-native-uuid';
 import {Room} from "../../types";
-import {getRooms, saveRooms} from "../../utils/roomStorage";
+import {getRooms, saveRoom} from "../../utils/roomStorage";
+import RoomModal from "../../components/home/RoomModal";
 
 const RoomRow = () => {
-
     const [rooms, setRooms] = useState<Room[]>([]);
+    const [isModalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
-        // Fetch rooms from AsyncStorage on component mount
         const fetchRooms = async () => {
             const storedRooms = await getRooms();
             setRooms(storedRooms);
@@ -19,25 +18,18 @@ const RoomRow = () => {
         fetchRooms();
     }, []);
 
-    const onAddRoom = () => {
-        const newRoom: Room = {
-            id: uuid.v4(),
-            name: 'New Room',
-            image: require('../../assets/images/sample.png'),
-            items: [],
-        };
-
+    const onAddRoom = (newRoom: Room) => {
         const updatedRooms = [...rooms, newRoom];
         setRooms(updatedRooms);
-        saveRooms(updatedRooms);
+        saveRoom(newRoom)
     };
 
     return (
-        <View style={{marginTop: 15, paddingHorizontal: 15}}>
-            <View style= {{ flexDirection: "row", marginTop: 15 }}>
-                <Text style={{fontWeight: "bold", fontSize: 30, lineHeight: 30, marginBottom: 15, flex: 1}}>Rooms</Text>
-                <View style={{ backgroundColor: '#D1D5DB', borderRadius: 999, marginBottom: 15, marginRight: 5, }}>
-                    <MaterialIcons name="add" size={38} color="#25292e" onPress={onAddRoom} />
+        <View style={styles.roomRowContainer}>
+            <View style= {styles.rowContainer}>
+                <Text style={styles.title}>Rooms</Text>
+                <View style={styles.addButtonContainer}>
+                    <MaterialIcons name="add" size={38} color="#25292e" onPress={() => setModalVisible(true)} />
                 </View>
             </View>
 
@@ -48,11 +40,24 @@ const RoomRow = () => {
                     <RoomCard key={index} room={room} />
                 ))
             )}
+            <RoomModal
+                visible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                onAddRoom={onAddRoom}
+            />
         </View>
         );
 }
 
 const styles = StyleSheet.create({
+    roomRowContainer: {
+        marginTop: 15,
+        paddingHorizontal: 15
+    },
+    rowContainer: {
+        flexDirection: "row",
+        marginTop: 15
+    },
     title: {
         fontWeight: 'bold',
         fontSize: 30,
@@ -60,13 +65,13 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         flex: 1,
     },
-    addButton: {
+    addButtonContainer: {
         backgroundColor: '#D1D5DB',
         borderRadius: 999,
         marginBottom: 15,
         marginRight: 5,
-        padding: 5,
     },
+    addButton: {},
     noRoomsText: {
         fontSize: 16,
         fontStyle: 'italic',
