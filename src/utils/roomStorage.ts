@@ -1,14 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Room} from '../types/Room';
+import {getImageSource} from "../utils/convertImageType";
 
-// Function to retrieve rooms from AsyncStorage
+// Functions to create/update and delete in AsyncStorage
 export const getRooms = async (): Promise<Room[]> => {
     try {
         const keys = await AsyncStorage.getAllKeys();
         const rooms = await AsyncStorage.multiGet(keys);
 
         return rooms.map(([key, value]) => {
-            return value ? JSON.parse(value) : null;
+            if (value) {
+                const jsonValue = JSON.parse(value);
+                return {
+                    ...jsonValue,
+                    image: getImageSource(jsonValue.image),
+                };
+            }
+            return null;
         }).filter(room => room !== null);
     } catch (e) {
         console.error('Error getting rooms from AsyncStorage:', e);
@@ -19,7 +27,14 @@ export const getRooms = async (): Promise<Room[]> => {
 export const getRoom = async (id: string): Promise<Room | null> => {
     try {
         const jsonValue = await AsyncStorage.getItem(id);
-        return jsonValue != null ? JSON.parse(jsonValue) : null;
+        if (jsonValue != null) {
+            const parsedValue = JSON.parse(jsonValue);
+            return {
+                ...parsedValue,
+                image: getImageSource(parsedValue.image),
+            };
+        }
+        return null;
     } catch (e) {
         console.error('Error getting room from AsyncStorage:', e);
         return null;

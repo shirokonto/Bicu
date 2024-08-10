@@ -21,10 +21,8 @@ const ItemModal = ({ visible, onClose, onAddItem } : AddItemModalProps) => {
             id: uuid.v4(),
             name: name,
             category: category,
-            markers: [],
+            marker: undefined,
         };
-
-        console.log("----------------------------------------------------------------------------")
 
         onAddItem(newItem);
         onClose();

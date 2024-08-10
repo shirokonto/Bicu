@@ -1,22 +1,30 @@
 import {StyleSheet, Text, View} from "react-native";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import RoomCard from "./RoomCard";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import {Room} from "../../types";
 import {getRooms, saveRoom} from "../../utils/roomStorage";
 import RoomModal from "../../components/home/RoomModal";
+import {useFocusEffect} from "@react-navigation/native";
 
 const RoomRow = () => {
     const [rooms, setRooms] = useState<Room[]>([]);
     const [isModalVisible, setModalVisible] = useState(false);
 
+    const fetchRooms = async () => {
+        const storedRooms = await getRooms();
+        setRooms(storedRooms);
+    };
+
     useEffect(() => {
-        const fetchRooms = async () => {
-            const storedRooms = await getRooms();
-            setRooms(storedRooms);
-        };
         fetchRooms();
     }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchRooms();
+        }, [])
+    );
 
     const onAddRoom = (newRoom: Room) => {
         const updatedRooms = [...rooms, newRoom];

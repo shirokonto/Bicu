@@ -4,5 +4,5 @@ export interface Item {
     id: string | number[];
     name: string;
     category: string;
-    markers: Marker[] | [];
+    marker: Marker | undefined;
 }

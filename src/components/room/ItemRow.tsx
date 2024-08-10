@@ -22,6 +22,7 @@ const ItemRow = ({ room }: ItemRowProps) => {
             items: room.items ? [...room.items, newItem] : [newItem]
         };
 
+        //TODO Remove getRoom just use saveRoom
         getRoom(updatedRoom.id as string).then(
             fetchedRoom => {
                 if (fetchedRoom) {

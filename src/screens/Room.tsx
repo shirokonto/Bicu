@@ -2,29 +2,36 @@ import {ActionSheetIOS, ScrollView, StyleSheet, TouchableOpacity, View} from 're
 import {NavigationProp, RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import {RootStackParamList} from '../navigation/index'
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ImageModal from "../components/room/modals/ImageModal";
 import TitleImage from "../components/room/image/TitleImage";
 import RoomDetails from "../components/room/RoomDetails";
 import {useImageHandler} from "../hooks/useImageHandler";
 import {RoomScreenParams} from "../constants";
-
+import {getImageSource} from "../utils/convertImageType";
 
 const placeholderImage = require('../assets/images/sample.png')
-
-
 
 const Room = () => {
 
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const route = useRoute<RouteProp<RootStackParamList, "Room">>();
     const { room } = route.params as RoomScreenParams;
-    //const  { room } = route.params as Room;
+    const initialImageSource = room.image ? getImageSource(room.image) : placeholderImage;
     const { selectedImg, openGalleryAsync, openCameraAsync } = useImageHandler();
 
+    const [imageSource, setImageSource] = useState(initialImageSource);
     const [isImageMaximized, setIsImageMaximized] = useState(false);
     const [showTagOptions, setShowTagOptions] = useState(false);
     const [showMarker, setMarker] = useState(false);
+
+    useEffect(() => {
+        if (selectedImg) {
+            // This will run after image is selected and saved
+            setImageSource(selectedImg)
+            room.image = selectedImg;
+        }
+    }, [selectedImg]);
 
     // TODO replace with openActionSheet?
     const openActionSheetAsync = async () =>
@@ -38,9 +45,9 @@ const Room = () => {
                 if (buttonIndex === 0) {
                     // cancel action
                 } else if (buttonIndex === 1) {
-                    openCameraAsync()
+                    openCameraAsync(room)
                 } else if (buttonIndex === 2) {
-                    openGalleryAsync()
+                    openGalleryAsync(room)
                 }
             },
         );
@@ -56,9 +63,10 @@ const Room = () => {
                 <View style={{position: "relative"}}>
 
                     {/* title image */}
-                    <TitleImage selectedImg={selectedImg}
-                    isImageMaximized={isImageMaximized}
-                    onPress={() => setIsImageMaximized(true)}/>
+                    <TitleImage
+                        selectedImg={imageSource}
+                        isImageMaximized={isImageMaximized}
+                        onPress={() => setIsImageMaximized(true)}/>
 
                     {/* Action Buttons */}
                     <TouchableOpacity
@@ -77,8 +85,7 @@ const Room = () => {
                 visible={isImageMaximized}
                 onClose={() => setIsImageMaximized(false)}
                 onMarkerPress={() => onSetMarker()}
-                placeholderImageSource={placeholderImage}
-                selectedImage={selectedImg}
+                selectedImage={imageSource}
             />
         </View>
 

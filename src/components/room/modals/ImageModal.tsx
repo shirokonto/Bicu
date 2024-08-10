@@ -4,9 +4,10 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import ImageViewer from "../../room/image/ImageViewer";
 import {ImageModalProps} from "../../../constants";
 import CircleButton from "../../buttons/CircleButton";
+import Marker from "../../Marker";
 
 
-const ImageModal = ({ visible, onClose, onMarkerPress, placeholderImageSource, selectedImage }: ImageModalProps) => {
+const ImageModal = ({ visible, onClose, onMarkerPress, selectedImage }: ImageModalProps) => {
     const [markers, setMarkers] = useState<Array<{x: number, y: number}>>([]);
 
     const handleAddMarker = (event: any) => {
@@ -28,10 +29,10 @@ const ImageModal = ({ visible, onClose, onMarkerPress, placeholderImageSource, s
                     </Pressable>
                 </View>
                 <ImageViewer
-                    placeholderImageSource={placeholderImageSource}
                     selectedImage={selectedImage}
                     maximized={true}
                 />
+                <Marker imageSize={40}/>
                 <View style={styles.bottomBar}>
                     <View style={styles.optionsRow}>
                         <CircleButton icon={"bookmark-add"} onPress={onMarkerPress}/>

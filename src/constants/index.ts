@@ -6,7 +6,6 @@ export type RoomScreenParams = {
 };
 
 export interface ImageViewerProps {
-    placeholderImageSource: ImageSourcePropType;
     selectedImage: ImageSourcePropType | null | undefined;
     maximized: boolean
 }
@@ -15,7 +14,6 @@ export interface ImageModalProps {
     visible: boolean;
     onClose: () => void;
     onMarkerPress: () => void;
-    placeholderImageSource: ImageSourcePropType;
     selectedImage: ImageSourcePropType | null | undefined;
 }
 
@@ -39,60 +37,6 @@ export interface EditableTitleProps {
     onReset: () => void;
     onAddMarker: () => void;
 }
-
-export const listedRooms = [
-    {
-        id: '1',
-        name: 'Basement',
-        image: require('../assets/images/sample.png'),
-        items: [
-            {
-                id: '0',
-                name: "item1",
-                category: "Clothing",
-                markers: [],
-            },
-            {
-                id: '1',
-                name: "item2",
-                category: "Food",
-                markers: [],
-            },
-            {
-                id: '2',
-                name: "item3",
-                category: "Tech",
-                markers: [],
-            },
-        ],
-    },
-    {
-        id: '2',
-        name: 'Room 02',
-        image: require('../assets/images/favicon.png'),
-        items: [
-            {
-                id: '0',
-                name: "item1",
-                category: "Clothing",
-                markers: [],
-            },
-        ],
-    },
-    {
-        id: '3',
-        name: 'Room 03',
-        image: require('../assets/images/bicuicon.png'),
-        items: [
-            {
-                id: '0',
-                name: "item1",
-                category: "Clothing",
-                markers: [],
-            },
-        ],
-    },
-]
 
 export const categories = [
     {
