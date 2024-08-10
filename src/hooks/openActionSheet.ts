@@ -1,7 +1,8 @@
 import {ActionSheetIOS} from "react-native";
 import {useImageHandler} from "../hooks/useImageHandler";
+import {Room} from "../types";
 
-export const openActionSheet = async () => {
+export const openActionSheet = async (room : Room) => {
     const { selectedImg, openGalleryAsync, openCameraAsync } = useImageHandler();
 
     ActionSheetIOS.showActionSheetWithOptions(
@@ -14,9 +15,9 @@ export const openActionSheet = async () => {
             if (buttonIndex === 0) {
                 // cancel action
             } else if (buttonIndex === 1) {
-                openCameraAsync()
+                openCameraAsync(room)
             } else if (buttonIndex === 2) {
-                openGalleryAsync()
+                openGalleryAsync(room)
             }
         },
     );

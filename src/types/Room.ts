@@ -4,6 +4,6 @@ import {ImageSourcePropType} from "react-native";
 export interface Room {
     id: string | number[];
     name: string;
-    image: ImageSourcePropType;
+    image: ImageSourcePropType | string | undefined;
     items: Item[] | [];
 }

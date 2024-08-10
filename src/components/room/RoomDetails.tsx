@@ -7,15 +7,17 @@ import ItemRow from "./ItemRow";
 import {Room} from "../../types";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
+// TODO MOVE
 interface RoomDetailsProps {
-    room: Room;
+    fetchedRoom: Room;
     navigation: NavigationProp<RootStackParamList>;
     openActionSheetAsync: () => void;
 }
 
-const RoomDetails= ({ room, navigation, openActionSheetAsync } : RoomDetailsProps) => {
+const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync } : RoomDetailsProps) => {
     const textInputRef = useRef<TextInput | null>(null);
-    const [value, onChangeText] = useState(room.name || "Room");
+    const [room, setRoom] = useState<Room>(fetchedRoom);
+    const [title, onChangeText] = useState(fetchedRoom.name || "Room");
 
     return (
         <View style={styles.detailsContainer}>
@@ -26,7 +28,7 @@ const RoomDetails= ({ room, navigation, openActionSheetAsync } : RoomDetailsProp
                             <TextInput style={styles.titleLabel}
                                        maxLength={9}
                                        onChangeText={text => onChangeText(text)}
-                                       value={value}
+                                       value={title}
                                        ref={textInputRef} />
                             <IconButton icon="mode-edit" label="Marker" onPress={() => {
                                 if (textInputRef.current) {
@@ -47,7 +49,7 @@ const RoomDetails= ({ room, navigation, openActionSheetAsync } : RoomDetailsProp
             </View>
 
             {/* items */}
-            <ItemRow room={room} />
+            <ItemRow room ={fetchedRoom}/>
         </View>
     );
 }

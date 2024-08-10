@@ -12,8 +12,6 @@ import {NavigationProp, useNavigation, useRoute} from "@react-navigation/native"
 import {RootStackParamList} from "../navigation";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-const placeholderImage = require('../assets/images/sample.png')
-
 const RoomImageView = () => {
 
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -21,7 +19,6 @@ const RoomImageView = () => {
 
     const {params} = useRoute();
     let item = params;
-    console.log("RoomImageView", item);
 
     const [selectedImg, setSelectedImage] = useState(null);
     const [showTagOptions, setShowTagOptions] = useState(false);
@@ -84,7 +81,6 @@ const RoomImageView = () => {
                     <View>
                         <Pressable onPress={onShowRaster}>
                             <ImageViewer
-                                placeholderImageSource={placeholderImage}
                                 selectedImage={selectedImg}
                                 maximized={false}
                             />
@@ -94,7 +90,6 @@ const RoomImageView = () => {
                 ) : (
                     <Pressable onPress={() => alert('First select an image')}>
                         <ImageViewer
-                            placeholderImageSource={placeholderImage}
                             selectedImage={selectedImg}
                             maximized={false}
                         />
