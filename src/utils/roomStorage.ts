@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Room} from '../types/Room';
-import {getImageSource} from "../utils/convertImageType";
+import {Room} from 'types';
+import {getImageSource} from "@utils/convertImageType";
 
 // Functions to create/update and delete in AsyncStorage
 export const getRooms = async (): Promise<Room[]> => {

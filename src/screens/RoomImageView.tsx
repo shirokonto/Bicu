@@ -9,7 +9,7 @@ import ItemPicker from "../components/room/ItemPicker";
 import ItemList from "../components/ItemList";
 import {StatusBar} from "expo-status-bar";
 import {NavigationProp, useNavigation, useRoute} from "@react-navigation/native";
-import {RootStackParamList} from "../navigation";
+import {RootStackParamList} from "navigation";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const RoomImageView = () => {

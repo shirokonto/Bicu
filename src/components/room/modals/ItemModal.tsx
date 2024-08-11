@@ -4,7 +4,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import uuid from 'react-native-uuid';
 import RNPickerSelect from 'react-native-picker-select';
 import {AddItemModalProps, categories} from "../../../constants";
-import {Item} from "../../../types";
+import {Item} from "types";
 
 
 const ItemModal = ({ visible, onClose, onAddItem } : AddItemModalProps) => {

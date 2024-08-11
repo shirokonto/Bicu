@@ -1,5 +1,5 @@
 import {ImageSourcePropType} from "react-native";
-import {Item, Room} from "../types";
+import {Item, Room} from "types";
 
 export type RoomScreenParams = {
     room: Room;
@@ -17,15 +17,6 @@ export interface ImageModalProps {
     selectedImage: ImageSourcePropType | null | undefined;
 }
 
-export type ItemRowProps = {
-    room: Room;
-};
-
-export type ItemCardProps = {
-    item: Item;
-    index: number;
-};
-
 export interface AddItemModalProps {
     visible: boolean;
     onClose: () => void;
@@ -37,6 +28,15 @@ export interface EditableTitleProps {
     onReset: () => void;
     onAddMarker: () => void;
 }
+
+export type ItemRowProps = {
+    room: Room;
+};
+
+export type ItemCardProps = {
+    item: Item;
+    index: number;
+};
 
 export const categories = [
     {

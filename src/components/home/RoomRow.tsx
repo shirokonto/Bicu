@@ -2,9 +2,9 @@ import {StyleSheet, Text, View} from "react-native";
 import React, {useCallback, useEffect, useState} from "react";
 import RoomCard from "./RoomCard";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import {Room} from "../../types";
-import {getRooms, saveRoom} from "../../utils/roomStorage";
-import RoomModal from "../../components/home/RoomModal";
+import {Room} from "types";
+import {getRooms, saveRoom} from "@utils/roomStorage";
+import RoomModal from "@components/home/RoomModal";
 import {useFocusEffect} from "@react-navigation/native";
 
 const RoomRow = () => {

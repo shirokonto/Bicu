@@ -7,7 +7,7 @@ interface ActionButtonsProps {
     onMarkerPress: () => void;
     onAddPhotoPress: () => void;
 }
-
+// TODO for what is it used?
 const ActionButtons= ({ onBackPress, onMarkerPress, onAddPhotoPress } : ActionButtonsProps) => {
     return (
         <View style={styles.buttonsContainer}>

@@ -1,6 +1,6 @@
 import {ActionSheetIOS} from "react-native";
-import {useImageHandler} from "../hooks/useImageHandler";
-import {Room} from "../types";
+import {useImageHandler} from "hooks/useImageHandler";
+import {Room} from "types";
 
 export const openActionSheet = async (room : Room) => {
     const { selectedImg, openGalleryAsync, openCameraAsync } = useImageHandler();

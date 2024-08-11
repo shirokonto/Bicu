@@ -1,8 +1,8 @@
 import {useState} from "react";
 import * as ImagePicker from "expo-image-picker";
 import {Alert, ImageSourcePropType} from "react-native";
-import {Room} from "../types";
-import {saveRoom} from "../utils/roomStorage";
+import {Room} from "types";
+import {saveRoom} from "@utils/roomStorage";
 
 export const useImageHandler = () => {
     const [selectedImg, setSelectedImg] = useState<ImageSourcePropType | undefined>(undefined);

@@ -1,4 +1,4 @@
-import {Marker} from "../types/Marker";
+import {Marker} from "types/Marker";
 
 export interface Item {
     id: string | number[];

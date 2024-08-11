@@ -4,7 +4,7 @@ import HomeScreen from "../screens/Home";
 import RoomScreen from "../screens/Room";
 import RoomImageView from "../screens/RoomImageView";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import {Room} from "../types"
+import {Room} from "types"
 
 const Stack = createNativeStackNavigator();
 

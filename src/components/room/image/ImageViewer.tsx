@@ -6,7 +6,6 @@ const placeholderImage = require('../../../assets/images/sample.png');
 
 const ImageViewer = ({ selectedImage, maximized} : ImageViewerProps) => {
 
-    // TODO add placeHolderImageSource here if not needed elsewhere
     const imageSource = selectedImage && true
         ? selectedImage
         : placeholderImage

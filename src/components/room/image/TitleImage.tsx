@@ -1,5 +1,5 @@
 import React from "react";
-import {ImageSourcePropType, Pressable, StyleSheet} from "react-native";
+import {ImageSourcePropType, Pressable} from "react-native";
 import ImageViewer from "./ImageViewer";
 
 
@@ -19,11 +19,5 @@ const TitleImage = ({ selectedImg, isImageMaximized, onPress } : TitleImageProps
         </Pressable>
     );
 }
-
-const styles = StyleSheet.create({
-    titleImageContainer: {
-        position: "relative",
-    },
-});
 
 export default TitleImage;

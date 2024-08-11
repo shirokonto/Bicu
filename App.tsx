@@ -3,7 +3,6 @@ import RootNavigator from './src/navigation';
 
 
 const App = () => {
-
     return (
         <GestureHandlerRootView style={{flex: 1}}>
             <RootNavigator/>

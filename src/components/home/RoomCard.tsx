@@ -2,8 +2,8 @@ import {Image, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-nat
 import React from "react";
 import {NavigationProp, useNavigation} from "@react-navigation/native";
 import {RoomScreenParams} from "../../constants";
-import {RootStackParamList} from "../../navigation";
-import {getImageSource} from "../../utils/convertImageType";
+import {RootStackParamList} from "navigation";
+import {getImageSource} from "@utils/convertImageType";
 
 const RoomCard = ({ room }: RoomScreenParams) => {
 

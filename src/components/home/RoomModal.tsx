@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Modal, Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import uuid from 'react-native-uuid';
-import {Room} from '../../types';
+import {Room} from 'types';
 
 interface RoomModalProps {
     visible: boolean;
