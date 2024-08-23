@@ -1,19 +1,51 @@
-import React, {useState} from 'react';
-import {Modal, Pressable, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Modal, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import ImageViewer from "../../room/image/ImageViewer";
 import {ImageModalProps} from "../../../constants";
 import CircleButton from "../../buttons/CircleButton";
 import Marker from "../../Marker";
+import {Item} from "types";
+import uuid from "react-native-uuid";
 
 
-const ImageModal = ({ visible, onClose, onMarkerPress, selectedImage }: ImageModalProps) => {
+const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: ImageModalProps) => {
     const [markers, setMarkers] = useState<Array<{x: number, y: number}>>([]);
+    const [isAddingMarker, setIsAddingMarker] = useState(false);
+    const [showMarker, setShowMarker] = useState(false);
+    const [itemsWithoutMarkers, setItemsWithoutMarkers] = useState<Item[]>([]);
+    const [currentMarker, setCurrentMarker] = useState<{ x: number, y: number } | null>(null);
 
-    const handleAddMarker = (event: any) => {
-        const { locationX, locationY } = event.nativeEvent;
-        setMarkers([...markers, { x: locationX, y: locationY }]);
+    useEffect(() => {
+        // Filter items without markers
+        const unmarkedItems: Item[] = room.items.filter(item => !item.marker);
+        setItemsWithoutMarkers(unmarkedItems);
+    }, [room.items]);
+
+    const onSetMarker = () => {
+        setIsAddingMarker(true);
     };
+
+    const handleItemSelection = (selectedItem: Item) => {
+        if (currentMarker) {
+            const updatedItems = room.items.map(item =>
+                item.id === selectedItem.id
+                    ? {
+                        ...item,
+                        marker: {
+                            id: uuid.v4(),
+                            xCoordinate: currentMarker.x,
+                            yCoordinate: currentMarker.y,
+                        }
+                    }
+                    : item
+            );
+            onMarkerUpdate(updatedItems);
+            setShowMarker(false);
+        }
+        onClose();
+    };
+
 
     return (
         <Modal
@@ -32,12 +64,27 @@ const ImageModal = ({ visible, onClose, onMarkerPress, selectedImage }: ImageMod
                     selectedImage={selectedImage}
                     maximized={true}
                 />
-                <Marker imageSize={40}/>
+                {showMarker && (
+                    <Marker imageSize={40} />
+                )}
                 <View style={styles.bottomBar}>
                     <View style={styles.optionsRow}>
-                        <CircleButton icon={"bookmark-add"} onPress={onMarkerPress}/>
+                        <CircleButton icon={"bookmark-add"} onPress={onSetMarker}/>
                     </View>
                 </View>
+                {isAddingMarker && (
+                    <View style={styles.itemsModal}>
+                        {itemsWithoutMarkers.map((item, index) => (
+                            <TouchableOpacity
+                                key={String(item.id)}
+                                onPress={() => handleItemSelection(item)}
+                                style={styles.itemButton}
+                            >
+                                <Text style={styles.itemText}>{item.name}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                )}
             </View>
         </Modal>
     );
@@ -105,6 +152,19 @@ const styles = StyleSheet.create({
         height: 20,
         borderRadius: 10,
         backgroundColor: 'red',
+    },
+    itemsModal: {
+        position: 'absolute',
+        bottom: 80,
+        backgroundColor: '#FFF',
+        padding: 20,
+        borderRadius: 10,
+    },
+    itemButton: {
+        paddingVertical: 10,
+    },
+    itemText: {
+        color: '#000',
     },
 });
 

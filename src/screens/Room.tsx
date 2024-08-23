@@ -9,6 +9,7 @@ import RoomDetails from "@components/room/RoomDetails";
 import {useImageHandler} from "hooks/useImageHandler";
 import {RoomScreenParams} from "../constants";
 import {getImageSource} from "@utils/convertImageType";
+import {Item} from "types";
 
 const placeholderImage = require('../assets/images/sample.png')
 
@@ -22,16 +23,26 @@ const Room = () => {
 
     const [imageSource, setImageSource] = useState(initialImageSource);
     const [isImageMaximized, setIsImageMaximized] = useState(false);
-    const [showTagOptions, setShowTagOptions] = useState(false);
-    const [showMarker, setMarker] = useState(false);
+
+    const [showMarker, setShowMarker] = useState(false);
+    const [itemsWithoutMarkers, setItemsWithoutMarkers] = useState<Item[]>([]);
+    const [isAddingMarker, setIsAddingMarker] = useState(false);
+    const [currentMarker, setCurrentMarker] = useState<{ x: number, y: number } | null>(null);
+
 
     useEffect(() => {
         if (selectedImg) {
             // This will run after image is selected and saved
-            setImageSource(selectedImg)
+            setImageSource(selectedImg);
             room.image = selectedImg;
         }
     }, [selectedImg]);
+
+    useEffect(() => {
+        // Filter items without markers
+        const unmarkedItems: Item[] = room.items.filter(item => !item.marker);
+        setItemsWithoutMarkers(unmarkedItems);
+    }, [room.items]);
 
     // TODO replace with openActionSheet?
     const openActionSheetAsync = async () =>
@@ -52,10 +63,10 @@ const Room = () => {
             },
         );
 
-    const onSetMarker = () => {
-        alert("Add marker here")
-        setMarker(true);
-    }
+    const handleMarkerUpdate = (updatedItems: Item[]) => {
+        room.items = updatedItems;
+    };
+
 
     return (
         <View>
@@ -84,8 +95,9 @@ const Room = () => {
             <ImageModal
                 visible={isImageMaximized}
                 onClose={() => setIsImageMaximized(false)}
-                onMarkerPress={() => onSetMarker()}
                 selectedImage={imageSource}
+                room={room}
+                onMarkerUpdate={handleMarkerUpdate}
             />
         </View>
 

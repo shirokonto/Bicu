@@ -7,14 +7,15 @@ export type RoomScreenParams = {
 
 export interface ImageViewerProps {
     selectedImage: ImageSourcePropType | null | undefined;
-    maximized: boolean
+    maximized: boolean;
 }
 
 export interface ImageModalProps {
     visible: boolean;
     onClose: () => void;
-    onMarkerPress: () => void;
     selectedImage: ImageSourcePropType | null | undefined;
+    room: Room;
+    onMarkerUpdate: (selectedItems: Item[]) => void;
 }
 
 export interface AddItemModalProps {
