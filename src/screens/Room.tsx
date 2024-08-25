@@ -25,7 +25,6 @@ const Room = () => {
     const [imageSource, setImageSource] = useState(initialImageSource);
     const [isImageMaximized, setIsImageMaximized] = useState(false);
 
-    const [itemsWithoutMarkers, setItemsWithoutMarkers] = useState<Item[]>([]);
 
     useEffect(() => {
         if (selectedImg) {
@@ -34,12 +33,6 @@ const Room = () => {
             room.image = selectedImg;
         }
     }, [selectedImg]);
-
-    useEffect(() => {
-        // Filter items without markers
-        const unmarkedItems: Item[] = room.items.filter(item => !item.marker);
-        setItemsWithoutMarkers(unmarkedItems);
-    }, [room.items]);
 
     // TODO replace with openActionSheet?
     const openActionSheetAsync = async () =>

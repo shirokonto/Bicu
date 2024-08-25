@@ -12,21 +12,35 @@ import uuid from "react-native-uuid";
 const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: ImageModalProps) => {
     const [isAddingMarker, setIsAddingMarker] = useState(false);
     const [showMarker, setShowMarker] = useState(false);
-    const [itemsWithoutMarkers, setItemsWithoutMarkers] = useState<Item[]>([]);
-    const [currentMarker, setCurrentMarker] = useState<{ x: number, y: number } | null>(null);
+    const [itemsSorted, setItemsSorted] = useState<Item[]>([]);
+    const [currentMarker, setCurrentMarker] = useState<{ x: number, y: number } | {x: 0, y: 0}>({x: 0, y: 0});
     const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
     useEffect(() => {
-        // Filter items without markers
-        const unmarkedItems: Item[] = room.items.filter(item => !item.marker);
-        setItemsWithoutMarkers(unmarkedItems);
+        const sortedItems: Item[] = room.items.sort((a: Item, b: Item) => {
+            if (a.marker === undefined && b.marker !== undefined) {
+                return -1;
+            }
+            if (b.marker === undefined && a.marker !== undefined) {
+                return 1;
+            }
+            return 0;
+        });
+
+        setItemsSorted(sortedItems);
     }, [room.items]);
 
     const handleItemSelection = (selectedItem: Item) => {
+        console.log("selectedItem", selectedItem?.marker?.xCoordinate)
+
+        selectedItem?.marker
+            ? setCurrentMarker({x: selectedItem.marker?.xCoordinate, y: selectedItem.marker?.yCoordinate})
+            : setCurrentMarker({ x: 0, y: 0 });
         setSelectedItem(selectedItem);
         setShowMarker(true);
-        setCurrentMarker({ x: 0, y: 0 });
         setIsAddingMarker(false);
+        console.log("currentMarker", currentMarker)
+
     };
 
     const onSetMarker = () => {
@@ -58,6 +72,10 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
         }
     };
 
+    const handleCoordinateChange = (x: number, y: number) => {
+        setCurrentMarker({ x, y });
+    }
+
 
     return (
         <Modal
@@ -77,7 +95,7 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
                     maximized={true}
                 />
                 {showMarker && (
-                    <Marker imageSize={40} />
+                    <Marker imageSize={40} coordinates= {currentMarker} onCoordinateChange={handleCoordinateChange}/>
                 )}
                 <View style={styles.bottomBar}>
                     <View style={styles.optionsRow}>
@@ -86,7 +104,7 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
                 </View>
                 {isAddingMarker && (
                     <View style={styles.itemsModal}>
-                        {itemsWithoutMarkers.map((item, index) => (
+                        {itemsSorted.map((item, index) => (
                             <TouchableOpacity
                                 key={String(item.id)}
                                 onPress={() => handleItemSelection(item)}

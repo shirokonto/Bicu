@@ -5,11 +5,13 @@ import React from "react";
 
 interface MarkerProps {
     imageSize: number;
+    coordinates: {x: number, y: number};
+    onCoordinateChange: (x: number, y: number) => void;
 }
-const Marker = ({ imageSize } : MarkerProps) => {
+const Marker = ({ imageSize, coordinates, onCoordinateChange } : MarkerProps) => {
 
-    const translateX = useSharedValue(0);
-    const translateY = useSharedValue(0);
+    const translateX = useSharedValue(coordinates.x);
+    const translateY = useSharedValue(coordinates.y);
 
     const doubleTap = Gesture.Tap()
         .numberOfTaps(1)
@@ -21,6 +23,8 @@ const Marker = ({ imageSize } : MarkerProps) => {
         .onChange((event) => {
             translateX.value += event.changeX;
             translateY.value += event.changeY;
+
+            onCoordinateChange(translateX.value, translateY.value);
         });
 
     const containerStyle = useAnimatedStyle(() => {
