@@ -10,6 +10,7 @@ import {useImageHandler} from "hooks/useImageHandler";
 import {RoomScreenParams} from "../constants";
 import {getImageSource} from "@utils/convertImageType";
 import {Item} from "types";
+import {saveRoom} from "@utils/roomStorage";
 
 const placeholderImage = require('../assets/images/sample.png')
 
@@ -24,11 +25,7 @@ const Room = () => {
     const [imageSource, setImageSource] = useState(initialImageSource);
     const [isImageMaximized, setIsImageMaximized] = useState(false);
 
-    const [showMarker, setShowMarker] = useState(false);
     const [itemsWithoutMarkers, setItemsWithoutMarkers] = useState<Item[]>([]);
-    const [isAddingMarker, setIsAddingMarker] = useState(false);
-    const [currentMarker, setCurrentMarker] = useState<{ x: number, y: number } | null>(null);
-
 
     useEffect(() => {
         if (selectedImg) {
@@ -65,8 +62,13 @@ const Room = () => {
 
     const handleMarkerUpdate = (updatedItems: Item[]) => {
         room.items = updatedItems;
+        saveRoom(room).then(() => {
+            //setItems(updatedItems);
+            console.log("Successfully updated items with markers");
+        }).catch(e => {
+            console.error("Error saving updated room:", e);
+        });
     };
-
 
     return (
         <View>

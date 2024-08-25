@@ -8,6 +8,8 @@ export const getRooms = async (): Promise<Room[]> => {
         const keys = await AsyncStorage.getAllKeys();
         const rooms = await AsyncStorage.multiGet(keys);
 
+        console.log(rooms)
+
         return rooms.map(([key, value]) => {
             if (value) {
                 const jsonValue = JSON.parse(value);

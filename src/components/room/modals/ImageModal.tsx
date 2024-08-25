@@ -10,11 +10,11 @@ import uuid from "react-native-uuid";
 
 
 const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: ImageModalProps) => {
-    const [markers, setMarkers] = useState<Array<{x: number, y: number}>>([]);
     const [isAddingMarker, setIsAddingMarker] = useState(false);
     const [showMarker, setShowMarker] = useState(false);
     const [itemsWithoutMarkers, setItemsWithoutMarkers] = useState<Item[]>([]);
     const [currentMarker, setCurrentMarker] = useState<{ x: number, y: number } | null>(null);
+    const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
     useEffect(() => {
         // Filter items without markers
@@ -22,12 +22,18 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
         setItemsWithoutMarkers(unmarkedItems);
     }, [room.items]);
 
-    const onSetMarker = () => {
-        setIsAddingMarker(true);
+    const handleItemSelection = (selectedItem: Item) => {
+        setSelectedItem(selectedItem);
+        setShowMarker(true);
+        setCurrentMarker({ x: 0, y: 0 });
+        setIsAddingMarker(false);
     };
 
-    const handleItemSelection = (selectedItem: Item) => {
-        if (currentMarker) {
+    const onSetMarker = () => {
+        if (showMarker && currentMarker && selectedItem) {
+            console.log("onSetMarker - safe before")
+            console.log(room.items)
+
             const updatedItems = room.items.map(item =>
                 item.id === selectedItem.id
                     ? {
@@ -40,10 +46,16 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
                     }
                     : item
             );
+
+            console.log("onSetMarker - safe after")
+            console.log(updatedItems)
+
             onMarkerUpdate(updatedItems);
             setShowMarker(false);
+            onClose();
+        } else {
+            setIsAddingMarker(true);
         }
-        onClose();
     };
 
 
