@@ -1,19 +1,19 @@
-import React, {useEffect, useState} from 'react';
-import {Modal, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import ImageViewer from "../../room/image/ImageViewer";
-import {ImageModalProps} from "../../../constants";
+import { ImageModalProps } from "../../../constants";
 import CircleButton from "../../buttons/CircleButton";
 import Marker from "../../Marker";
-import {Item} from "types";
+import { Item } from "types";
 import uuid from "react-native-uuid";
 
 
 const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: ImageModalProps) => {
     const [isAddingMarker, setIsAddingMarker] = useState(false);
-    const [showMarker, setShowMarker] = useState(false);
+    const [showSelectedMarker, setShowSelectedMarker] = useState(false);
     const [itemsSorted, setItemsSorted] = useState<Item[]>([]);
-    const [currentMarker, setCurrentMarker] = useState<{ x: number, y: number } | {x: 0, y: 0}>({x: 0, y: 0});
+    const [currentMarker, setCurrentMarker] = useState<{ x: number, y: number } | { x: 0, y: 0 }>({x: 0, y: 0});
     const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
     useEffect(() => {
@@ -31,22 +31,18 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
     }, [room.items]);
 
     const handleItemSelection = (selectedItem: Item) => {
-        console.log("selectedItem", selectedItem?.marker?.xCoordinate)
 
         selectedItem?.marker
             ? setCurrentMarker({x: selectedItem.marker?.xCoordinate, y: selectedItem.marker?.yCoordinate})
             : setCurrentMarker({ x: 0, y: 0 });
         setSelectedItem(selectedItem);
-        setShowMarker(true);
+        //setShowSelectedMarker(true);
         setIsAddingMarker(false);
-        console.log("currentMarker", currentMarker)
-
     };
 
     const onSetMarker = () => {
-        if (showMarker && currentMarker && selectedItem) {
-            console.log("onSetMarker - safe before")
-            console.log(room.items)
+        if (selectedItem && currentMarker) {
+        //if (showSelectedMarker && currentMarker && selectedItem) {
 
             const updatedItems = room.items.map(item =>
                 item.id === selectedItem.id
@@ -61,11 +57,8 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
                     : item
             );
 
-            console.log("onSetMarker - safe after")
-            console.log(updatedItems)
-
             onMarkerUpdate(updatedItems);
-            setShowMarker(false);
+            setShowSelectedMarker(false);
             onClose();
         } else {
             setIsAddingMarker(true);
@@ -87,15 +80,40 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
                 {/* Bar at the top */}
                 <View style={styles.topBar}>
                     <Pressable onPress={onClose} style={styles.closeButton}>
-                        <MaterialIcons name="close" size={28} color="#FFFFFF" />
+                        <MaterialIcons name="close" size={28} color="#FFFFFF"/>
                     </Pressable>
                 </View>
                 <ImageViewer
                     selectedImage={selectedImage}
                     maximized={true}
                 />
-                {showMarker && (
-                    <Marker imageSize={40} coordinates= {currentMarker} onCoordinateChange={handleCoordinateChange}/>
+                {itemsSorted.map((item) => {
+                    if (item.marker) {
+                        const isSelected = selectedItem?.id === item.id;
+                        return (
+                            <Marker
+                                key={item.id as string}
+                                itemName={item.name}
+                                coordinates={{ x: item.marker.xCoordinate, y: item.marker.yCoordinate }}
+                                onCoordinateChange={(x, y) => {
+                                    handleItemSelection(item);
+                                    handleCoordinateChange(x, y);
+                                }}
+                                color={isSelected ? 'green' : 'red'}
+                            />
+                        );
+                    }
+                    return null
+                })}
+                { showSelectedMarker && (
+                    <Marker
+                        key={"0"}
+                        itemName={selectedItem?.name}
+                        coordinates={currentMarker}
+                        onCoordinateChange={handleCoordinateChange}
+                        color={'green'}
+                    />
+
                 )}
                 <View style={styles.bottomBar}>
                     <View style={styles.optionsRow}>

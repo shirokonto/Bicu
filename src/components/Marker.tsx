@@ -1,14 +1,16 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {Gesture, GestureDetector} from 'react-native-gesture-handler';
-import Animated, {useAnimatedStyle, useSharedValue} from 'react-native-reanimated';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import React from "react";
 
 interface MarkerProps {
-    imageSize: number;
+    key: string | number[];
+    itemName?: string;
     coordinates: {x: number, y: number};
     onCoordinateChange: (x: number, y: number) => void;
+    color: string;
 }
-const Marker = ({ imageSize, coordinates, onCoordinateChange } : MarkerProps) => {
+const Marker = ({ key, itemName, coordinates, onCoordinateChange, color } : MarkerProps) => {
 
     const translateX = useSharedValue(coordinates.x);
     const translateY = useSharedValue(coordinates.y);
@@ -47,10 +49,11 @@ const Marker = ({ imageSize, coordinates, onCoordinateChange } : MarkerProps) =>
                     <Animated.View>
                         <FontAwesome
                             name={"map-marker"}
-                            size={imageSize}
+                            size={40}
                             resizeMode="contain"
-                            color={"red"}
+                            color={color}
                         />
+                        <div>{itemName}</div>
                     </Animated.View>
                 </GestureDetector>
             </Animated.View>
