@@ -1,15 +1,14 @@
-import React, {useState} from "react";
-import {ImageSourcePropType, Pressable, StyleSheet, TouchableOpacity, View} from "react-native";
+import React, { useState } from "react";
+import { ImageSourcePropType, Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import EditableTitle from "../components/EditableTitle";
 import ImageViewer from "../components/room/image/ImageViewer";
-import Marker from "../components/Marker";
 import LabeledIconButton from "../components/buttons/LabeledIconButton";
 import CircleButton from "../components/buttons/CircleButton";
-import ItemPicker from "../components/room/ItemPicker";
+import ItemPicker from "@components/room/items/ItemPicker";
 import ItemList from "../components/ItemList";
-import {StatusBar} from "expo-status-bar";
-import {NavigationProp, useNavigation, useRoute} from "@react-navigation/native";
-import {RootStackParamList} from "navigation";
+import { StatusBar } from "expo-status-bar";
+import { NavigationProp, useNavigation, useRoute } from "@react-navigation/native";
+import { RootStackParamList } from "navigation";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const RoomImageView = () => {
@@ -85,7 +84,7 @@ const RoomImageView = () => {
                                 maximized={false}
                             />
                         </Pressable>
-                        {showMarker && <Marker imageSize={40}/>}
+                        {/*showMarker && <Marker imageSize={40}/>*/}
                     </View>
                 ) : (
                     <Pressable onPress={() => alert('First select an image')}>

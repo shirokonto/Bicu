@@ -1,8 +1,8 @@
-import {Image, Text, TouchableWithoutFeedback, View} from "react-native";
+import { Image, Text, TouchableWithoutFeedback, View } from "react-native";
 import React from "react";
-import {NavigationProp, useNavigation} from "@react-navigation/native";
-import {RootStackParamList} from "navigation";
-import {categories, ItemCardProps} from "../../constants";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "navigation";
+import { categories, ItemCardProps } from "../../../constants";
 
 const ItemCard = ({ item, index }: ItemCardProps) => {
 

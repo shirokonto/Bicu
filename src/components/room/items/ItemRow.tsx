@@ -1,11 +1,11 @@
-import {StyleSheet, Text, View} from "react-native";
-import React, {useEffect, useState} from "react";
+import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import IconButton from "@components/buttons/IconButton";
-import ItemModal from "./modals/ItemModal";
-import {Item} from "types";
-import {ItemRowProps} from "../../constants";
-import ItemCard from "./ItemCard";
-import {getRoom, saveRoom} from "@utils/roomStorage";
+import ItemModal from "components/room/modals/ItemModal";
+import { Item } from "types";
+import { ItemRowProps } from "../../../constants";
+import ItemCard from "components/room/items/ItemCard";
+import { getRoom, saveRoom } from "@utils/roomStorage";
 
 const ItemRow = ({ room }: ItemRowProps) => {
     const [isModalVisible, setModalVisible] = useState(false);

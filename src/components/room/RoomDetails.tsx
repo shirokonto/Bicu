@@ -1,10 +1,10 @@
-import React, {useRef, useState} from "react";
-import {StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import React, { useRef, useState } from "react";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import IconButton from "@components/buttons/IconButton";
-import {NavigationProp} from "@react-navigation/native";
-import {RootStackParamList} from "navigation";
-import ItemRow from "./ItemRow";
-import {Room} from "types";
+import { NavigationProp } from "@react-navigation/native";
+import { RootStackParamList } from "navigation";
+import ItemRow from "components/room/items/ItemRow";
+import { Room } from "types";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 // TODO MOVE to constants or types
