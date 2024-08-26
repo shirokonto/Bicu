@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Modal, StyleSheet, View } from 'react-native';
 import ImageViewer from "../../room/image/ImageViewer";
 import { ImageModalProps } from "../../../constants";
-import CircleButton from "../../buttons/CircleButton";
-import Marker from "../../Marker";
 import { Item } from "types";
 import uuid from "react-native-uuid";
+import TopBar from "@components/room/bar/TopBar";
+import BottomBar from "@components/room/bar/BottomBar";
+import ItemSelectionList from "@components/room/items/ItemSelectionList";
+import MarkerContainer from "@components/room/marker/MarkerContainer";
 
 const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: ImageModalProps) => {
     const [isAddingMarker, setIsAddingMarker] = useState(false);
@@ -87,63 +88,23 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
         >
             <View style={styles.modalContainer}>
                 {/* Bar at the top */}
-                <View style={styles.topBar}>
-                    <Pressable onPress={onClose} style={styles.closeButton}>
-                        <MaterialIcons name="close" size={28} color="#FFFFFF"/>
-                    </Pressable>
-                </View>
+                < TopBar onClose={onClose}/>
                 <ImageViewer
                     selectedImage={selectedImage}
                     maximized={true}
                 />
-                {itemsSorted.map((item) => {
-                    if (item.marker) {
-                        const isSelected = selectedItem?.id === item.id;
-
-                        if (isSelected && showSelectedMarker) {
-                            return null;
-                        }
-                        return (
-                            <Marker
-                                key={item.id as string}
-                                itemName={item.name}
-                                coordinates={{ x: item.marker.xCoordinate, y: item.marker.yCoordinate }}
-                                onCoordinateChange={(x, y) => {
-                                    handleItemSelection(item);
-                                    handleCoordinateChange(x, y);
-                                }}
-                                color={isSelected ? 'green' : 'red'}
-                            />
-                        );
-                    }
-                    return null;
-                })}
-                { showSelectedMarker && currentMarker && selectedItem && (
-                    <Marker
-                        key={"0"}
-                        itemName={selectedItem?.name}
-                        coordinates={currentMarker}
-                        onCoordinateChange={handleCoordinateChange}
-                        color={'green'}
-                    />
-                )}
-                <View style={styles.bottomBar}>
-                    <View style={styles.optionsRow}>
-                        <CircleButton icon={"bookmark-add"} onPress={onSetMarker}/>
-                    </View>
-                </View>
+                <MarkerContainer
+                    itemsSorted={itemsSorted}
+                    selectedItem={selectedItem}
+                    showSelectedMarker={showSelectedMarker}
+                    currentMarker={currentMarker}
+                    handleItemSelection={handleItemSelection}
+                    handleCoordinateChange={handleCoordinateChange}
+                />
+                {/* Bar at the bottom with selection list */}
+                <BottomBar onSetMarker={onSetMarker}/>
                 {isAddingMarker && (
-                    <View style={styles.itemsModal}>
-                        {itemsSorted.map((item, index) => (
-                            <TouchableOpacity
-                                key={String(item.id)}
-                                onPress={() => handleItemSelection(item)}
-                                style={styles.itemButton}
-                            >
-                                <Text style={styles.itemText}>{item.name}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
+                    <ItemSelectionList items={itemsSorted} onItemSelect={handleItemSelection} />
                 )}
             </View>
         </Modal>
@@ -156,75 +117,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    interactionBar: {
-        position: 'absolute',
-    },
-    topBar: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: 50,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        zIndex: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 15,
-    },
-    bottomBar: {
-        flex: 1,
-        alignItems: 'center',
-        position: 'absolute',
-        bottom: 40,
-    },
-    optionsContainer: {
-        flex: 1,
-        alignItems: 'center',
-        position: 'absolute',
-        bottom: 60,
-    },
-    optionsRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    closeButton: {
-        position: 'absolute',
-        top: 95,
-        right: 30,
-        backgroundColor: '#000',
-        borderRadius: 999,
-        padding: 5,
-    },
-    markerButton: {
-        position: "absolute",
-        top: 9,
-        right: 30,
-        backgroundColor: '#FFFF',
-        borderRadius: 999,
-        padding: 5,
-    },
-    marker: {
-        position: 'absolute',
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-        backgroundColor: 'red',
-    },
-    itemsModal: {
-        position: 'absolute',
-        bottom: 80,
-        backgroundColor: '#FFF',
-        padding: 20,
-        borderRadius: 10,
-    },
-    itemButton: {
-        paddingVertical: 10,
-    },
-    itemText: {
-        color: '#000',
     },
 });
 
