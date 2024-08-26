@@ -39,13 +39,6 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
         setSelectedItem(selectedItem);
         setShowSelectedMarker(true);
         setIsAddingMarker(false);
-
-        /*selectedItem?.marker
-            ? setCurrentMarker({x: selectedItem.marker?.xCoordinate, y: selectedItem.marker?.yCoordinate})
-            : setCurrentMarker({ x: 0, y: 0 });
-        setSelectedItem(selectedItem);
-        //setShowSelectedMarker(true);
-        setIsAddingMarker(false);*/
     };
 
     const onSetMarker = () => {
@@ -79,37 +72,9 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
             // No item is selected yet, show the item list
             setIsAddingMarker(true);
         }
-        /*if (selectedItem && currentMarker) {
-        //if (showSelectedMarker && currentMarker && selectedItem) {
-
-            const updatedItems = room.items.map(item =>
-                item.id === selectedItem.id
-                    ? {
-                        ...item,
-                        marker: {
-                            id: uuid.v4(),
-                            xCoordinate: currentMarker.x,
-                            yCoordinate: currentMarker.y,
-                        }
-                    }
-                    : item
-            );
-
-            onMarkerUpdate(updatedItems);
-            setShowSelectedMarker(false);
-            setCurrentMarker(null);
-            setSelectedItem(null);
-            onClose();
-        } else {
-            // Create a new marker
-            setIsAddingMarker(true);
-        }*/
     };
 
     const handleCoordinateChange = (x: number, y: number) => {
-        //if (selectedItem) {
-        //    setCurrentMarker({ x, y });
-        //}
         setCurrentMarker({ x, y });
     }
 
@@ -134,6 +99,10 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
                 {itemsSorted.map((item) => {
                     if (item.marker) {
                         const isSelected = selectedItem?.id === item.id;
+
+                        if (isSelected && showSelectedMarker) {
+                            return null;
+                        }
                         return (
                             <Marker
                                 key={item.id as string}
@@ -147,7 +116,7 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
                             />
                         );
                     }
-                    return null
+                    return null;
                 })}
                 { showSelectedMarker && currentMarker && selectedItem && (
                     <Marker
@@ -157,7 +126,6 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
                         onCoordinateChange={handleCoordinateChange}
                         color={'green'}
                     />
-
                 )}
                 <View style={styles.bottomBar}>
                     <View style={styles.optionsRow}>
