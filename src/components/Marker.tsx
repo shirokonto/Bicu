@@ -1,19 +1,22 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import Animated, { SharedValue, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import React from "react";
 
 interface MarkerProps {
     key: string | number[];
     itemName?: string;
-    coordinates: {x: number, y: number};
+    coordinates: {x: number, y: number} | null;
     onCoordinateChange: (x: number, y: number) => void;
     color: string;
 }
 const Marker = ({ key, itemName, coordinates, onCoordinateChange, color } : MarkerProps) => {
-
-    const translateX = useSharedValue(coordinates.x);
-    const translateY = useSharedValue(coordinates.y);
+    let translateX: SharedValue<number> = useSharedValue(0);
+    let translateY: SharedValue<number> = useSharedValue(0);
+    if (coordinates) {
+        translateX = useSharedValue(coordinates.x);
+        translateY = useSharedValue(coordinates.y);
+    }
 
     const doubleTap = Gesture.Tap()
         .numberOfTaps(1)

@@ -8,12 +8,11 @@ import Marker from "../../Marker";
 import { Item } from "types";
 import uuid from "react-native-uuid";
 
-
 const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: ImageModalProps) => {
     const [isAddingMarker, setIsAddingMarker] = useState(false);
     const [showSelectedMarker, setShowSelectedMarker] = useState(false);
     const [itemsSorted, setItemsSorted] = useState<Item[]>([]);
-    const [currentMarker, setCurrentMarker] = useState<{ x: number, y: number } | { x: 0, y: 0 }>({x: 0, y: 0});
+    const [currentMarker, setCurrentMarker] = useState<{ x: number, y: number } |  null>(null);
     const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
     useEffect(() => {
@@ -31,17 +30,56 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
     }, [room.items]);
 
     const handleItemSelection = (selectedItem: Item) => {
+        if (selectedItem?.marker) {
+            setCurrentMarker({ x: selectedItem.marker.xCoordinate, y: selectedItem.marker.yCoordinate });
+        } else {
+            // No marker yet, ready to add new
+            setCurrentMarker({ x: 0, y: 0 });
+        }
+        setSelectedItem(selectedItem);
+        setShowSelectedMarker(true);
+        setIsAddingMarker(false);
 
-        selectedItem?.marker
+        /*selectedItem?.marker
             ? setCurrentMarker({x: selectedItem.marker?.xCoordinate, y: selectedItem.marker?.yCoordinate})
             : setCurrentMarker({ x: 0, y: 0 });
         setSelectedItem(selectedItem);
         //setShowSelectedMarker(true);
-        setIsAddingMarker(false);
+        setIsAddingMarker(false);*/
     };
 
     const onSetMarker = () => {
-        if (selectedItem && currentMarker) {
+        if (selectedItem) {
+            if (currentMarker) {
+                // Update existing marker
+                const updatedItems = room.items.map(item =>
+                    item.id === selectedItem.id
+                        ? {
+                            ...item,
+                            marker: {
+                                id: uuid.v4(),
+                                xCoordinate: currentMarker.x,
+                                yCoordinate: currentMarker.y,
+                            }
+                        }
+                        : item
+                );
+                onMarkerUpdate(updatedItems);
+                setShowSelectedMarker(false);
+                setCurrentMarker(null);
+                setSelectedItem(null);
+                onClose();
+            } else {
+                // Create a new marker with 0,0 coordinates
+                setCurrentMarker({ x: 0, y: 0 });
+                setShowSelectedMarker(true);
+            }
+        }
+        else {
+            // No item is selected yet, show the item list
+            setIsAddingMarker(true);
+        }
+        /*if (selectedItem && currentMarker) {
         //if (showSelectedMarker && currentMarker && selectedItem) {
 
             const updatedItems = room.items.map(item =>
@@ -59,13 +97,19 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
 
             onMarkerUpdate(updatedItems);
             setShowSelectedMarker(false);
+            setCurrentMarker(null);
+            setSelectedItem(null);
             onClose();
         } else {
+            // Create a new marker
             setIsAddingMarker(true);
-        }
+        }*/
     };
 
     const handleCoordinateChange = (x: number, y: number) => {
+        //if (selectedItem) {
+        //    setCurrentMarker({ x, y });
+        //}
         setCurrentMarker({ x, y });
     }
 
@@ -105,7 +149,7 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
                     }
                     return null
                 })}
-                { showSelectedMarker && (
+                { showSelectedMarker && currentMarker && selectedItem && (
                     <Marker
                         key={"0"}
                         itemName={selectedItem?.name}
