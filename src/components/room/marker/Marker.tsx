@@ -1,6 +1,6 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import Animated, { SharedValue, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import Animated, { runOnJS, SharedValue, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { Text } from 'react-native';
 import React, { useEffect } from "react";
 
@@ -11,17 +11,27 @@ interface MarkerProps {
     color: string;
 }
 const Marker = ({ itemName, coordinates, onCoordinateChange, color } : MarkerProps) => {
-    let translateX: SharedValue<number> = useSharedValue(coordinates ? coordinates.x : 0);
-    let translateY: SharedValue<number> = useSharedValue(coordinates ? coordinates.y : 0);
-
+    const translateX: SharedValue<number> = useSharedValue(coordinates ? coordinates.x : 0);
+    const translateY: SharedValue<number> = useSharedValue(coordinates ? coordinates.y : 0);
 
     useEffect(() => {
-        console.log("coordinates", coordinates)
         if (coordinates) {
             translateX.value = coordinates.x;
             translateY.value = coordinates.y;
         }
     }, [coordinates, translateX, translateY]);
+
+    const handleOnCoordinateChange = (x: number, y: number) => {
+        if (typeof onCoordinateChange === 'function') {
+            try {
+                onCoordinateChange(x, y);
+            } catch (error) {
+                console.error("Marker - Error in onCoordinateChange:", error);
+            }
+        } else {
+            console.error("Marker - onCoordinateChange is not a function or is undefined:", onCoordinateChange);
+        }
+    };
 
     const doubleTap = Gesture.Tap()
         .numberOfTaps(1)
@@ -31,23 +41,19 @@ const Marker = ({ itemName, coordinates, onCoordinateChange, color } : MarkerPro
 
     const drag = Gesture.Pan()
         .onChange((event) => {
-            console.log("dragged")
-
             translateX.value += event.changeX;
             translateY.value += event.changeY;
-
-            onCoordinateChange(translateX.value, translateY.value);
+        })
+        .onEnd(() => {
+            console.log("drag end")
+            runOnJS(handleOnCoordinateChange)(translateX.value, translateY.value);
         });
 
     const containerStyle = useAnimatedStyle(() => {
         return {
             transform: [
-                {
-                    translateX: translateX.value,
-                },
-                {
-                    translateY: translateY.value,
-                },
+                { translateX: translateX.value },
+                { translateY: translateY.value },
             ],
         };
     });

@@ -1,19 +1,10 @@
 import { Image, StyleSheet, View } from 'react-native';
-import React, { useState } from "react";
+import React from "react";
 import { ImageViewerProps } from "../../../constants";
 
 const placeholderImage = require('../../../assets/images/sample.png');
 
 const ImageViewer = ({ selectedImage, maximized} : ImageViewerProps) => {
-    const [layout, setLayout] = useState({ width: 0, height: 0 });
-
-    /*useEffect(() => {
-        if (layout.width && layout.height && onLayoutChange) {
-            onLayoutChange(layout.width, layout.height);
-        }
-    }, [layout]);*/
-
-
     const imageSource = selectedImage
         ? selectedImage
         : placeholderImage

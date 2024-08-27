@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Modal, StyleSheet, View } from 'react-native';
 import ImageViewer from "../../room/image/ImageViewer";
 import { ImageModalProps } from "../../../constants";
@@ -30,9 +30,11 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
         setItemsSorted(sortedItems);
     }, [room.items]);
 
-    const handleItemSelection = (selectedItem: Item) => {
-        console.log("handleItemSelection1", selectedItem);
+    const handleCoordinateChange = useCallback((x: number, y: number) => {
+        setCurrentMarker({ x, y });
+    }, []);
 
+    const handleItemSelection = (selectedItem: Item) => {
         //                 x: selectedItem.marker.xCoordinate * imageDimensions.width,
         if (selectedItem?.marker) {
             setCurrentMarker({
@@ -42,7 +44,6 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
         } else {
             // No marker yet, ready to add new
             console.log("setCurrentMarker", selectedItem);
-
             setCurrentMarker({ x: 0, y: 0 });
         }
         setSelectedItem(selectedItem);
@@ -83,11 +84,6 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
             setIsAddingMarker(true);
         }
     };
-
-    const handleCoordinateChange = (x: number, y: number) => {
-        setCurrentMarker({ x, y });
-    }
-
 
     return (
         <Modal

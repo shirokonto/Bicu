@@ -5,5 +5,4 @@ export interface Item {
     name: string;
     category: string;
     marker: Marker | undefined;
-    markers?: Marker[];
 }
