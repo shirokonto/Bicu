@@ -1,22 +1,27 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { SharedValue, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import React from "react";
+import { Text } from 'react-native';
+import React, { useEffect } from "react";
 
 interface MarkerProps {
-    key: string | number[];
     itemName?: string;
     coordinates: {x: number, y: number} | null;
     onCoordinateChange: (x: number, y: number) => void;
     color: string;
 }
-const Marker = ({ key, itemName, coordinates, onCoordinateChange, color } : MarkerProps) => {
-    let translateX: SharedValue<number> = useSharedValue(0);
-    let translateY: SharedValue<number> = useSharedValue(0);
-    if (coordinates) {
-        translateX = useSharedValue(coordinates.x);
-        translateY = useSharedValue(coordinates.y);
-    }
+const Marker = ({ itemName, coordinates, onCoordinateChange, color } : MarkerProps) => {
+    let translateX: SharedValue<number> = useSharedValue(coordinates ? coordinates.x : 0);
+    let translateY: SharedValue<number> = useSharedValue(coordinates ? coordinates.y : 0);
+
+
+    useEffect(() => {
+        console.log("coordinates", coordinates)
+        if (coordinates) {
+            translateX.value = coordinates.x;
+            translateY.value = coordinates.y;
+        }
+    }, [coordinates, translateX, translateY]);
 
     const doubleTap = Gesture.Tap()
         .numberOfTaps(1)
@@ -26,6 +31,8 @@ const Marker = ({ key, itemName, coordinates, onCoordinateChange, color } : Mark
 
     const drag = Gesture.Pan()
         .onChange((event) => {
+            console.log("dragged")
+
             translateX.value += event.changeX;
             translateY.value += event.changeY;
 
@@ -56,7 +63,7 @@ const Marker = ({ key, itemName, coordinates, onCoordinateChange, color } : Mark
                             resizeMode="contain"
                             color={color}
                         />
-                        <div>{itemName}</div>
+                        <Text>{itemName}</Text>
                     </Animated.View>
                 </GestureDetector>
             </Animated.View>

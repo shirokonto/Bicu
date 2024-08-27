@@ -39,6 +39,8 @@ const MarkerContainer = ({
                     />
                 );
             }
+            console.log("MarkerContainer", selectedItem);
+
             return null;
         })}
         {showSelectedMarker && currentMarker && selectedItem && (

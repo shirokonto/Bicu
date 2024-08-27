@@ -1,5 +1,5 @@
 import React from "react";
-import {ImageSourcePropType, Pressable} from "react-native";
+import { ImageSourcePropType, Pressable } from "react-native";
 import ImageViewer from "./ImageViewer";
 
 

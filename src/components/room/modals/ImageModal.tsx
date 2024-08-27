@@ -31,10 +31,18 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
     }, [room.items]);
 
     const handleItemSelection = (selectedItem: Item) => {
+        console.log("handleItemSelection1", selectedItem);
+
+        //                 x: selectedItem.marker.xCoordinate * imageDimensions.width,
         if (selectedItem?.marker) {
-            setCurrentMarker({ x: selectedItem.marker.xCoordinate, y: selectedItem.marker.yCoordinate });
+            setCurrentMarker({
+                x: selectedItem.marker.xCoordinate,
+                y: selectedItem.marker.yCoordinate
+            });
         } else {
             // No marker yet, ready to add new
+            console.log("setCurrentMarker", selectedItem);
+
             setCurrentMarker({ x: 0, y: 0 });
         }
         setSelectedItem(selectedItem);
@@ -46,6 +54,7 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
         if (selectedItem) {
             if (currentMarker) {
                 // Update existing marker
+                // currentMarker.y / imageDimensions.height
                 const updatedItems = room.items.map(item =>
                     item.id === selectedItem.id
                         ? {
@@ -70,7 +79,7 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
             }
         }
         else {
-            // No item is selected yet, show the item list
+            // No item is selected yet, show item list
             setIsAddingMarker(true);
         }
     };
@@ -89,18 +98,20 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
             <View style={styles.modalContainer}>
                 {/* Bar at the top */}
                 < TopBar onClose={onClose}/>
-                <ImageViewer
-                    selectedImage={selectedImage}
-                    maximized={true}
-                />
-                <MarkerContainer
-                    itemsSorted={itemsSorted}
-                    selectedItem={selectedItem}
-                    showSelectedMarker={showSelectedMarker}
-                    currentMarker={currentMarker}
-                    handleItemSelection={handleItemSelection}
-                    handleCoordinateChange={handleCoordinateChange}
-                />
+                <View style={styles.imageWrapper}>
+                    <ImageViewer
+                        selectedImage={selectedImage}
+                        maximized={true}
+                    />
+                    <MarkerContainer
+                        itemsSorted={itemsSorted}
+                        selectedItem={selectedItem}
+                        showSelectedMarker={showSelectedMarker}
+                        currentMarker={currentMarker}
+                        handleItemSelection={handleItemSelection}
+                        handleCoordinateChange={handleCoordinateChange}
+                    />
+                </View>
                 {/* Bar at the bottom with selection list */}
                 <BottomBar onSetMarker={onSetMarker}/>
                 {isAddingMarker && (
@@ -112,6 +123,12 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
 };
 
 const styles = StyleSheet.create({
+    imageWrapper: {
+        flex: 1,
+        width: '100%',
+        position: 'relative', // relative positioning to enable absolute positioning of children
+    },
+
     modalContainer: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.8)',

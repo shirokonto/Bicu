@@ -1,5 +1,5 @@
-import {ImageSourcePropType} from "react-native";
-import {Item, Room} from "types";
+import { ImageSourcePropType } from "react-native";
+import { Item, Room } from "types";
 
 export type RoomScreenParams = {
     room: Room;
