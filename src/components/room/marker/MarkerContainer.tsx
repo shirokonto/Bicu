@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import Marker from "./Marker";
 import { Item } from "types";
 
@@ -20,7 +21,7 @@ const MarkerContainer = ({
         handleCoordinateChange,
         }: MarkerContainerProps) => {
     return (
-        <>
+        <View style={styles.markerContainer}>
             {itemsSorted.map((item) => {
                 if (item.marker) {
                     const isSelected = selectedItem?.id === item.id;
@@ -54,8 +55,21 @@ const MarkerContainer = ({
                     color={'green'}
                 />
             )}
-        </>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    markerContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        pointerEvents: 'box-none',
+    },
+});
 
 export default MarkerContainer;

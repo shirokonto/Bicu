@@ -1,12 +1,11 @@
 import React, { useRef, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import IconButton from "@components/buttons/IconButton";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "navigation";
 import ItemRow from "components/room/items/ItemRow";
 import { Room } from "types";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { updateRoom } from "@utils/roomStorage";
 
 // TODO MOVE to constants or types
 interface RoomDetailsProps {
@@ -19,17 +18,6 @@ const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync } : RoomDeta
     const textInputRef = useRef<TextInput | null>(null);
     const [room, setRoom] = useState<Room>(fetchedRoom);
     const [title, onChangeText] = useState(fetchedRoom.name || "Room");
-
-    const updateTheRoom = () => {
-        if (room) {
-            updateRoom(room).then(() => {
-                console.log("Successfully updated room");
-
-            }).catch(e => {
-                console.error("Error updating room:", e);
-            });
-        }
-    }
 
     return (
         <View style={styles.detailsContainer}>
@@ -55,11 +43,6 @@ const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync } : RoomDeta
                         </TouchableOpacity>
                     </View>
                 </View>
-                <Button title={"update room"} onPress={updateTheRoom}></Button>
-
-                <TouchableOpacity onPress={() => navigation.navigate("TodoConvert")}>
-                    <Text style={{ fontSize: 11, paddingTop: 20, color: "#D97706", lineHeight: 16 }}>See old view</Text>
-                </TouchableOpacity>
             </View>
 
             {/* items */}

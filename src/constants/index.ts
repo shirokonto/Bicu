@@ -43,7 +43,7 @@ export const categories = [
     {
         id: 1,
         name: 'Clothing',
-        image: require('../assets/images/favicon.png'),
+        image: require('../assets/images/categories/clothing.png'),
     },
     {
         id: 2,
@@ -53,36 +53,36 @@ export const categories = [
     {
         id: 3,
         name: 'Tech',
-        image: require('../assets/images/favicon.png'),
+        image: require('../assets/images/categories/technology.png'),
     },
     {
         id: 4,
         name: 'Garden',
-        image: require('../assets/images/favicon.png'),
+        image: require('../assets/images/categories/garden.png'),
     },
     {
         id: 5,
         name: 'Furniture',
-        image: require('../assets/images/favicon.png'),
+        image: require('../assets/images/categories/furniture.png'),
     },
     {
         id: 6,
         name: 'Media',
-        image: require('../assets/images/favicon.png'),
+        image: require('../assets/images/categories/media.png'),
     },
     {
         id: 7,
         name: 'Toys',
-        image: require('../assets/images/favicon.png'),
+        image: require('../assets/images/categories/toy.png'),
     },
     {
         id: 8,
         name: 'Household',
-        image: require('../assets/images/favicon.png'),
+        image: require('../assets/images/categories/household.png'),
     },
     {
         id: 9,
         name: 'Misc',
-        image: require('../assets/images/favicon.png'),
+        image: require('../assets/images/categories/misc.png'),
     },
 ]

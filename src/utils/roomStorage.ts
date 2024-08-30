@@ -51,6 +51,25 @@ export const saveRoom = async (room: Room): Promise<void> => {
     }
 }
 
+export const updateRoom = async (room: Room): Promise<void> => {
+    try {
+        /*const updatedRoom = {
+            ...room,
+            items: room.items.map(item => {
+                const { marker, ...rest } = item; // currently removes stuff from item
+                return rest;
+            }),
+        };*/
+
+        const jsonValue = JSON.stringify(room);
+        await AsyncStorage.setItem(room.id as string, jsonValue);
+        console.log("new room", jsonValue)
+
+    } catch (e) {
+        console.error('Error saving room to AsyncStorage:', e);
+    }
+}
+
 export const deleteRoom = async (id: string)=> {
     try {
         await AsyncStorage.removeItem(id);
@@ -58,26 +77,3 @@ export const deleteRoom = async (id: string)=> {
         console.log(error);
     }
 };
-
-export const updateRoom = async (room: Room): Promise<void> => {
-    console.log("old room", room)
-    try {
-        // Remove empty `markers` arrays from all items in the room
-        const cleanedRoom = {
-            ...room,
-            items: room.items.map(item => {
-                const { markers, ...rest } = item;  // Destructure item to remove markers field
-                return rest;
-            }),
-        };
-
-        // Convert cleaned room object to JSON string
-        const jsonValue = JSON.stringify(cleanedRoom);
-        await AsyncStorage.setItem(room.id as string, jsonValue);
-        console.log("new room", jsonValue)
-
-
-    } catch (e) {
-        console.error('Error saving room to AsyncStorage:', e);
-    }
-}

@@ -5,7 +5,7 @@ import ItemModal from "components/room/modals/ItemModal";
 import { Item } from "types";
 import { ItemRowProps } from "../../../constants";
 import ItemCard from "components/room/items/ItemCard";
-import { getRoom, saveRoom } from "@utils/roomStorage";
+import { getRoom, saveRoom, updateRoom } from "@utils/roomStorage";
 
 const ItemRow = ({ room }: ItemRowProps) => {
     const [isModalVisible, setModalVisible] = useState(false);
@@ -15,6 +15,18 @@ const ItemRow = ({ room }: ItemRowProps) => {
         setItems(room.items);
     }, [room.items]);
 
+
+    const updateItemsOfRoom = () => {
+        if (room) {
+            updateRoom(room).then(() => {
+                console.log("Successfully updated room");
+
+            }).catch(e => {
+                console.error("Error updating room:", e);
+            });
+        }
+    }
+
     const handleAddItem = (newItem: Item) => {
         const updatedItems = [...items, newItem];
         const updatedRoom = {
@@ -22,7 +34,7 @@ const ItemRow = ({ room }: ItemRowProps) => {
             items: room.items ? [...room.items, newItem] : [newItem]
         };
 
-        // TODO Remove getRoom just use saveRoom
+        // TODO Remove getRoom just use updateRoom
         getRoom(updatedRoom.id as string).then(
             fetchedRoom => {
                 if (fetchedRoom) {

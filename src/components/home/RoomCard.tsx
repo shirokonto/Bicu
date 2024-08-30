@@ -1,9 +1,9 @@
-import {Image, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
+import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import React from "react";
-import {NavigationProp, useNavigation} from "@react-navigation/native";
-import {RoomScreenParams} from "../../constants";
-import {RootStackParamList} from "navigation";
-import {getImageSource} from "@utils/convertImageType";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { RoomScreenParams } from "../../constants";
+import { RootStackParamList } from "navigation";
+import { getImageSource } from "@utils/convertImageType";
 
 const RoomCard = ({ room }: RoomScreenParams) => {
 
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#fff",
         borderRadius: 24,
+        marginBottom: 10,
         elevation: 12,
         shadowColor: '#000',
         shadowOffset: {width: 0, height: 6},

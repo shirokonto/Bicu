@@ -95,6 +95,7 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
                 {/* Bar at the top */}
                 < TopBar onClose={onClose}/>
                 <View style={styles.imageWrapper}>
+                    {/* Should be u */}
                     <ImageViewer
                         selectedImage={selectedImage}
                         maximized={true}
@@ -124,7 +125,6 @@ const styles = StyleSheet.create({
         width: '100%',
         position: 'relative', // relative positioning to enable absolute positioning of children
     },
-
     modalContainer: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
