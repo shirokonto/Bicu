@@ -6,6 +6,7 @@ import { RootStackParamList } from "navigation";
 import ItemRow from "components/room/items/ItemRow";
 import { Room } from "types";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { saveRoom } from "@utils/roomStorage";
 
 // TODO MOVE to constants or types
 interface RoomDetailsProps {
@@ -16,8 +17,27 @@ interface RoomDetailsProps {
 
 const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync } : RoomDetailsProps) => {
     const textInputRef = useRef<TextInput | null>(null);
-    const [room, setRoom] = useState<Room>(fetchedRoom);
-    const [title, onChangeText] = useState(fetchedRoom.name || "Room");
+    const [title, setTitle] = useState(fetchedRoom.name || "Room");
+    const [isEditing, setIsEditing] = useState(false);
+
+    const handleEditToggle = () => {
+        if (isEditing) {
+            fetchedRoom.name = title;
+            saveRoom(fetchedRoom);
+        } else {
+            if (textInputRef.current) {
+                textInputRef.current.focus();
+            }
+        }
+        setIsEditing(!isEditing);
+    };
+
+    const handleTitleSubmit = () => {
+        if (textInputRef.current) {
+            textInputRef.current.blur(); // Dismiss keyboard
+        }
+        handleEditToggle();
+    };
 
     return (
         <View style={styles.detailsContainer}>
@@ -25,16 +45,21 @@ const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync } : RoomDeta
                 <View>
                     <View style={styles.titleRow}>
                         <View style={{ flexDirection: 'row', }}>
-                            <TextInput style={styles.titleLabel}
-                                       maxLength={9}
-                                       onChangeText={text => onChangeText(text)}
-                                       value={title}
-                                       ref={textInputRef} />
-                            <IconButton icon="mode-edit" label="Marker" onPress={() => {
-                                if (textInputRef.current) {
-                                    textInputRef.current.focus();
-                                }
-                            }} />
+                            <TextInput
+                                style={styles.titleLabel}
+                                maxLength={9}
+                                onChangeText={text => setTitle(text)}
+                                value={title}
+                                ref={textInputRef}
+                                onFocus={() => setIsEditing(true)}
+                                onSubmitEditing={handleTitleSubmit}
+                                returnKeyType="done"
+                            />
+                            <IconButton
+                                icon={isEditing ? "check" : "mode-edit"}
+                                label={isEditing ? "Save" : "Edit"}
+                                onPress={handleEditToggle}
+                            />
                         </View>
                         <TouchableOpacity
                             onPress={openActionSheetAsync}

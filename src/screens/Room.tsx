@@ -1,16 +1,16 @@
-import {ActionSheetIOS, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {NavigationProp, RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import { ActionSheetIOS, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import {RootStackParamList} from 'navigation'
-import React, {useEffect, useState} from "react";
+import { RootStackParamList } from 'navigation'
+import React, { useEffect, useState } from "react";
 import ImageModal from "@components/room/modals/ImageModal";
 import TitleImage from "@components/room/image/TitleImage";
 import RoomDetails from "@components/room/RoomDetails";
-import {useImageHandler} from "hooks/useImageHandler";
-import {RoomScreenParams} from "../constants";
-import {getImageSource} from "@utils/convertImageType";
-import {Item} from "types";
-import {saveRoom} from "@utils/roomStorage";
+import { useImageHandler } from "hooks/useImageHandler";
+import { RoomScreenParams } from "../constants";
+import { getImageSource } from "@utils/convertImageType";
+import { Item } from "types";
+import { saveRoom } from "@utils/roomStorage";
 
 const placeholderImage = require('../assets/images/sample.png')
 
@@ -83,7 +83,10 @@ const Room = () => {
                 </View>
 
                 {/* Room details with item list*/}
-                <RoomDetails fetchedRoom={room} navigation={navigation} openActionSheetAsync={openActionSheetAsync}/>
+                <RoomDetails 
+                    fetchedRoom={room}
+                    navigation={navigation}
+                    openActionSheetAsync={openActionSheetAsync}/>
             </ScrollView>
 
             {/* Modal for maximized image */}
