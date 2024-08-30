@@ -1,8 +1,20 @@
-import {StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import React from "react";
+import React, { useState } from "react";
 
-const SearchBar = () => {
+const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
+
+    const [searchText, setSearchText] = useState("");
+
+    const handleSearchChange = (text: string) => {
+        setSearchText(text);
+        onSearch(text);
+    };
+
+    const clearSearch = () => {
+        setSearchText("");
+        onSearch("");
+    }
 
     const onFilterPress  = () => {
         alert("pressed")
@@ -11,7 +23,16 @@ const SearchBar = () => {
         <View style={styles.searchbarContainer}>
             <View style={styles.searchbarRow}>
                 <MaterialIcons name={"search"} size={28} style={styles.searchIcon}/>
-                <TextInput placeholder={'Rooms'} style={styles.searchField}/>
+                <TextInput placeholder={'Search for items or rooms'}
+                           style={styles.searchField}
+                           value={searchText}
+                           onChangeText={handleSearchChange}
+                />
+                {searchText.length > 0 && (
+                    <TouchableOpacity onPress={clearSearch}>
+                        <MaterialIcons name={"close"} size={28} style={styles.clearButton} />
+                    </TouchableOpacity>
+                )}
             </View>
             <View style={styles.filterButtonContainer}>
                 <TouchableOpacity
@@ -48,6 +69,10 @@ const styles = StyleSheet.create({
     searchField: {
         marginLeft: 2,
         flex: 1
+    },
+    clearButton: {
+        marginRight: 5,
+        color: "gray",
     },
     filterButtonContainer: {
         padding:3,

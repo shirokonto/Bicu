@@ -1,20 +1,21 @@
-import {StyleSheet, Text, View} from "react-native";
-import React, {useCallback, useEffect, useState} from "react";
+import { StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
 import RoomCard from "./RoomCard";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import {Room} from "types";
-import {getRooms, saveRoom} from "@utils/roomStorage";
+import { Room } from "types";
+import { getRooms, saveRoom } from "@utils/roomStorage";
 import RoomModal from "@components/home/RoomModal";
-import {useFocusEffect} from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 
-const RoomRow = () => {
+type RoomRowProps = {
+    searchQuery: string;
+    selectedCategory: string | null;
+};
+
+const RoomRow = ({ searchQuery, selectedCategory }: RoomRowProps) => {
     const [rooms, setRooms] = useState<Room[]>([]);
+    const [filteredRooms, setFilteredRooms] = useState<Room[]>([]);
     const [isModalVisible, setModalVisible] = useState(false);
-
-    const fetchRooms = async () => {
-        const storedRooms = await getRooms();
-        setRooms(storedRooms);
-    };
 
     useEffect(() => {
         fetchRooms();
@@ -26,10 +27,61 @@ const RoomRow = () => {
         }, [])
     );
 
+    useEffect(() => {
+        // Filter rooms based on search query and selected category
+        let filtered = rooms;
+        console.log(selectedCategory)
+
+        // Filter by selected category
+        if (selectedCategory !== null) {
+            filtered = filtered.filter((room) =>
+                room.items.some((item) => item.category === selectedCategory)
+            );
+        }
+
+        if (searchQuery?.length >= 2) {
+            const lowerCaseQuery = searchQuery.toLowerCase();
+            filtered = filtered.filter(room =>
+                room.name.toLowerCase().includes(lowerCaseQuery) ||
+                room.items.some(item => item.name.toLowerCase().includes(lowerCaseQuery))
+            );
+
+        }
+        setFilteredRooms(filtered);
+
+    }, [searchQuery, rooms, selectedCategory]);
+
+    const fetchRooms = async () => {
+        const storedRooms = await getRooms();
+        setRooms(storedRooms);
+        setFilteredRooms(storedRooms);
+    };
+
     const onAddRoom = (newRoom: Room) => {
         const updatedRooms = [...rooms, newRoom];
         setRooms(updatedRooms);
         saveRoom(newRoom)
+    };
+
+    const renderRoomResults = () => {
+        if (rooms.length === 0) {
+            return (
+                <Text style={styles.noRoomsText}>
+                    No rooms found. Click the + button to add a new room.
+                </Text>
+            );
+        } else if (filteredRooms.length === 0) {
+            return (
+                <Text style={styles.noRoomsText}>
+                    No room or item "{searchQuery}" found
+                    {selectedCategory !== null ? " in selected category." : "."}
+                </Text>
+            );
+        } else {
+            return filteredRooms.map((room, index) => (
+                <RoomCard key={index} room={room} />
+            ));
+        }
     };
 
     return (
@@ -41,13 +93,7 @@ const RoomRow = () => {
                 </View>
             </View>
 
-            {rooms.length === 0 ? (
-                <Text style={styles.noRoomsText}>No rooms found. Click the + button to add a new room.</Text>
-            ) : (
-                rooms.map((room, index) => (
-                    <RoomCard key={index} room={room} />
-                ))
-            )}
+            {renderRoomResults()}
             <RoomModal
                 visible={isModalVisible}
                 onClose={() => setModalVisible(false)}

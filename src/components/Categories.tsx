@@ -1,55 +1,89 @@
-import {Image, ImageStyle, ScrollView, Text, TextStyle, TouchableOpacity, View, ViewStyle} from "react-native";
-import React, {useState} from "react";
-import {categories} from "../constants";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { categories } from "../constants";
 
-const Categories = () => {
+type CategoriesProps = {
+    onCategorySelect: (category: string | null) => void; // Add onCategorySelect prop
+};
 
-    const [activeCategory, setActiveCategory] = useState<number | null>(null);
+
+const Categories = ({ onCategorySelect }: CategoriesProps) => {
+
+    const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+    const handleCategorySelect = (categoryId: string | null) => {
+        const newCategory = activeCategory === categoryId ? null : categoryId; // Toggle selection
+        setActiveCategory(newCategory);
+        onCategorySelect(newCategory);
+    };
 
     return (
-        <View style= {{marginTop: 15}}>
+        <View style={styles.container}>
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                style= {{overflow: "visible"}}
-                contentContainerStyle={{
-                    paddingHorizontal: 15
-                }}
+                style={styles.scrollView}
+                contentContainerStyle={styles.scrollViewContent}
             >
-                {
-                    categories.map((category, index)=> {
-                        let isActive = category.id == activeCategory;
-                        const btnStyle: ViewStyle = {
-                            padding: 8,
-                            borderRadius: 9,
-                            alignItems: "center",
-                            backgroundColor: isActive ? '#757575' : '#D1D5DB'
-                        };
-                        const textStyle: TextStyle = {
-                            fontSize: 15,
-                            lineHeight: 20,
-                            fontWeight: isActive ? '600' : '400'
-                        };
-                        const imgStyle : ImageStyle = {
-                            width: 48,
-                            height: 48
-                        }
-                        return (
-                            <View key={index} style= {{display: "flex", flex: 1, justifyContent: "center", alignItems: "center", marginRight: 10}}>
-                                <TouchableOpacity
-                                    onPress={() => setActiveCategory(category.id)}
-                                    style={btnStyle}>
-                                    <Image source={category.image} style={imgStyle}/>
-                                </TouchableOpacity>
-                                <Text style={textStyle}>{category.name}</Text>
-                            </View>
-                        )
-
-                })
-                }
+                {categories.map((category, index) => {
+                    let isActive = category.name === activeCategory;
+                    return (
+                        <View key={index} style={styles.categoryContainer}>
+                            <TouchableOpacity
+                                onPress={() => handleCategorySelect(category.name)}
+                                style={[
+                                    styles.categoryButton,
+                                    { backgroundColor: isActive ? "#757575" : "#D1D5DB" },
+                                ]}
+                            >
+                                <Image source={category.image} style={styles.categoryImage} />
+                            </TouchableOpacity>
+                            <Text
+                                style={[
+                                    styles.categoryText,
+                                    { fontWeight: isActive ? "600" : "400" },
+                                ]}
+                            >
+                                {category.name}
+                            </Text>
+                        </View>
+                    );
+                })}
             </ScrollView>
         </View>
-    )
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        marginTop: 15,
+    },
+    scrollView: {
+        overflow: "visible",
+    },
+    scrollViewContent: {
+        paddingHorizontal: 15,
+    },
+    categoryContainer: {
+        display: "flex",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 10,
+    },
+    categoryButton: {
+        padding: 8,
+        borderRadius: 9,
+        alignItems: "center",
+    },
+    categoryImage: {
+        width: 48,
+        height: 48,
+    },
+    categoryText: {
+        fontSize: 15,
+        lineHeight: 20,
+    },
+});
 
 export default Categories;
