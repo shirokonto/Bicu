@@ -18,12 +18,13 @@ const Room = () => {
 
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const route = useRoute<RouteProp<RootStackParamList, "Room">>();
-    const { room } = route.params as RoomScreenParams;
+    const { room, itemId } = route.params as RoomScreenParams;
     const initialImageSource = room.image ? getImageSource(room.image) : placeholderImage;
     const { selectedImg, openGalleryAsync, openCameraAsync } = useImageHandler();
 
     const [imageSource, setImageSource] = useState(initialImageSource);
     const [isImageMaximized, setIsImageMaximized] = useState(false);
+    const [highlightedItemId, setHighlightedItemId] = useState<string | number[] | null>(null);
 
 
     useEffect(() => {
@@ -32,7 +33,14 @@ const Room = () => {
             setImageSource(selectedImg);
             room.image = selectedImg;
         }
-    }, [selectedImg]);
+
+        if (route.params.itemId) {
+            setHighlightedItemId(route.params.itemId);
+            setIsImageMaximized(true);
+            console.log("Item ID:", itemId);
+
+        }
+    }, [selectedImg, route.params.itemId]);
 
     // TODO replace with openActionSheet?
     const openActionSheetAsync = async () =>
@@ -83,7 +91,7 @@ const Room = () => {
                 </View>
 
                 {/* Room details with item list*/}
-                <RoomDetails 
+                <RoomDetails
                     fetchedRoom={room}
                     navigation={navigation}
                     openActionSheetAsync={openActionSheetAsync}/>
@@ -96,6 +104,7 @@ const Room = () => {
                 selectedImage={imageSource}
                 room={room}
                 onMarkerUpdate={handleMarkerUpdate}
+                highlightedItemId={highlightedItemId}
             />
         </View>
 

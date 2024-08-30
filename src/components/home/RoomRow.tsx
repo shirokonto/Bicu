@@ -30,9 +30,6 @@ const RoomRow = ({ searchQuery, selectedCategory }: RoomRowProps) => {
     useEffect(() => {
         // Filter rooms based on search query and selected category
         let filtered = rooms;
-        console.log(selectedCategory)
-
-        // Filter by selected category
         if (selectedCategory !== null) {
             filtered = filtered.filter((room) =>
                 room.items.some((item) => item.category === selectedCategory)

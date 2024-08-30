@@ -39,6 +39,13 @@ const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync } : RoomDeta
         handleEditToggle();
     };
 
+    const handleItemPress = (itemId:  string | number[]) => {
+        navigation.navigate("Room", {
+            room: fetchedRoom,
+            itemId: itemId,
+        });
+    };
+
     return (
         <View style={styles.detailsContainer}>
             <View style={{ paddingHorizontal: 30 }}>
@@ -71,7 +78,10 @@ const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync } : RoomDeta
             </View>
 
             {/* items */}
-            <ItemRow room ={fetchedRoom}/>
+            <ItemRow
+                room ={fetchedRoom}
+                onItemPress={handleItemPress}
+            />
         </View>
     );
 }

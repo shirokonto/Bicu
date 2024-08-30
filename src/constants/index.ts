@@ -3,6 +3,7 @@ import { Item, Room } from "types";
 
 export type RoomScreenParams = {
     room: Room;
+    itemId?: string;
 };
 
 export interface ImageViewerProps {
@@ -16,6 +17,7 @@ export interface ImageModalProps {
     selectedImage: ImageSourcePropType | null | undefined;
     room: Room;
     onMarkerUpdate: (selectedItems: Item[]) => void;
+    highlightedItemId?: string | number[] | null;
 }
 
 export interface AddItemModalProps {
@@ -32,11 +34,13 @@ export interface EditableTitleProps {
 
 export type ItemRowProps = {
     room: Room;
+    onItemPress: (itemId: string | number[] ) => void;
 };
 
 export type ItemCardProps = {
     item: Item;
     index: number;
+    onPress: () => void;
 };
 
 export const categories = [

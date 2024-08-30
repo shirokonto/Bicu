@@ -9,7 +9,7 @@ import BottomBar from "@components/room/bar/BottomBar";
 import ItemSelectionList from "@components/room/items/ItemSelectionList";
 import MarkerContainer from "@components/room/marker/MarkerContainer";
 
-const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: ImageModalProps) => {
+const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate, highlightedItemId }: ImageModalProps) => {
     const [isAddingMarker, setIsAddingMarker] = useState(false);
     const [showSelectedMarker, setShowSelectedMarker] = useState(false);
     const [itemsSorted, setItemsSorted] = useState<Item[]>([]);
@@ -30,12 +30,21 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
         setItemsSorted(sortedItems);
     }, [room.items]);
 
+
+    useEffect(() => {
+        if (highlightedItemId) {
+            const item = room.items.find(item => item.id === highlightedItemId);
+            if (item) {
+                handleItemSelection(item);
+            }
+        }
+    }, [highlightedItemId, room.items]);
+
     const handleCoordinateChange = useCallback((x: number, y: number) => {
         setCurrentMarker({ x, y });
     }, []);
 
     const handleItemSelection = (selectedItem: Item) => {
-        //                 x: selectedItem.marker.xCoordinate * imageDimensions.width,
         if (selectedItem?.marker) {
             setCurrentMarker({
                 x: selectedItem.marker.xCoordinate,
@@ -43,7 +52,6 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
             });
         } else {
             // No marker yet, ready to add new
-            console.log("setCurrentMarker", selectedItem);
             setCurrentMarker({ x: 0, y: 0 });
         }
         setSelectedItem(selectedItem);
@@ -55,7 +63,6 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate }: I
         if (selectedItem) {
             if (currentMarker) {
                 // Update existing marker
-                // currentMarker.y / imageDimensions.height
                 const updatedItems = room.items.map(item =>
                     item.id === selectedItem.id
                         ? {

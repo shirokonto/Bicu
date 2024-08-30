@@ -34,7 +34,6 @@ const MarkerContainer = ({
                             itemName={item.name}
                             coordinates={{ x: item.marker.xCoordinate, y: item.marker.yCoordinate }}
                             onCoordinateChange={(x, y) => {
-                                console.log("MarkerContainer - handleCoordinateChange is a function inside conditional:", typeof handleCoordinateChange === 'function');
                                 handleItemSelection(item);
                                 handleCoordinateChange(x, y);
                             }}

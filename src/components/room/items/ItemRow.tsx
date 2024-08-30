@@ -7,7 +7,7 @@ import { ItemRowProps } from "../../../constants";
 import ItemCard from "components/room/items/ItemCard";
 import { getRoom, saveRoom, updateRoom } from "@utils/roomStorage";
 
-const ItemRow = ({ room }: ItemRowProps) => {
+const ItemRow = ({ room, onItemPress }: ItemRowProps) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [ items, setItems] = useState<Item[]>(room.items);
 
@@ -68,6 +68,9 @@ const ItemRow = ({ room }: ItemRowProps) => {
                         item={item}
                         key={index}
                         index={index}
+                        onPress={() => {
+                            onItemPress(item.id)
+                        }}
                     />
                 ))
             ) : (
