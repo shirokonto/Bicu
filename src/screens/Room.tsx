@@ -37,8 +37,6 @@ const Room = () => {
         if (route.params.itemId) {
             setHighlightedItemId(route.params.itemId);
             setIsImageMaximized(true);
-            console.log("Item ID:", itemId);
-
         }
     }, [selectedImg, route.params.itemId]);
 

@@ -17,7 +17,9 @@ const ImageModal = ({ visible, onClose, selectedImage, room, onMarkerUpdate, hig
     const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
     useEffect(() => {
-        const sortedItems: Item[] = room.items.sort((a: Item, b: Item) => {
+        console.log('Room items updated of room with id:', room.id);
+
+        const sortedItems: Item[] = [...room.items].sort((a: Item, b: Item) => {
             if (a.marker === undefined && b.marker !== undefined) {
                 return -1;
             }
