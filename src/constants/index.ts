@@ -43,6 +43,7 @@ export type ItemCardProps = {
     index: number;
     onPress: () => void;
     onEdit: (item : Item) => void;
+    onDelete: (itemId: string | number[]) => void;
 };
 
 export const categories = [

@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import React, { useRef, useState } from "react";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "navigation";
@@ -6,7 +6,7 @@ import { categories, ItemCardProps } from "../../../constants";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { GestureHandlerRootView, Swipeable } from "react-native-gesture-handler";
 
-const ItemCard = ({ item, index, onPress, onEdit }: ItemCardProps) => {
+const ItemCard = ({ item, index, onPress, onEdit, onDelete }: ItemCardProps) => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
     const categoryName = item.category ?? "No Category";
@@ -30,9 +30,28 @@ const ItemCard = ({ item, index, onPress, onEdit }: ItemCardProps) => {
                     size={28}
                     color="red"
                     style={styles.actionIcon}
+                    onPress={handleDelete}
                 />
             </View>
     );
+
+    const handleDelete = () => {
+        Alert.alert(
+            `Delete "${item.name}"?`,
+            "Are you sure you want to delete this item?",
+            [
+                {
+                    text: "No",
+                    style: "cancel",
+                },
+                {
+                    text: "Yes",
+                    onPress: () => onDelete(item.id),
+                    style: "destructive",
+                },
+            ]
+        );
+    };
 
     const handleSwipeableOpen = () => {
         setActionItemsVisible(true);
@@ -50,7 +69,6 @@ const ItemCard = ({ item, index, onPress, onEdit }: ItemCardProps) => {
             swipeableRef.current?.close();
         }
     };
-
 
     return (
         <GestureHandlerRootView>
