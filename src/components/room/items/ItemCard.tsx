@@ -1,12 +1,12 @@
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "navigation";
 import { categories, ItemCardProps } from "../../../constants";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { GestureHandlerRootView, Swipeable } from "react-native-gesture-handler";
 
-const ItemCard = ({ item, index, onPress }: ItemCardProps) => {
+const ItemCard = ({ item, index, onPress, onEdit }: ItemCardProps) => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
     const categoryName = item.category ?? "No Category";
@@ -14,11 +14,23 @@ const ItemCard = ({ item, index, onPress }: ItemCardProps) => {
     const categoryImage = category ? category.image : null;
     const [actionItemsVisible, setActionItemsVisible] = useState(false);
 
-    // onPress={() => navigation.navigate("Room", { room })}
+    const swipeableRef = useRef<Swipeable>(null);
+
     const renderRightActions = () => (
             <View style={styles.actionContainer}>
-                <MaterialIcons name="mode-edit" size={28} color="#000" style={styles.actionIcon} />
-                <MaterialIcons name="delete" size={28} color="#000" style={styles.actionIcon} />
+                <MaterialIcons
+                    name="mode-edit"
+                    size={28}
+                    color="#000"
+                    style={styles.actionIcon}
+                    onPress={() => onEdit(item)}
+                />
+                <MaterialIcons
+                    name="delete"
+                    size={28}
+                    color="red"
+                    style={styles.actionIcon}
+                />
             </View>
     );
 
@@ -30,9 +42,20 @@ const ItemCard = ({ item, index, onPress }: ItemCardProps) => {
         setActionItemsVisible(false);
     };
 
+    // Open/Close the Swipeable with press on chevron icon
+    const handleChevronPress = () => {
+        if (!actionItemsVisible) {
+            swipeableRef.current?.openRight();
+        } else {
+            swipeableRef.current?.close();
+        }
+    };
+
+
     return (
         <GestureHandlerRootView>
             <Swipeable
+                ref={swipeableRef} // to open/close swipeable with press
                 renderRightActions={renderRightActions}
                 onSwipeableOpen={handleSwipeableOpen}
                 onSwipeableClose={handleSwipeableClose}
@@ -47,7 +70,11 @@ const ItemCard = ({ item, index, onPress }: ItemCardProps) => {
                                 <Text style={styles.itemName}>{item.name}</Text>
                                 <Text style={styles.itemCategory}>{item.category}</Text>
                             </View>
-                            <MaterialIcons name={!actionItemsVisible ? "chevron-right" : "chevron-left"} size={28} color="#000" style={styles.arrowIcon} />
+                            <MaterialIcons
+                                name={!actionItemsVisible ? "chevron-right" : "chevron-left"}
+                                size={28} color="#000"
+                                onPress={handleChevronPress}
+                                style={styles.arrowIcon} />
                         </View>
                     </View>
                 </TouchableWithoutFeedback>

@@ -1,30 +1,42 @@
-import React, {useState} from "react";
-import {Modal, Pressable, StyleSheet, Text, TextInput, View} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import uuid from 'react-native-uuid';
 import RNPickerSelect from 'react-native-picker-select';
-import {AddItemModalProps, categories} from "../../../constants";
-import {Item} from "types";
+import { AddItemModalProps, categories } from "../../../constants";
+import { Item } from "types";
 
 
-const ItemModal = ({ visible, onClose, onAddItem } : AddItemModalProps) => {
+const ItemModal = ({ visible, onClose, onAddItem, itemToEdit } : AddItemModalProps) => {
     const [ items, setItems] = useState<Item[]>([]);
 
     const [name, setName] = useState("");
     const [category, setCategory] = useState("");
-    // TODO set category as image
-    // const [image, setImage] = useState("");
     const [isPickerVisible, setIsPickerVisible] = useState(false);
 
-    const handleAddItem = () => {
-        const newItem:Item = {
+    useEffect(() => {
+        if (itemToEdit) {
+            setName(itemToEdit.name);
+            setCategory(itemToEdit.category);
+        } else {
+            setName("");
+            setCategory("");
+        }
+    }, [itemToEdit]);
+
+    const handleAddOrUpdateItem  = () => {
+        const itemToSave: Item = itemToEdit ? {
+            ...itemToEdit,
+            name,
+            category
+        } : {
             id: uuid.v4(),
-            name: name,
-            category: category,
+            name,
+            category,
             marker: undefined,
         };
 
-        onAddItem(newItem);
+        onAddItem(itemToSave);
         onClose();
     }
 
@@ -36,7 +48,7 @@ const ItemModal = ({ visible, onClose, onAddItem } : AddItemModalProps) => {
         <Modal animationType="slide" transparent={true} visible={visible}>
             <View style={styles.modalContent}>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Add New Item</Text>
+                    <Text style={styles.title}>{itemToEdit ? "Update Item" : "Add New Item"}</Text>
                     <Pressable onPress={onClose}>
                         <MaterialIcons name="close" color="#fff" size={22} />
                     </Pressable>
@@ -70,8 +82,8 @@ const ItemModal = ({ visible, onClose, onAddItem } : AddItemModalProps) => {
                         style={pickerSelectStyles}
                         value={category}
                     />
-                    <Pressable style={styles.addButton} onPress={handleAddItem}>
-                        <Text style={styles.addButtonText}>Add Item</Text>
+                    <Pressable style={styles.addButton} onPress={handleAddOrUpdateItem}>
+                        <Text style={styles.addButtonText}>{itemToEdit ? "Save" : "Add"}</Text>
                     </Pressable>
                 </View>
             </View>

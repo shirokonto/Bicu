@@ -24,6 +24,7 @@ export interface AddItemModalProps {
     visible: boolean;
     onClose: () => void;
     onAddItem: (item: Item) => void;
+    itemToEdit?: Item | null;
 }
 
 export interface EditableTitleProps {
@@ -41,6 +42,7 @@ export type ItemCardProps = {
     item: Item;
     index: number;
     onPress: () => void;
+    onEdit: (item : Item) => void;
 };
 
 export const categories = [

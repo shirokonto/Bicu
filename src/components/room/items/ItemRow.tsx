@@ -5,56 +5,45 @@ import ItemModal from "components/room/modals/ItemModal";
 import { Item } from "types";
 import { ItemRowProps } from "../../../constants";
 import ItemCard from "components/room/items/ItemCard";
-import { getRoom, saveRoom, updateRoom } from "@utils/roomStorage";
+import { saveRoom } from "@utils/roomStorage";
 
 const ItemRow = ({ room, onItemPress }: ItemRowProps) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [ items, setItems] = useState<Item[]>(room.items);
+    const [ selectedItem, setSelectedItem ] = useState<Item | null>(null);
 
     useEffect(() => {
         setItems(room.items);
     }, [room.items]);
 
+    const handleAddOrUpdateItem = (newItem: Item) => {
 
-    const updateItemsOfRoom = () => {
-        if (room) {
-            updateRoom(room).then(() => {
-                console.log("Successfully updated room");
+        const updatedItems = items.some(item => item.id === newItem.id)
+            ? items.map(item => (item.id === newItem.id ? newItem : item))
+            : [...items, newItem];
 
-            }).catch(e => {
-                console.error("Error updating room:", e);
-            });
-        }
-    }
-
-    const handleAddItem = (newItem: Item) => {
-        const updatedItems = [...items, newItem];
         const updatedRoom = {
             ...room,
-            items: room.items ? [...room.items, newItem] : [newItem]
+            items: updatedItems
         };
 
-        // TODO Remove getRoom just use updateRoom
-        getRoom(updatedRoom.id as string).then(
-            fetchedRoom => {
-                if (fetchedRoom) {
-                    saveRoom(updatedRoom).then(() => {
-                        setItems(updatedItems);
-                    }).catch(e => {
-                        console.error("Error saving updated room:", e);
-                    });
-                } else {
-                    console.error("Room not found");
-                }
-            }).catch(e => {
-            console.error("Error fetching room:", e);
+        saveRoom(updatedRoom).then(() => {
+            setItems(updatedItems);
+            setSelectedItem(null);
+        }).catch(e => {
+            console.error("Error saving updated room:", e);
         });
     };
 
     const onAddItem = (newItem: Item) => {
-        handleAddItem(newItem);
+        handleAddOrUpdateItem (newItem);
         setModalVisible(false);
     };
+
+    const onEditItem = (editedItem: Item) => {
+        setSelectedItem(editedItem);
+        setModalVisible(true);
+    }
 
     return(
         <View>
@@ -68,9 +57,8 @@ const ItemRow = ({ room, onItemPress }: ItemRowProps) => {
                         item={item}
                         key={index}
                         index={index}
-                        onPress={() => {
-                            onItemPress(item.id)
-                        }}
+                        onPress={() => onItemPress(item.id)}
+                        onEdit={onEditItem}
                     />
                 ))
             ) : (
@@ -78,8 +66,12 @@ const ItemRow = ({ room, onItemPress }: ItemRowProps) => {
             )}
             <ItemModal
                 visible={isModalVisible}
-                onClose={() => setModalVisible(false)}
+                onClose={() => {
+                    setModalVisible(false);
+                    setSelectedItem(null);
+                }}
                 onAddItem={onAddItem}
+                itemToEdit={selectedItem}
             />
         </View>
     )
