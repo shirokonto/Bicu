@@ -24,23 +24,6 @@ export const getRooms = async (): Promise<Room[]> => {
     }
 };
 
-export const getRoom = async (id: string): Promise<Room | null> => {
-    try {
-        const jsonValue = await AsyncStorage.getItem(id);
-        if (jsonValue != null) {
-            const parsedValue = JSON.parse(jsonValue);
-            return {
-                ...parsedValue,
-                image: getImageSource(parsedValue.image),
-            };
-        }
-        return null;
-    } catch (e) {
-        console.error('Error getting room from AsyncStorage:', e);
-        return null;
-    }
-};
-
 export const saveRoom = async (room: Room): Promise<void> => {
     try {
         const jsonValue = JSON.stringify(room);
@@ -51,9 +34,9 @@ export const saveRoom = async (room: Room): Promise<void> => {
     }
 }
 
-export const deleteRoom = async (id: string)=> {
+export const deleteRoom = async (id: string | number[])=> {
     try {
-        await AsyncStorage.removeItem(id);
+        await AsyncStorage.removeItem(id as string);
     } catch (error) {
         console.log(error);
     }

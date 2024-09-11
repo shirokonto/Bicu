@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import IconButton from "@components/buttons/IconButton";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "navigation";
 import ItemRow from "components/room/items/ItemRow";
 import { Room } from "types";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { saveRoom } from "@utils/roomStorage";
+import { deleteRoom, saveRoom } from "@utils/roomStorage";
 
 // TODO MOVE to constants or types
 interface RoomDetailsProps {
@@ -47,6 +47,28 @@ const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync, onRoomUpdat
         });
     };
 
+    const handleDeleteRoom = () => {
+        Alert.alert(
+            `Delete Room "${fetchedRoom.name}"?`,
+            "Are you sure you want to delete this room?",
+            [
+                {
+                    text: "No",
+                    style: "cancel",
+                },
+                {
+                    text: "Yes",
+                    onPress: async () => {
+                        await deleteRoom(fetchedRoom.id);
+                        navigation.goBack();
+                    },
+                    style: "destructive",
+                },
+            ]
+        );
+    };
+
+
     return (
         <View style={styles.detailsContainer}>
             <View style={{ paddingHorizontal: 30 }}>
@@ -69,11 +91,19 @@ const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync, onRoomUpdat
                                 onPress={handleEditToggle}
                             />
                         </View>
-                        <TouchableOpacity
-                            onPress={openActionSheetAsync}
-                            style={{ right: 15, backgroundColor: '#FFFF', borderRadius: 999, padding: 5 }}>
-                            <MaterialIcons name={"add-photo-alternate"} size={28} color={'#D97706'} />
-                        </TouchableOpacity>
+                        <View style={styles.iconGroup}>
+                            <TouchableOpacity
+                                onPress={openActionSheetAsync}
+                                style={styles.iconButton}>
+                                <MaterialIcons name={"add-photo-alternate"} size={28} color={'#D97706'} />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={handleDeleteRoom}
+                                style={styles.iconButton}
+                            >
+                                <MaterialIcons name="delete" size={28} color="red" />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -106,6 +136,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         paddingVertical: 12,
     },
+    iconGroup: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    iconButton: {
+        right: 15,
+        backgroundColor: '#FFFF',
+        borderRadius: 999,
+        marginLeft: 10,
+        padding: 5
+    }
 });
 
 export default RoomDetails;
