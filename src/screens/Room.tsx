@@ -44,6 +44,11 @@ const Room = () => {
         setUpdatedRoom(newRoom);
     };
 
+    const handleImageUpdate = (imageUri: string) => {
+        setImageSource({ uri: imageUri });
+        handleRoomUpdate({ ...updatedRoom, image: imageUri });
+    };
+
     // TODO replace with openActionSheet?
     const openActionSheetAsync = async () =>
         ActionSheetIOS.showActionSheetWithOptions(
@@ -56,9 +61,9 @@ const Room = () => {
                 if (buttonIndex === 0) {
                     // cancel action
                 } else if (buttonIndex === 1) {
-                    openCameraAsync(updatedRoom)
+                    openCameraAsync(updatedRoom, handleImageUpdate)
                 } else if (buttonIndex === 2) {
-                    openGalleryAsync(updatedRoom)
+                    openGalleryAsync(updatedRoom, handleImageUpdate)
                 }
             },
         );
@@ -97,7 +102,8 @@ const Room = () => {
                 <RoomDetails
                     fetchedRoom={updatedRoom}
                     navigation={navigation}
-                    openActionSheetAsync={openActionSheetAsync} onRoomUpdate={handleRoomUpdate}
+                    openActionSheetAsync={openActionSheetAsync}
+                    onRoomUpdate={handleRoomUpdate}
                 />
             </ScrollView>
 

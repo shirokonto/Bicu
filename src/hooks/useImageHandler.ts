@@ -1,13 +1,13 @@
-import {useState} from "react";
+import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import {Alert, ImageSourcePropType} from "react-native";
-import {Room} from "types";
-import {saveRoom} from "@utils/roomStorage";
+import { Alert, ImageSourcePropType } from "react-native";
+import { Item, Room } from "types";
+import { saveRoom } from "@utils/roomStorage";
 
 export const useImageHandler = () => {
     const [selectedImg, setSelectedImg] = useState<ImageSourcePropType | undefined>(undefined);
 
-    const openGalleryAsync = async (room : Room) => {
+    const openGalleryAsync = async (entity: Room | Item, updateImageCallback: (uri: string) => void) => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         if (!permissionResult.granted) {
@@ -22,14 +22,15 @@ export const useImageHandler = () => {
 
         if (!result.canceled) {
             const imageUri = result.assets[0].uri;
-            await handleAddRoomImage(room, imageUri)
+            await handleImageUpdate(entity, imageUri, updateImageCallback);
+            //await handleAddRoomImage(room, imageUri)
             setSelectedImg({ uri: imageUri });
         } else {
             Alert.alert('No image selected.');
         }
     }
 
-    const openCameraAsync = async (room : Room) => {
+    const openCameraAsync = async (entity: Room | Item, updateImageCallback: (uri: string) => void) => {
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
         if (!permissionResult.granted) {
@@ -41,11 +42,34 @@ export const useImageHandler = () => {
 
         if (!result.canceled) {
             const imageUri = result.assets[0].uri;
-            await handleAddRoomImage(room, imageUri)
+            await handleImageUpdate(entity, imageUri, updateImageCallback);
+            //await handleAddRoomImage(room, imageUri)
             setSelectedImg({ uri: imageUri });
         } else {
             Alert.alert('No image selected.');
         }
+    }
+
+    const handleImageUpdate  = async (
+        entity: Room | Item,
+        imageUri: string,
+        updateImageCallback: (uri: string) => void
+    ) => {
+        try {
+            if ("items" in entity) {
+                const updatedRoom: Room = {
+                    ...entity,
+                    image: imageUri,
+                };
+                await saveRoom(updatedRoom);
+            } else {
+                // For item image
+                updateImageCallback(imageUri);
+            }
+        } catch (error) {
+            Alert.alert("Error", "Failed to update image.");
+        }
+
     }
 
     const handleAddRoomImage = async (room : Room, imageUri : string) => {

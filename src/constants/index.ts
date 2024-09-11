@@ -45,6 +45,7 @@ export type ItemCardProps = {
     onPress: () => void;
     onEdit: (item : Item) => void;
     onDelete: (itemId: string | number[]) => void;
+    onImageUpdate: (itemId: string | number[], uri: string) => void;
 };
 
 export const categories = [

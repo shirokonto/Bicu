@@ -5,16 +5,20 @@ import { RootStackParamList } from "navigation";
 import { categories, ItemCardProps } from "../../../constants";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { GestureHandlerRootView, Swipeable } from "react-native-gesture-handler";
+import { useImageHandler } from "hooks/useImageHandler";
 
-const ItemCard = ({ item, index, onPress, onEdit, onDelete }: ItemCardProps) => {
+const ItemCard = ({ item, index, onPress, onEdit, onDelete, onImageUpdate }: ItemCardProps) => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
     const categoryName = item.category ?? "No Category";
-    const category = categories.find(cat => cat.name === categoryName);
-    const categoryImage = category ? category.image : null;
-    const [actionItemsVisible, setActionItemsVisible] = useState(false);
 
+    const [actionItemsVisible, setActionItemsVisible] = useState(false);
+    const { openGalleryAsync, openCameraAsync } = useImageHandler();
     const swipeableRef = useRef<Swipeable>(null);
+
+    const category = categories.find(cat => cat.name === categoryName);
+    const itemImg = item.image ? { uri: item.image } : category?.image ?? null;
+
 
     const renderRightActions = () => (
             <View style={styles.actionContainer}>
@@ -24,6 +28,13 @@ const ItemCard = ({ item, index, onPress, onEdit, onDelete }: ItemCardProps) => 
                     color="#000"
                     style={styles.actionIcon}
                     onPress={() => onEdit(item)}
+                />
+                <MaterialIcons
+                    name="add-photo-alternate"
+                    size={28}
+                    color="#D97706"
+                    style={styles.actionIcon}
+                    onPress={() => openGalleryAsync(item, (uri) => onImageUpdate(item.id, uri))}
                 />
                 <MaterialIcons
                     name="delete"
@@ -82,7 +93,7 @@ const ItemCard = ({ item, index, onPress, onEdit, onDelete }: ItemCardProps) => 
                     <View style={styles.cardContainer}>
                         <View style={styles.cardContent}>
                             <View style={styles.imageWrapper}>
-                                <Image source={categoryImage} style={styles.categoryImage} />
+                                <Image source={itemImg} style={styles.categoryImage} />
                             </View>
                             <View>
                                 <Text style={styles.itemName}>{item.name}</Text>

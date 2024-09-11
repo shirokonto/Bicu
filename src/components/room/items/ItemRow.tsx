@@ -37,6 +37,16 @@ const ItemRow = ({ room, onItemPress, onRoomUpdate }: ItemRowProps) => {
             });
     };
 
+    const handleUpdateItemImage = (itemId: string | number[], uri: string) => {
+        const updatedItems = items.map((item) =>
+            item.id === itemId ? { ...item, image: uri } : item
+        );
+        const updatedRoom = { ...room, items: updatedItems };
+        saveRoom(updatedRoom)
+            .then(() => setItems(updatedItems))
+            .catch((e) => console.error("Error saving updated room:", e));
+    };
+
     const handleDeleteItem = (itemId: string| number[]) => {
         const updatedItems = items.filter(item => item.id !== itemId);
         const updatedRoom = {
@@ -77,6 +87,7 @@ const ItemRow = ({ room, onItemPress, onRoomUpdate }: ItemRowProps) => {
                         onPress={() => onItemPress(item.id)}
                         onEdit={onEditItem}
                         onDelete={ () => handleDeleteItem(item.id)}
+                        onImageUpdate={handleUpdateItemImage}
                     />
                 ))
             ) : (
