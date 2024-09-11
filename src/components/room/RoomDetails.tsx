@@ -13,9 +13,10 @@ interface RoomDetailsProps {
     fetchedRoom: Room;
     navigation: NavigationProp<RootStackParamList>;
     openActionSheetAsync: () => void;
+    onRoomUpdate: (updatedRoom: Room) => void;
 }
 
-const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync } : RoomDetailsProps) => {
+const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync, onRoomUpdate } : RoomDetailsProps) => {
     const textInputRef = useRef<TextInput | null>(null);
     const [title, setTitle] = useState(fetchedRoom.name || "Room");
     const [isEditing, setIsEditing] = useState(false);
@@ -81,6 +82,7 @@ const RoomDetails= ({ fetchedRoom, navigation, openActionSheetAsync } : RoomDeta
             <ItemRow
                 room ={fetchedRoom}
                 onItemPress={handleItemPress}
+                onRoomUpdate={onRoomUpdate}
             />
         </View>
     );

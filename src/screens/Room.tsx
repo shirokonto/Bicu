@@ -9,7 +9,7 @@ import RoomDetails from "@components/room/RoomDetails";
 import { useImageHandler } from "hooks/useImageHandler";
 import { RoomScreenParams } from "../constants";
 import { getImageSource } from "@utils/convertImageType";
-import { Item } from "types";
+import { Item, Room as RoomType } from "types";
 import { saveRoom } from "@utils/roomStorage";
 
 const placeholderImage = require('../assets/images/sample.png')
@@ -25,7 +25,7 @@ const Room = () => {
     const [imageSource, setImageSource] = useState(initialImageSource);
     const [isImageMaximized, setIsImageMaximized] = useState(false);
     const [highlightedItemId, setHighlightedItemId] = useState<string | number[] | null>(null);
-
+    const [updatedRoom, setUpdatedRoom] = useState(room);
 
     useEffect(() => {
         if (selectedImg) {
@@ -40,6 +40,10 @@ const Room = () => {
         }
     }, [selectedImg, route.params.itemId]);
 
+    const handleRoomUpdate = (newRoom: RoomType) => {
+        setUpdatedRoom(newRoom);
+    };
+
     // TODO replace with openActionSheet?
     const openActionSheetAsync = async () =>
         ActionSheetIOS.showActionSheetWithOptions(
@@ -52,15 +56,16 @@ const Room = () => {
                 if (buttonIndex === 0) {
                     // cancel action
                 } else if (buttonIndex === 1) {
-                    openCameraAsync(room)
+                    openCameraAsync(updatedRoom)
                 } else if (buttonIndex === 2) {
-                    openGalleryAsync(room)
+                    openGalleryAsync(updatedRoom)
                 }
             },
         );
 
     const handleMarkerUpdate = (updatedItems: Item[]) => {
-        room.items = updatedItems;
+        const newRoom = { ...updatedRoom, items: updatedItems };
+        setUpdatedRoom(newRoom);
         saveRoom(room).then(() => {
             //setItems(updatedItems);
             console.log("Successfully updated items with markers");
@@ -90,9 +95,10 @@ const Room = () => {
 
                 {/* Room details with item list*/}
                 <RoomDetails
-                    fetchedRoom={room}
+                    fetchedRoom={updatedRoom}
                     navigation={navigation}
-                    openActionSheetAsync={openActionSheetAsync}/>
+                    openActionSheetAsync={openActionSheetAsync} onRoomUpdate={handleRoomUpdate}
+                />
             </ScrollView>
 
             {/* Modal for maximized image */}
@@ -100,7 +106,7 @@ const Room = () => {
                 visible={isImageMaximized}
                 onClose={() => setIsImageMaximized(false)}
                 selectedImage={imageSource}
-                room={room}
+                room={updatedRoom}
                 onMarkerUpdate={handleMarkerUpdate}
                 highlightedItemId={highlightedItemId}
             />

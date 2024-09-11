@@ -36,6 +36,7 @@ export interface EditableTitleProps {
 export type ItemRowProps = {
     room: Room;
     onItemPress: (itemId: string | number[] ) => void;
+    onRoomUpdate: (updatedRoom: Room) => void;
 };
 
 export type ItemCardProps = {

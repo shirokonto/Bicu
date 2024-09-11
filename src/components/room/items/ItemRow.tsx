@@ -7,7 +7,7 @@ import { ItemRowProps } from "../../../constants";
 import ItemCard from "components/room/items/ItemCard";
 import { saveRoom } from "@utils/roomStorage";
 
-const ItemRow = ({ room, onItemPress }: ItemRowProps) => {
+const ItemRow = ({ room, onItemPress, onRoomUpdate }: ItemRowProps) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [ items, setItems] = useState<Item[]>(room.items);
     const [ selectedItem, setSelectedItem ] = useState<Item | null>(null);
@@ -26,12 +26,15 @@ const ItemRow = ({ room, onItemPress }: ItemRowProps) => {
             items: updatedItems
         };
 
-        saveRoom(updatedRoom).then(() => {
-            setItems(updatedItems);
-            setSelectedItem(null);
-        }).catch(e => {
-            console.error("Error saving updated room:", e);
-        });
+        saveRoom(updatedRoom)
+            .then(() => {
+                setItems(updatedItems);
+                setSelectedItem(null);
+                onRoomUpdate(updatedRoom);
+            })
+            .catch(e => {
+                console.error("Error saving updated room:", e);
+            });
     };
 
     const handleDeleteItem = (itemId: string| number[]) => {
@@ -43,6 +46,7 @@ const ItemRow = ({ room, onItemPress }: ItemRowProps) => {
 
         saveRoom(updatedRoom).then(() => {
             setItems(updatedItems);
+            onRoomUpdate(updatedRoom);
         }).catch(e => {
             console.error("Error saving updated room:", e);
         });
