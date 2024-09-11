@@ -37,8 +37,15 @@ const ItemModal = ({ visible, onClose, onAddItem, itemToEdit } : AddItemModalPro
         };
 
         onAddItem(itemToSave);
-        onClose();
+        handleClose();
     }
+
+    // Reset data
+    const handleClose = () => {
+        setName("");
+        setCategory("");
+        onClose();
+    };
 
     const togglePicker = () => {
         setIsPickerVisible(!isPickerVisible);
