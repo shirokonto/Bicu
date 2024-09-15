@@ -2,8 +2,12 @@ import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React, { useState } from "react";
 
-const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
+interface SearchBarProps {
+    onSearch: (query: string) => void;
+    onFilterPress: () => void;
+}
 
+const SearchBar = ({ onSearch, onFilterPress }: SearchBarProps) => {
     const [searchText, setSearchText] = useState("");
 
     const handleSearchChange = (text: string) => {
@@ -16,17 +20,15 @@ const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
         onSearch("");
     }
 
-    const onFilterPress  = () => {
-        alert("pressed")
-    }
     return (
         <View style={styles.searchbarContainer}>
             <View style={styles.searchbarRow}>
                 <MaterialIcons name={"search"} size={28} style={styles.searchIcon}/>
-                <TextInput placeholder={'Search for items or rooms'}
-                           style={styles.searchField}
-                           value={searchText}
-                           onChangeText={handleSearchChange}
+                <TextInput
+                    placeholder={'Search for items or rooms'}
+                    style={styles.searchField}
+                    value={searchText}
+                    onChangeText={handleSearchChange}
                 />
                 {searchText.length > 0 && (
                     <TouchableOpacity onPress={clearSearch}>
@@ -35,10 +37,8 @@ const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
                 )}
             </View>
             <View style={styles.filterButtonContainer}>
-                <TouchableOpacity
-                    onPress={onFilterPress}
-                    >
-                <MaterialIcons name={"filter-list"}  size={28} style={styles.filterButton}/>
+                <TouchableOpacity onPress={onFilterPress} >
+                    <MaterialIcons name={"filter-list"}  size={28} style={styles.filterButton}/>
                 </TouchableOpacity>
                 </View>
         </View>

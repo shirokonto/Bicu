@@ -10,9 +10,10 @@ import { useFocusEffect } from "@react-navigation/native";
 type RoomRowProps = {
     searchQuery: string;
     selectedCategory: string | null;
+    selectedColor: string | null;
 };
 
-const RoomRow = ({ searchQuery, selectedCategory }: RoomRowProps) => {
+const RoomRow = ({ searchQuery, selectedCategory, selectedColor }: RoomRowProps) => {
     const [rooms, setRooms] = useState<Room[]>([]);
     const [filteredRooms, setFilteredRooms] = useState<Room[]>([]);
     const [isModalVisible, setModalVisible] = useState(false);
@@ -28,11 +29,17 @@ const RoomRow = ({ searchQuery, selectedCategory }: RoomRowProps) => {
     );
 
     useEffect(() => {
-        // Filter rooms based on search query and selected category
+        // Filter rooms based on search query, selected category and color
         let filtered = rooms;
         if (selectedCategory !== null) {
             filtered = filtered.filter((room) =>
                 room.items.some((item) => item.category === selectedCategory)
+            );
+        }
+
+        if(selectedColor) {
+            filtered = filtered.filter((room) =>
+                room.items.some((item) => item.dominantColor === selectedColor)
             );
         }
 
@@ -46,7 +53,7 @@ const RoomRow = ({ searchQuery, selectedCategory }: RoomRowProps) => {
         }
         setFilteredRooms(filtered);
 
-    }, [searchQuery, rooms, selectedCategory]);
+    }, [searchQuery, rooms, selectedCategory, selectedColor]);
 
     const fetchRooms = async () => {
         const storedRooms = await getRooms();

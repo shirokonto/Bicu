@@ -1,6 +1,6 @@
-import {ActionSheetIOS} from "react-native";
-import {useImageHandler} from "hooks/useImageHandler";
-import {Room} from "types";
+import { ActionSheetIOS } from "react-native";
+import { useImageHandler } from "hooks/useImageHandler";
+import { Room } from "types";
 
 export const openActionSheet = async (room : Room) => {
     const { selectedImg, openGalleryAsync, openCameraAsync } = useImageHandler();
@@ -15,9 +15,9 @@ export const openActionSheet = async (room : Room) => {
             if (buttonIndex === 0) {
                 // cancel action
             } else if (buttonIndex === 1) {
-                openCameraAsync(room)
+                // openCameraAsync(room)
             } else if (buttonIndex === 2) {
-                openGalleryAsync(room)
+                // openGalleryAsync(room)
             }
         },
     );

@@ -7,9 +7,12 @@ export const getRooms = async (): Promise<Room[]> => {
     try {
         const keys = await AsyncStorage.getAllKeys();
         const rooms = await AsyncStorage.multiGet(keys);
-
+        
         return rooms.map(([key, value]) => {
             if (value) {
+                if (value.toString().includes("Bathroom")) {
+                    console.log("room: ", value.toString())
+                }
                 const jsonValue = JSON.parse(value);
                 return {
                     ...jsonValue,

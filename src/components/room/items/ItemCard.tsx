@@ -19,6 +19,7 @@ const ItemCard = ({ item, index, onPress, onEdit, onDelete, onImageUpdate }: Ite
     const category = categories.find(cat => cat.name === categoryName);
     const itemImg = item.image ? { uri: item.image } : category?.image ?? null;
 
+    // TODO openBoth not only openGalleryAsync
 
     const renderRightActions = () => (
             <View style={styles.actionContainer}>
@@ -34,7 +35,7 @@ const ItemCard = ({ item, index, onPress, onEdit, onDelete, onImageUpdate }: Ite
                     size={28}
                     color="#D97706"
                     style={styles.actionIcon}
-                    onPress={() => openGalleryAsync(item, (uri) => onImageUpdate(item.id, uri))}
+                    onPress={() => openGalleryAsync(item, (uri, dominantColor) => onImageUpdate(item.id, uri, dominantColor))}
                 />
                 <MaterialIcons
                     name="delete"

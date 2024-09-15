@@ -1,4 +1,4 @@
-import {GestureHandlerRootView} from "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import RootNavigator from './src/navigation';
 
 

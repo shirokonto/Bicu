@@ -45,8 +45,25 @@ export type ItemCardProps = {
     onPress: () => void;
     onEdit: (item : Item) => void;
     onDelete: (itemId: string | number[]) => void;
-    onImageUpdate: (itemId: string | number[], uri: string) => void;
+    onImageUpdate: (itemId: string | number[], uri: string, dominantColor: string | undefined) => void;
 };
+
+export const colorPalette = [
+    { name: 'WHITE', rgb: [255, 255, 255] },
+    { name: 'YELLOW', rgb: [255, 255, 0] },
+    { name: 'ORANGE', rgb: [255, 165, 0] },
+    { name: 'PINK', rgb: [255, 192, 203] },
+    { name: 'MAGENTA', rgb: [255, 0, 255] },
+    { name: 'RED', rgb: [255, 0, 0] },
+    { name: 'GREEN', rgb: [0, 128, 0] },
+    { name: 'OLIVE', rgb: [128, 128, 0] },
+    { name: 'BLUE', rgb: [0, 0, 255] },
+    { name: 'NAVY', rgb: [0, 0, 128] },
+    { name: 'BROWN', rgb: [165, 42, 42] },
+    { name: 'GRAY', rgb: [128, 128, 128] },
+    { name: 'BLACK', rgb: [0, 0, 0] },
+];
+
 
 export const categories = [
     {

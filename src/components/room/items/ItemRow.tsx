@@ -37,9 +37,9 @@ const ItemRow = ({ room, onItemPress, onRoomUpdate }: ItemRowProps) => {
             });
     };
 
-    const handleUpdateItemImage = (itemId: string | number[], uri: string) => {
+    const handleUpdateItemImage = (itemId: string | number[], uri: string, dominantColor : string | undefined) => {
         const updatedItems = items.map((item) =>
-            item.id === itemId ? { ...item, image: uri } : item
+            item.id === itemId ? { ...item, image: uri, dominantColor } : item
         );
         const updatedRoom = { ...room, items: updatedItems };
         saveRoom(updatedRoom)
