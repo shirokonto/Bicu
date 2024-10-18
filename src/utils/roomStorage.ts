@@ -10,9 +10,6 @@ export const getRooms = async (): Promise<Room[]> => {
         
         return rooms.map(([key, value]) => {
             if (value) {
-                if (value.toString().includes("Bathroom")) {
-                    console.log("room: ", value.toString())
-                }
                 const jsonValue = JSON.parse(value);
                 return {
                     ...jsonValue,
