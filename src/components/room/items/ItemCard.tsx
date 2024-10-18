@@ -13,7 +13,7 @@ const ItemCard = ({ item, index, onPress, onEdit, onDelete, onImageUpdate }: Ite
     const categoryName = item.category ?? "No Category";
 
     const [actionItemsVisible, setActionItemsVisible] = useState(false);
-    const { openGalleryAsync, openCameraAsync } = useImageHandler();
+    const { openCameraAsyncItem } = useImageHandler();
     const swipeableRef = useRef<Swipeable>(null);
 
     const category = categories.find(cat => cat.name === categoryName);
@@ -35,7 +35,7 @@ const ItemCard = ({ item, index, onPress, onEdit, onDelete, onImageUpdate }: Ite
                     size={28}
                     color="#D97706"
                     style={styles.actionIcon}
-                    onPress={() => openGalleryAsync(item, (uri, dominantColor) => onImageUpdate(item.id, uri, dominantColor))}
+                    onPress={() => openCameraAsyncItem(item, (uri, dominantColor) => onImageUpdate(item.id, uri, dominantColor))}
                 />
                 <MaterialIcons
                     name="delete"

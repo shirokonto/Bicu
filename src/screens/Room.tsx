@@ -20,7 +20,7 @@ const Room = () => {
     const route = useRoute<RouteProp<RootStackParamList, "Room">>();
     const { room, itemId } = route.params as RoomScreenParams;
     const initialImageSource = room.image ? getImageSource(room.image) : placeholderImage;
-    const { selectedImg, openGalleryAsync, openCameraAsync } = useImageHandler();
+    const { selectedImg, openGalleryAsyncRoom, openCameraAsyncRoom } = useImageHandler();
 
     const [imageSource, setImageSource] = useState(initialImageSource);
     const [isImageMaximized, setIsImageMaximized] = useState(false);
@@ -40,16 +40,20 @@ const Room = () => {
         }
     }, [selectedImg, route.params.itemId]);
 
+    // handle Room image update
+    const handleImageUpdate = (imageUri: string) => {
+        const newRoom : RoomType = { ...updatedRoom, image: imageUri };
+        handleRoomUpdate(newRoom);
+        setImageSource({ uri: imageUri });
+    };
+
     const handleRoomUpdate = (newRoom: RoomType) => {
         setUpdatedRoom(newRoom);
+        saveRoom(newRoom)
+            .then(() => console.log("Room updated successfully"))
+            .catch((e) => console.error("Error updating room:", e));
     };
 
-    const handleImageUpdate = (imageUri: string) => {
-        setImageSource({ uri: imageUri });
-        handleRoomUpdate({ ...updatedRoom, image: imageUri });
-    };
-
-    // TODO replace with openActionSheet?
     const openActionSheetAsync = async () =>
         ActionSheetIOS.showActionSheetWithOptions(
             {
@@ -61,9 +65,9 @@ const Room = () => {
                 if (buttonIndex === 0) {
                     // cancel action
                 } else if (buttonIndex === 1) {
-                    openCameraAsync(updatedRoom, handleImageUpdate)
+                    openCameraAsyncRoom(updatedRoom, handleImageUpdate)
                 } else if (buttonIndex === 2) {
-                    openGalleryAsync(updatedRoom, handleImageUpdate)
+                    openGalleryAsyncRoom(updatedRoom, handleImageUpdate)
                 }
             },
         );
@@ -72,7 +76,6 @@ const Room = () => {
         const newRoom = { ...updatedRoom, items: updatedItems };
         setUpdatedRoom(newRoom);
         saveRoom(room).then(() => {
-            //setItems(updatedItems);
             console.log("Successfully updated items with markers");
         }).catch(e => {
             console.error("Error saving updated room:", e);

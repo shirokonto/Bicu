@@ -7,7 +7,6 @@ export const getRooms = async (): Promise<Room[]> => {
     try {
         const keys = await AsyncStorage.getAllKeys();
         const rooms = await AsyncStorage.multiGet(keys);
-        
         return rooms.map(([key, value]) => {
             if (value) {
                 const jsonValue = JSON.parse(value);
@@ -26,6 +25,7 @@ export const getRooms = async (): Promise<Room[]> => {
 
 export const saveRoom = async (room: Room): Promise<void> => {
     try {
+        console.log('Saving room to AsyncStorage:', room);
         const jsonValue = JSON.stringify(room);
         await AsyncStorage.setItem(room.id as string, jsonValue);
 

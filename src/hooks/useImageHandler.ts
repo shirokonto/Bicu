@@ -18,12 +18,12 @@ const getColorNameFromRGB = (r: number, g: number, b: number): string => {
     let closestColorName = 'UNKNOWN';
 
     for (const color of colorPalette) {
-        const [cr, cg, cb] = color.rgb;
+        const [red, green, blue] = color.rgb;
         // Calculate Euclidean distance in RGB space
         const distance = Math.sqrt(
-            Math.pow(r - cr, 2) +
-            Math.pow(g - cg, 2) +
-            Math.pow(b - cb, 2)
+            Math.pow(r - red, 2) +
+            Math.pow(g - green, 2) +
+            Math.pow(b - blue, 2)
         );
 
         if (distance < minDistance) {
@@ -38,7 +38,48 @@ const getColorNameFromRGB = (r: number, g: number, b: number): string => {
 export const useImageHandler = () => {
     const [selectedImg, setSelectedImg] = useState<ImageSourcePropType | undefined>(undefined);
 
-    const openGalleryAsync = async (entity: Room | Item, updateImageCallback: (uri: string, dominantColor?: string) => void) => {
+    const openGalleryAsyncRoom = async (entity: Room, updateImageCallback: (uri: string) => void) => {
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (!permissionResult.granted) {
+            Alert.alert("Permission Denied", "Allow this app access to your photos");
+            return;
+        }
+
+        let result: any = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            quality: 1
+        });
+
+        if (!result.canceled) {
+            const imageUri = result.assets[0].uri;
+            updateImageCallback(imageUri); // No dominant color detection for Room
+            setSelectedImg({ uri: imageUri });
+        } else {
+            Alert.alert('No image selected.');
+        }
+    }
+
+    const openCameraAsyncRoom = async (entity: Room, updateImageCallback: (uri: string) => void) => {
+        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+        if (!permissionResult.granted) {
+            Alert.alert("Permission Denied", "Allow this app access to your camera");
+            return;
+        }
+
+        let result: any = await ImagePicker.launchCameraAsync();
+
+        if (!result.canceled) {
+            const imageUri = result.assets[0].uri;
+            updateImageCallback(imageUri);
+            setSelectedImg({ uri: imageUri });
+        } else {
+            Alert.alert('No image selected.');
+        }
+    }
+
+    const openGalleryAsyncItem = async (entity: Item, updateImageCallback: (uri: string, dominantColor?: string) => void) => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
         if (!permissionResult.granted) {
@@ -55,13 +96,12 @@ export const useImageHandler = () => {
             const imageUri = result.assets[0].uri;
             const dominantColor = await detectDominantColor(imageUri);
             updateImageCallback(imageUri, dominantColor);
-            setSelectedImg({ uri: imageUri });
         } else {
             Alert.alert('No image selected.');
         }
     }
 
-    const openCameraAsync = async (entity: Room | Item, updateImageCallback: (uri: string, dominantColor?: string) => void) => {
+    const openCameraAsyncItem = async (entity: Item, updateImageCallback: (uri: string, dominantColor?: string) => void) => {
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
         if (!permissionResult.granted) {
@@ -75,7 +115,6 @@ export const useImageHandler = () => {
             const imageUri = result.assets[0].uri;
             const dominantColor = await detectDominantColor(imageUri);
             updateImageCallback(imageUri, dominantColor);
-            setSelectedImg({ uri: imageUri });
         } else {
             Alert.alert('No image selected.');
         }
@@ -100,6 +139,7 @@ export const useImageHandler = () => {
         return 'rgb(255, 255, 255)'; // Fallback to white when failing to detect color
     };
 
+    // Not really working
     const getColorFromPNGData = (pngData: Uint8Array): string => {
         // Parse PNG data to get the pixel color
         const pngSignature = [137, 80, 78, 71, 13, 10, 26, 10];
@@ -124,7 +164,7 @@ export const useImageHandler = () => {
             if (type === 'IDAT') {
                 const compressedData = pngData.slice(offset + 8, offset + 8 + length);
 
-                // Decompress the image data using pako (a zlib port)
+                // Decompress image data using pako (a zlib port)
                 const decompressedData = pako.inflate(compressedData);
 
                 // For 1x1 image, decompressed data should be minimal
@@ -151,5 +191,5 @@ export const useImageHandler = () => {
         ) >>> 0;
     };
 
-    return { selectedImg, openGalleryAsync, openCameraAsync };
+    return { selectedImg, openGalleryAsyncItem, openCameraAsyncItem, openGalleryAsyncRoom, openCameraAsyncRoom };
 }
