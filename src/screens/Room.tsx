@@ -75,7 +75,7 @@ const Room = () => {
     const handleMarkerUpdate = (updatedItems: Item[]) => {
         const newRoom = { ...updatedRoom, items: updatedItems };
         setUpdatedRoom(newRoom);
-        saveRoom(room).then(() => {
+        saveRoom(newRoom).then(() => {
             console.log("Successfully updated items with markers");
         }).catch(e => {
             console.error("Error saving updated room:", e);
